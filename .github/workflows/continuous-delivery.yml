@@ -21,7 +21,7 @@ jobs:
     if: |
       (github.event_name == 'workflow_dispatch' ||
       github.event.pull_request.merged == true) &&
-      github.actor != 'dependabot[bot]'
+      startsWith(github.head_ref, 'dependabot/') == false
 
     steps:
       - name: Checkout
