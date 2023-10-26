@@ -109,6 +109,6 @@
     "mocha": "^10.2.0",
     "prettier": "^3.0.3",
     "prettier-eslint": "^15.0.1",
-    "sinon": "^16.0.0"
+    "sinon": "^17.0.0"
   }
 }
