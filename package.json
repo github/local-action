@@ -25,6 +25,9 @@
   "bin": {
     "local-action": "./src/index.ts"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "scripts": {
     "ci-test": "npx mocha",
     "format:write": "prettier --write **/*.ts",
