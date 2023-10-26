@@ -63,10 +63,11 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          registry-url: https://npm.pkg.github.com
 
       - name: Install Dependencies
         id: install
-        run: npm ci
+        run: npm ci --registry https://registry.npmjs.org
 
       - name: Publish
         id: publish
