@@ -1,0 +1,16 @@
+name: MyAction
+description: This action returns without error
+
+inputs:
+  myInput:
+    description: An input
+    required: true
+    default: 'default value'
+
+outputs:
+  myOutput:
+    description: An output
+
+runs:
+  using: node20
+  main: dist/index.js

@@ -1,0 +1,6 @@
+name: MyAction
+description: This action returns without error
+
+runs:
+  using: node20
+  main: dist/index.js

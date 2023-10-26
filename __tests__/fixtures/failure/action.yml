@@ -1,0 +1,6 @@
+name: MyAction
+description: This action sets a failure status
+
+runs:
+  using: node20
+  main: dist/index.js
