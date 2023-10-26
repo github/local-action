@@ -23,7 +23,7 @@
     ".": "./src/index.ts"
   },
   "bin": {
-    "local-action": "./src/index.ts"
+    "local-action": "src/index.ts"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
