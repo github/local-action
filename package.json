@@ -108,7 +108,7 @@
     "make-coverage-badge": "^1.2.0",
     "mocha": "^10.2.0",
     "prettier": "^3.0.3",
-    "prettier-eslint": "^15.0.1",
+    "prettier-eslint": "^16.1.1",
     "sinon": "^17.0.0"
   }
 }
