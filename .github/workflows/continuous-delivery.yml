@@ -19,8 +19,9 @@ jobs:
 
     # Only run this job if it was done manually or the PR was merged
     if: |
-      github.event_name == 'workflow_dispatch' ||
-      github.event.pull_request.merged == true
+      (github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.merged == true) &&
+      github.actor != 'dependabot[bot]'
 
     steps:
       - name: Checkout
