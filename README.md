@@ -1,7 +1,7 @@
 # Local Action Debugger
 
-[![GitHub Super-Linter](https://github.com/github/local-action-debugger/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-![Continuous Integration](https://github.com/github/local-action-debugger/actions/workflows/continuous-integration.yml/badge.svg)
+![GitHub Super-Linter](https://github.com/github/local-action/actions/workflows/linter.yml/badge.svg)
+![Continuous Integration](https://github.com/github/local-action/actions/workflows/continuous-integration.yml/badge.svg)
 ![Coverage](badges/coverage.svg)
 
 Run custom GitHub Actions locally and test them in VS Code!
@@ -10,7 +10,7 @@ This command-line tool emulates functionality of the
 [GitHub Actions Toolkit](https://github.com/actions/toolkit) so that custom
 actions can be run directly on your workstation.
 
-> [NOTE]
+> [!NOTE]
 >
 > This tool currently only supports JavaScript and TypeScript actions!
 
