@@ -57,8 +57,8 @@ jobs:
         with:
           fetch-tags: true
 
-      - name: Setup Node.js
-        id: setup-node
+      - name: Setup Node.js (npm)
+        id: setup-node-npm
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -69,8 +69,8 @@ jobs:
         id: install
         run: npm ci
 
-      - name: Setup Node.js
-        id: setup-node
+      - name: Setup Node.js (gh-pkg)
+        id: setup-node-gh
         uses: actions/setup-node@v4
         with:
           node-version: 20
