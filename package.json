@@ -98,7 +98,7 @@
     "@types/mocha": "^10.0.2",
     "@types/sinon": "^10.0.17",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
-    "@typescript-eslint/parser": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.1",
     "@vercel/ncc": "^0.38.1",
     "c8": "^8.0.1",
     "chai": "^4.3.10",
