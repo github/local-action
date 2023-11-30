@@ -32,7 +32,7 @@ jobs:
 
       - name: Tag
         id: tag
-        uses: issue-ops/semver@v0.1.0
+        uses: issue-ops/semver@v0.3.2
         with:
           manifest-path: package.json
           workspace: ${{ github.workspace }}
@@ -40,7 +40,7 @@ jobs:
 
       - name: Create Release
         id: release
-        uses: issue-ops/releaser@v0.1.2
+        uses: issue-ops/releaser@v0.1.3
         with:
           tag: v${{ steps.tag.outputs.version }}
 
