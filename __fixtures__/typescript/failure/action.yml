@@ -1,4 +1,4 @@
-name: MyAction
+name: TypeScript (Failing)
 description: This action sets a failure status
 
 runs:

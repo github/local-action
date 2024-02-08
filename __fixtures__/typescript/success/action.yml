@@ -1,4 +1,4 @@
-name: MyAction
+name: TypeScript (Success)
 description: This action returns without error
 
 inputs:
