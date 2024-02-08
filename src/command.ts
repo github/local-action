@@ -1,13 +1,6 @@
-#!/usr/bin/env ts-node
-
-/**
- * Generates the CLI command utility
- */
-import * as commander from 'commander'
-
 import type { Command } from 'commander'
-
-import { run } from './commands/run'
+import * as commander from 'commander'
+import * as run from './commands/run'
 import { checkActionPath, checkEntryPoint, checkEnvFile } from './utils/checks'
 
 export function makeProgram(): Command {
@@ -29,7 +22,7 @@ export function makeProgram(): Command {
     )
     .argument('<env file>', 'Path to the local .env file', checkEnvFile)
     .action(async () => {
-      run()
+      await run.action()
     })
 
   return program
