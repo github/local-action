@@ -1,7 +1,9 @@
+import { ExitCode } from './enums'
+
 /**
  * Environment metadata
  */
-export interface EnvMetadata {
+export type EnvMetadata = {
   actionFile: string
   actionPath: string
   env: {
@@ -23,7 +25,7 @@ export interface EnvMetadata {
 /**
  * Metadata for `@actions/core`
  */
-export interface CoreMetadata {
+export type CoreMetadata = {
   exitCode: ExitCode
   exitMessage: string
   outputs: { [key: string]: string }
@@ -32,14 +34,14 @@ export interface CoreMetadata {
   echo: boolean
   state: { [key: string]: string }
   colors: {
-    [key: string]: any
+    [key: string]: (message: string) => void
   }
 }
 
 /**
  * Return value for the loadAction function
  */
-export interface Action {
+export type Action = {
   inputs: Record<string, Input>
   outputs: Record<string, Output>
 }
@@ -47,7 +49,7 @@ export interface Action {
 /**
  * A GitHub Actions input
  */
-export interface Input {
+export type Input = {
   description: string
   required?: boolean
   default?: string
@@ -57,7 +59,7 @@ export interface Input {
 /**
  * A GitHub Actions output
  */
-export interface Output {
+export type Output = {
   description: string
 }
 
@@ -69,7 +71,7 @@ export interface Output {
  * Optional properties that can be sent with annotation commands (notice, error, and warning)
  * See: https://docs.github.com/en/rest/reference/checks#create-a-check-run for more information about annotations.
  */
-export interface AnnotationProperties {
+export type AnnotationProperties = {
   /** A title for the annotation. */
   title?: string
 
@@ -93,23 +95,9 @@ export interface AnnotationProperties {
 }
 
 /**
- * The code to exit an action
- */
-// eslint-disable-next-line no-shadow
-export enum ExitCode {
-  /** A code indicating that the action was successful */
-  // eslint-disable-next-line no-unused-vars
-  Success = 0,
-
-  /** A code indicating that the action was a failure */
-  // eslint-disable-next-line no-unused-vars
-  Failure = 1
-}
-
-/**
  * Interface for getInput options
  */
-export interface InputOptions {
+export type InputOptions = {
   /** Optional. Whether the input is required. If required and not present, will throw. Defaults to false */
   required?: boolean
 
@@ -121,7 +109,7 @@ export interface InputOptions {
 // @actions/github
 //-----------------------------------------------------------------------
 
-export interface PayloadRepository {
+export type PayloadRepository = {
   [key: string]: any
   full_name?: string
   name: string
@@ -133,7 +121,7 @@ export interface PayloadRepository {
   html_url?: string
 }
 
-export interface WebhookPayload {
+export type WebhookPayload = {
   [key: string]: any
   repository?: PayloadRepository
   issue?: {
