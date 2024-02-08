@@ -1,0 +1,48 @@
+env:
+  es2022: true
+  node: true
+  jest: true
+
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+
+ignorePatterns:
+  - node_modules/.*
+  - coverage/.*
+
+parser: '@typescript-eslint/parser'
+
+parserOptions:
+  ecmaVersion: 2022
+  project:
+    - tsconfig.eslint.json
+    - tsconfig.json
+
+plugins:
+  - '@typescript-eslint'
+
+settings:
+  import/resolver:
+    typescript: {}
+
+extends:
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended-requiring-type-checking
+  - plugin:@typescript-eslint/recommended
+  - eslint:recommended
+  - plugin:github/recommended
+  - plugin:import/typescript
+  - plugin:jest/recommended
+
+rules:
+  {
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
+    'camelcase': 'off',
+    'eslint-comments/no-use': 'off',
+    'i18n-text/no-en': 'off',
+    'import/no-namespace': 'off',
+    'no-console': 'off',
+    'no-unused-vars': 'off'
+  }

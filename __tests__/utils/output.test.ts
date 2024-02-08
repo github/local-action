@@ -1,32 +1,35 @@
-/**
- * Unit tests for the tool's output printing utilities
- */
-
-import { expect } from 'chai'
-import { restore, stub } from 'sinon'
-
+import * as coreStubs from '../../src/stubs/core-stubs'
+import * as envStubs from '../../src/stubs/env-stubs'
 import * as output from '../../src/utils/output'
-import { ResetEnvMetadata } from '../../src/stubs/env'
-import { ResetCoreMetadata } from '../../src/stubs/core'
 
-describe('printTitle', () => {
+let console_logSpy: jest.SpyInstance
+
+describe('Output', () => {
+  beforeAll(() => {
+    // Prevent output during tests
+    console_logSpy = jest.spyOn(console, 'log').mockImplementation()
+    jest.spyOn(console, 'table').mockImplementation()
+  })
+
   beforeEach(() => {
-    ResetEnvMetadata()
-    ResetCoreMetadata()
+    // Reset metadata
+    envStubs.ResetEnvMetadata()
+    coreStubs.ResetCoreMetadata()
   })
+
   afterEach(() => {
-    restore()
+    // Reset all spies
+    jest.resetAllMocks()
   })
 
-  it('Prints the correct number of (=) signs', () => {
-    // Stub console.log to ignore the actual output
-    const consoleSpy = stub(console, 'log')
+  describe('printTitle()', () => {
+    it('Prints the correct number of (=) signs', () => {
+      output.printTitle(console.log, 'Test')
 
-    output.printTitle(console.log, 'Test')
-
-    expect(consoleSpy.calledThrice).to.be.true
-    expect(consoleSpy.firstCall.calledWith('='.repeat(80))).to.be.true
-    expect(consoleSpy.secondCall.calledWith(`${' '.repeat(38)}Test`)).to.be.true
-    expect(consoleSpy.thirdCall.calledWith('='.repeat(80))).to.be.true
+      expect(console_logSpy).toHaveBeenCalledTimes(3)
+      expect(console_logSpy).toHaveBeenNthCalledWith(1, '='.repeat(80))
+      expect(console_logSpy).toHaveBeenNthCalledWith(2, `${' '.repeat(38)}Test`)
+      expect(console_logSpy).toHaveBeenNthCalledWith(3, '='.repeat(80))
+    })
   })
 })

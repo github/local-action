@@ -1,93 +1,98 @@
-/**
- * Unit tests for the tool's run command
- */
-
-import { expect } from 'chai'
-import { SinonSpy, SinonStub, spy, stub } from 'sinon'
-import { config } from 'dotenv'
-
-import * as main from '../../src/commands/run'
+import * as core from '@actions/core'
+import * as run from '../../src/commands/run'
+import * as coreStubs from '../../src/stubs/core-stubs'
+import * as envStubs from '../../src/stubs/env-stubs'
 import * as output from '../../src/utils/output'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env'
-import { ResetCoreMetadata } from '../../src/stubs/core'
 
-describe('run', () => {
-  describe('Successful tests', () => {
-    let titleStub: SinonStub
-    let tableStub: SinonStub
-    let runSpy: SinonSpy
+// eslint-disable-next-line no-undef
+let envBackup: NodeJS.ProcessEnv = process.env
 
-    beforeEach(async () => {
-      ResetCoreMetadata()
-      ResetEnvMetadata()
+describe('Command: run', () => {
+  beforeAll(() => {
+    // Prevent output during tests
+    jest.spyOn(console, 'log').mockImplementation()
+    jest.spyOn(console, 'table').mockImplementation()
+    jest.spyOn(output, 'printTitle').mockImplementation()
+  })
 
-      runSpy = spy(main, 'run')
-      titleStub = stub(output, 'printTitle')
-      tableStub = stub(console, 'table')
-    })
-    afterEach(() => {
-      runSpy.restore()
-      titleStub.restore()
-      tableStub.restore()
-    })
+  beforeEach(() => {
+    // Reset metadata
+    envStubs.ResetEnvMetadata()
+    coreStubs.ResetCoreMetadata()
 
-    it('Prints the configuration', () => {
-      EnvMeta.actionFile = './__tests__/fixtures/success/action.yml'
-      EnvMeta.actionPath = './__tests__/fixtures/success'
-      EnvMeta.entrypoint = './__tests__/fixtures/success/src/index.ts'
-      EnvMeta.envFile = './__tests__/fixtures/success/.env.fixture'
+    // Back up environment variables
+    envBackup = process.env
+  })
 
-      // eslint-disable-next-line github/no-then
-      main.run().then(() => {
-        expect(titleStub.calledOnce).to.be.true
-        expect(
-          tableStub.calledOnceWith([
-            {
-              Field: 'Action Path',
-              Value: './__tests__/fixtures/success'
-            },
-            {
-              Field: 'Entrypoint',
-              Value: './__tests__/fixtures/success/src/index.ts'
-            },
-            {
-              Field: 'Environment File',
-              Value: './__tests__/fixtures/success/.env.fixture'
-            }
-          ])
-        )
-      })
+  afterEach(() => {
+    // Reset all spies
+    jest.resetAllMocks()
+
+    // Restore environment variables
+    process.env = envBackup
+  })
+
+  describe('TypeScript', () => {
+    it('Action: success', async () => {
+      envStubs.EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
+      envStubs.EnvMeta.actionPath = `./__fixtures__/typescript/success`
+      envStubs.EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/index.ts`
+      envStubs.EnvMeta.envFile = `./__fixtures__/typescript/success/.env.fixture`
+
+      await expect(run.action()).resolves.toBeUndefined()
+      expect(core.setFailed).not.toHaveBeenCalled()
     })
 
-    it('Loads the environment file', () => {
-      EnvMeta.actionFile = './__tests__/fixtures/success/action.yml'
-      EnvMeta.actionPath = './__tests__/fixtures/success'
-      EnvMeta.entrypoint = './__tests__/fixtures/success/src/index.ts'
-      EnvMeta.envFile = './__tests__/fixtures/success/.env.fixture'
+    it('Action: failure', async () => {
+      envStubs.EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
+      envStubs.EnvMeta.actionPath = `./__fixtures__/typescript/failure`
+      envStubs.EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/index.ts`
+      envStubs.EnvMeta.envFile = `./__fixtures__/typescript/failure/.env.fixture`
 
-      const configSpy = spy(config)
-
-      // eslint-disable-next-line github/no-then
-      main.run().then(() => {
-        expect(
-          configSpy.calledOnceWith({
-            path: './__tests__/fixtures/success/.env.fixture'
-          })
-        ).to.be.true
-      })
+      await expect(run.action()).resolves.toBeUndefined()
+      expect(core.setFailed).toHaveBeenCalledWith('TypeScript Action Failed!')
     })
 
-    it('Sets empty environment action metadata when not present', () => {
-      EnvMeta.actionFile = './__tests__/fixtures/empty-meta/action.yml'
-      EnvMeta.actionPath = './__tests__/fixtures/empty-meta'
-      EnvMeta.entrypoint = './__tests__/fixtures/empty-meta/src/index.ts'
-      EnvMeta.envFile = './__tests__/fixtures/empty-meta/.env.fixture'
+    it('Action: no-import', async () => {
+      envStubs.EnvMeta.actionFile = `./__fixtures__/typescript/no-import/action.yml`
+      envStubs.EnvMeta.actionPath = `./__fixtures__/typescript/no-import`
+      envStubs.EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/index.ts`
+      envStubs.EnvMeta.envFile = `./__fixtures__/typescript/no-import/.env.fixture`
 
-      // eslint-disable-next-line github/no-then
-      main.run().then(() => {
-        expect(EnvMeta.inputs).to.deep.equal({})
-        expect(EnvMeta.outputs).to.deep.equal({})
-      })
+      await expect(run.action()).resolves.toBeUndefined()
+      expect(core.setFailed).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('JavaScript', () => {
+    it('Action: success', async () => {
+      envStubs.EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
+      envStubs.EnvMeta.actionPath = `./__fixtures__/javascript/success`
+      envStubs.EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/index.js`
+      envStubs.EnvMeta.envFile = `./__fixtures__/javascript/success/.env.fixture`
+
+      await expect(run.action()).resolves.toBeUndefined()
+      expect(core.setFailed).not.toHaveBeenCalled()
+    })
+
+    it('Action: failure', async () => {
+      envStubs.EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
+      envStubs.EnvMeta.actionPath = `./__fixtures__/javascript/failure`
+      envStubs.EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/index.js`
+      envStubs.EnvMeta.envFile = `./__fixtures__/javascript/failure/.env.fixture`
+
+      await expect(run.action()).resolves.toBeUndefined()
+      expect(core.setFailed).toHaveBeenCalled()
+    })
+
+    it('Action: no-import', async () => {
+      envStubs.EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
+      envStubs.EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
+      envStubs.EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/index.js`
+      envStubs.EnvMeta.envFile = `./__fixtures__/javascript/no-import/.env.fixture`
+
+      await expect(run.action()).resolves.toBeUndefined()
+      expect(core.setFailed).not.toHaveBeenCalled()
     })
   })
 })

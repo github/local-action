@@ -1,96 +1,108 @@
-/**
- * Unit tests for the tool's command utility
- */
-
-import { expect } from 'chai'
 import { Command } from 'commander'
-import { restore, stub } from 'sinon'
-
 import * as command from '../src/command'
-import * as main from '../src/commands/run'
-import { ResetEnvMetadata } from '../src/stubs/env'
-import { ResetCoreMetadata } from '../src/stubs/core'
+import * as run from '../src/commands/run'
+import * as coreStubs from '../src/stubs/core-stubs'
+import * as envStubs from '../src/stubs/env-stubs'
+
+let process_exitSpy: jest.SpyInstance
+let program: Command
+let run_actionSpy: jest.SpyInstance
 
 describe('Commmand', () => {
+  beforeAll(() => {
+    // Prevent output during tests
+    jest.spyOn(console, 'log').mockImplementation()
+    jest.spyOn(console, 'table').mockImplementation()
+  })
+
   beforeEach(() => {
-    ResetEnvMetadata()
-    ResetCoreMetadata()
+    // Reset metadata
+    envStubs.ResetEnvMetadata()
+    coreStubs.ResetCoreMetadata()
+
+    // Create a new program before each test
+    program = command.makeProgram()
+
+    // Stub the run action and process.exit
+    run_actionSpy = jest.spyOn(run, 'action').mockImplementation()
+    process_exitSpy = jest.spyOn(process, 'exit').mockImplementation()
   })
+
   afterEach(() => {
-    restore()
+    // Reset all spies
+    jest.resetAllMocks()
   })
 
-  it('Returns a program object', () => {
-    const program = command.makeProgram()
-
-    expect(program).to.not.be.null
-    expect(program).to.be.instanceOf(Command)
-  })
-
-  it('Has a run command', () => {
-    const program = command.makeProgram()
-    const cmd = program.commands.find(c => c.name() === 'run')
-
-    expect(cmd).to.not.be.undefined
-    expect(cmd).to.be.instanceOf(Command)
-  })
-
-  it('Exits if no path arg is provided', () => {
-    const exitStub = stub(process, 'exit').callsFake(() => {
-      throw new Error('Process exited')
+  describe('makeProgram()', () => {
+    it('Returns a Program', () => {
+      expect(program).not.toBe(null)
+      expect(program).toBeInstanceOf(Command)
     })
 
-    command.makeProgram().parseAsync()
-
-    expect(exitStub.calledOnce).to.be.true
-  })
-
-  it('Exits if no entrypoint arg is provided', () => {
-    const exitStub = stub(process, 'exit').callsFake(() => {
-      throw new Error('Process exited')
-    })
-
-    command
-      .makeProgram()
-      .parseAsync(['./__tests__/fixtures/success', ''], { from: 'user' })
-
-    expect(exitStub.calledOnce).to.be.true
-  })
-
-  it('Exits if no env file arg is provided', () => {
-    const exitStub = stub(process, 'exit').callsFake(() => {
-      throw new Error('Process exited')
-    })
-
-    command
-      .makeProgram()
-      .parseAsync(['./__tests__/fixtures/success', 'src/index.ts'], {
-        from: 'user'
-      })
-
-    expect(exitStub.calledOnce).to.be.true
-  })
-
-  it('Runs if all args are provided', () => {
-    const runStub = stub(main, 'run').callsFake(async () => {})
-    const exitStub = stub(process, 'exit').callsFake(() => {
-      throw new Error('Process exited')
-    })
-
-    command
-      .makeProgram()
-      .parseAsync(
-        [
-          './__tests__/fixtures/success',
-          'src/index.ts',
-          './__tests__/fixtures/success/.env.fixture'
-        ],
-        {
-          from: 'user'
-        }
+    it('Has a run command', () => {
+      expect(program.commands.find(c => c.name() === 'run')).toBeInstanceOf(
+        Command
       )
+    })
 
-    expect(exitStub.calledOnce).to.be.false
-    expect(runStub.calledOnce).to.be.true
+    it('Runs if all arguments are provided', async () => {
+      await command
+        .makeProgram()
+        .parseAsync(
+          [
+            './__fixtures__/typescript/success',
+            'src/index.ts',
+            './__fixtures__/typescript/success/.env.fixture'
+          ],
+          {
+            from: 'user'
+          }
+        )
+
+      expect(process_exitSpy).not.toHaveBeenCalled()
+      expect(run_actionSpy).toHaveBeenCalled()
+    })
+
+    it('Exits if no path argument is provided', async () => {
+      const process_stderrSpy: jest.SpyInstance = jest
+        .spyOn(process.stderr, 'write')
+        .mockImplementation()
+
+      await command.makeProgram().parseAsync([], { from: 'user' })
+
+      expect(process_exitSpy).toHaveBeenCalled()
+
+      process_stderrSpy.mockRestore()
+    })
+
+    it('Exits if no entrypoint argument is provided', async () => {
+      const process_stderrSpy: jest.SpyInstance = jest
+        .spyOn(process.stderr, 'write')
+        .mockImplementation()
+
+      await command
+        .makeProgram()
+        .parseAsync(['./__fixtures__/typescript/success', ''], { from: 'user' })
+
+      expect(process_exitSpy).toHaveBeenCalled()
+
+      process_stderrSpy.mockRestore()
+    })
+
+    it('Exits if no env-file argument is provided', async () => {
+      const process_stderrSpy: jest.SpyInstance = jest
+        .spyOn(process.stderr, 'write')
+        .mockImplementation()
+
+      await command
+        .makeProgram()
+        .parseAsync(['./__fixtures__/typescript/success', 'src/index.ts'], {
+          from: 'user'
+        })
+
+      expect(process_exitSpy).toHaveBeenCalled()
+
+      process_stderrSpy.mockRestore()
+    })
   })
 })

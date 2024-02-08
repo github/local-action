@@ -1,42 +1,46 @@
-/**
- * Unit tests for the tool's entrypoint
- */
-
-import { expect } from 'chai'
-import { restore, stub } from 'sinon'
-
-import * as command from '../src/command'
-import { ResetEnvMetadata } from '../src/stubs/env'
-import { ResetCoreMetadata } from '../src/stubs/core'
 import { Command } from 'commander'
+import * as command from '../src/command'
+import * as coreStubs from '../src/stubs/core-stubs'
+import * as envStubs from '../src/stubs/env-stubs'
+
+let command_makeProgramSpy: jest.SpyInstance
 
 describe('Index', () => {
-  beforeEach(async () => {
-    ResetEnvMetadata()
-    ResetCoreMetadata()
+  beforeAll(() => {
+    // Prevent output during tests
+    jest.spyOn(console, 'log').mockImplementation()
+    jest.spyOn(console, 'table').mockImplementation()
+
+    // Stub the command.makeProgram call
+    command_makeProgramSpy = jest
+      .spyOn(command, 'makeProgram')
+      .mockImplementation(() => {
+        return {
+          parse: () => {}
+        } as Command
+      })
   })
+
+  beforeEach(() => {
+    // Reset metadata
+    envStubs.ResetEnvMetadata()
+    coreStubs.ResetCoreMetadata()
+  })
+
   afterEach(() => {
-    restore()
+    // Reset all spies
+    jest.resetAllMocks()
   })
 
-  it('tests', () => {
-    expect(true).to.be.true
-  })
+  describe('run()', () => {
+    it('Runs the program', async () => {
+      const index: typeof import('../src/index') = (await import(
+        '../src/index'
+      )) as typeof import('../src/index')
 
-  it('Creates and runs the program', async () => {
-    //stub(console, 'log')
-    stub(console, 'table')
+      await index.run()
 
-    const programStub = stub(command, 'makeProgram').callsFake(() => {
-      return {
-        parse: () => {}
-      } as Command
+      expect(command_makeProgramSpy).toHaveBeenCalled()
     })
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const run = require('../src/index')
-
-    await run.default()
-    expect(programStub.calledOnce).to.be.true
   })
 })

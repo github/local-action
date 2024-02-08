@@ -2,11 +2,11 @@
 
 ![GitHub Super-Linter](https://github.com/github/local-action/actions/workflows/linter.yml/badge.svg)
 ![Continuous Integration](https://github.com/github/local-action/actions/workflows/continuous-integration.yml/badge.svg)
-![Coverage](badges/coverage.svg)
+![Code Coverage](badges/coverage.svg)
 
 Run custom GitHub Actions locally and test them in VS Code!
 
-This command-line tool emulates functionality of the
+This command-line tool emulates some **basic** functionality of the
 [GitHub Actions Toolkit](https://github.com/actions/toolkit) so that custom
 actions can be run directly on your workstation.
 
@@ -158,13 +158,13 @@ $ local-action run /path/to/typescript-action src/index.ts .env
                                  Configuration
 ================================================================================
 
-┌─────────┬────────────────────┬──────────────────────────────────────────┐
-│ (index) │       Field        │                  Value                   │
-├─────────┼────────────────────┼──────────────────────────────────────────┤
-│    0    │   'Action Path'    │       '/path/to/typescript-action'       │
+┌─────────┬────────────────────┬───────────────────────────────────────────┐
+│ (index) │       Field        │                  Value                    │
+├─────────┼────────────────────┼───────────────────────────────────────────┤
+│    0    │   'Action Path'    │       '/path/to/typescript-action'        │
 │    1    │    'Entrypoint'    │ '/path/to/typescript-action/src/index.ts' │
-│    2    │ 'Environment File' │   '/path/to/local-action-debugger/.env'  │
-└─────────┴────────────────────┴──────────────────────────────────────────┘
+│    2    │ 'Environment File' │   '/path/to/local-action-debugger/.env'   │
+└─────────┴────────────────────┴───────────────────────────────────────────┘
 
 ================================================================================
                                 Action Metadata
@@ -190,7 +190,7 @@ $ local-action run /path/to/typescript-action src/index.ts .env
 ## Debugging in VS Code
 
 This package can also be used with VS Code's built-in debugging tools. You just
-need to add a `launch.json` to the directory containing your local action. The
+need to add a `launch.json` to the project containing your local action. The
 following can be used as an example.
 
 ```json

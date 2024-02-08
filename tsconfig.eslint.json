@@ -1,0 +1,6 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.json",
+  "include": ["__fixtures__", "__tests__", "src"],
+  "exclude": ["node_modules", "coverage"]
+}

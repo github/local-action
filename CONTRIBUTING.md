@@ -34,6 +34,32 @@ This project requires **100%** test coverage.
 > introducing any regressions. All changes will be throughly tested by
 > maintainers of this repository before a new release is created.
 
+### Testing Local Updates
+
+As you make changes, it's a great idea to run the `local-action` tool regularly
+against any testing repositories.
+
+1. Symlink your package folder (this should only need to be done once)
+
+   ```bash
+   npm link
+   ```
+
+1. Test your updated version
+
+   ```bash
+   local-action run <path> <entrypoint> <env file>
+
+   # Or...
+   npm exec local-action run <path> <entrypoint> <env file>
+   ```
+
+Once you're finished testing, make sure to unlink!
+
+```bash
+npm unlink @github/local-action
+```
+
 ### Running the Test Suite
 
 Simply run the following command to execute the entire test suite:
