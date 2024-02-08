@@ -1,11 +1,11 @@
 import { InvalidArgumentError } from 'commander'
 import fs from 'fs'
 import path from 'path'
-
-import { EnvMeta } from '../stubs/env'
+import { EnvMeta } from '../stubs/env-stubs'
 
 /**
  * Checks if the provided action path is valid
+ *
  * @param value The action path
  * @returns The resolved action path
  */
@@ -19,9 +19,11 @@ export function checkActionPath(value: string): string {
     if (!stat.isDirectory())
       throw new InvalidArgumentError('Action path must be a directory')
   } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (err.code === 'ENOENT')
       throw new InvalidArgumentError('Action path does not exist')
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
     throw new InvalidArgumentError(err.message)
   }
 
