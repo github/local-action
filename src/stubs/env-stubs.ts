@@ -1,7 +1,4 @@
-/**
- * Load environment variables from a `.env` file
- */
-import { EnvMetadata } from '../interfaces'
+import type { EnvMetadata } from '../types'
 
 export const EnvMeta: EnvMetadata = {
   actionFile: '',
