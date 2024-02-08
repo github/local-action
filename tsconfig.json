@@ -2,10 +2,13 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "baseUrl": ".",
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2022"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "newLine": "lf",
@@ -13,12 +16,11 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
-    "outDir": "./dist",
     "resolveJsonModule": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "sourceMap": true,
     "strict": true,
     "target": "ES2022"
   },
-  "exclude": ["./node_modules", "./__tests__", "./coverage"]
+  "exclude": ["__fixtures__", "__tests__", "coverage", "node_modules"]
 }
