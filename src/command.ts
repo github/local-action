@@ -4,7 +4,7 @@ import * as run from './commands/run'
 import { checkActionPath, checkEntryPoint, checkEnvFile } from './utils/checks'
 
 export function makeProgram(): Command {
-  const program = new commander.Command()
+  const program: Command = new commander.Command()
 
   program
     .name('local-action')

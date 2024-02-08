@@ -10,10 +10,10 @@ import { EnvMeta } from '../stubs/env-stubs'
  * @returns The resolved action path
  */
 export function checkActionPath(value: string): string {
-  const actionPath = path.resolve(value)
+  const actionPath: string = path.resolve(value)
 
   try {
-    const stat = fs.statSync(actionPath)
+    const stat: fs.Stats = fs.statSync(actionPath)
 
     // Confirm the value is a directory
     if (!stat.isDirectory())
@@ -27,7 +27,7 @@ export function checkActionPath(value: string): string {
     throw new InvalidArgumentError(err.message)
   }
 
-  const actionFile = path.resolve(actionPath, 'action.yml')
+  const actionFile: string = path.resolve(actionPath, 'action.yml')
 
   // Confirm there is an `action.yml` in the directory
   if (!fs.existsSync(actionFile))
@@ -44,11 +44,12 @@ export function checkActionPath(value: string): string {
 
 /**
  * Checks if the provided entrypoint is valid
+ *
  * @param value The entrypoint
  * @returns The resolved entrypoint path
  */
 export function checkEntryPoint(value: string): string {
-  const entrypoint = path.resolve(EnvMeta.actionPath, value)
+  const entrypoint: string = path.resolve(EnvMeta.actionPath, value)
 
   // Confirm the entrypoint exists
   if (!fs.existsSync(entrypoint))
@@ -62,11 +63,12 @@ export function checkEntryPoint(value: string): string {
 
 /**
  * Checks if the provided env file is valid
+ *
  * @param value The env file path
  * @returns The resolved env file path
  */
 export function checkEnvFile(value: string): string {
-  const envFile = path.resolve(value)
+  const envFile: string = path.resolve(value)
 
   // Confirm the env file exists
   if (!fs.existsSync(envFile))
