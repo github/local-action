@@ -18,6 +18,8 @@ export const EnvMeta: EnvMetadata = {
 
 /**
  * Resets the environment metadata
+ *
+ * @returns void
  */
 export function ResetEnvMetadata(): void {
   EnvMeta.actionFile = ''
