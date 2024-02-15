@@ -7,10 +7,6 @@ globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
 
-ignorePatterns:
-  - node_modules/.*
-  - coverage/.*
-
 parser: '@typescript-eslint/parser'
 
 parserOptions:

@@ -2,8 +2,8 @@
 .vscode/
 badges/
 bin/
+coverage/
 dist/
 node_modules/
-coverage/
 reports/
 *.json
