@@ -7,7 +7,7 @@ const config: Config = {
   // }
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ['src/**'],
+  collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: ['node_modules'],
   coverageReporters: ['json-summary', 'lcov', 'text'],

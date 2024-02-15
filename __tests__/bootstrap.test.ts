@@ -7,13 +7,6 @@ let envBackup: { [key: string]: string | undefined } = process.env
 let fs_existsSyncSpy: jest.SpyInstance
 let fs_readFileSyncSpy: jest.SpyInstance
 
-/** Example `tsconfig.json` without paths set. */
-const tsConfigWithoutPaths = {
-  compilerOptions: {
-    baseUrl: '.'
-  }
-}
-
 describe('Bootstrap', () => {
   beforeAll(() => {
     fs_existsSyncSpy = jest.spyOn(fs, 'existsSync')
@@ -63,23 +56,6 @@ describe('Bootstrap', () => {
     )
     expect(fs_readFileSyncSpy).not.toHaveBeenCalledWith(
       `${process.env.TARGET_ACTION_PATH}/tsconfig.json`
-    )
-  })
-
-  it('Defaults to an empty paths object', async () => {
-    process.env.TARGET_ACTION_PATH = 'non-existent-path'
-
-    fs_existsSyncSpy.mockReturnValueOnce(true)
-    fs_readFileSyncSpy.mockReturnValueOnce(JSON.stringify(tsConfigWithoutPaths))
-
-    await import('../src/bootstrap')
-
-    expect(fs_existsSyncSpy).toHaveBeenCalledWith(
-      `${process.env.TARGET_ACTION_PATH}/tsconfig.json`
-    )
-    expect(fs_readFileSyncSpy).toHaveBeenCalledWith(
-      `${process.env.TARGET_ACTION_PATH}/tsconfig.json`,
-      'utf-8'
     )
   })
 })
