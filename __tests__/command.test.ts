@@ -154,7 +154,7 @@ describe('Commmand', () => {
             from: 'user'
           }
         )
-      ).rejects.toThrow('Action path must contain an action.yml file')
+      ).rejects.toThrow('Path must contain an action.yml file')
 
       process_stderrSpy.mockRestore()
     })

@@ -6,10 +6,10 @@ import type { EnvMetadata } from '../../src/types'
 const empty: EnvMetadata = {
   actionFile: '',
   actionPath: '',
+  dotenvFile: '',
   entrypoint: '',
   env: {},
   envBackup: {},
-  envFile: '',
   inputs: {},
   outputs: {},
   path: '',
@@ -42,10 +42,10 @@ describe('Env', () => {
       // Update the metadata
       EnvMeta.actionFile = 'action.yml'
       EnvMeta.actionPath = '/some/path'
+      EnvMeta.dotenvFile = '.env'
       EnvMeta.entrypoint = 'index.ts'
       EnvMeta.env = { TEST: 'test' }
       EnvMeta.envBackup = { TEST: 'testBackup' }
-      EnvMeta.envFile = '.env'
       EnvMeta.inputs = { input: { description: 'test input' } }
       EnvMeta.outputs = { output: { description: 'test output' } }
       EnvMeta.path = '/usr/bin'
@@ -55,10 +55,10 @@ describe('Env', () => {
       expect(EnvMeta).toMatchObject({
         actionFile: 'action.yml',
         actionPath: '/some/path',
+        dotenvFile: '.env',
         entrypoint: 'index.ts',
         env: { TEST: 'test' },
         envBackup: { TEST: 'testBackup' },
-        envFile: '.env',
         inputs: { input: { description: 'test input' } },
         outputs: { output: { description: 'test output' } },
         path: '/usr/bin',
