@@ -7,20 +7,6 @@ let envBackup: { [key: string]: string | undefined } = process.env
 let fs_existsSyncSpy: jest.SpyInstance
 let fs_readFileSyncSpy: jest.SpyInstance
 
-/** Example `tsconfig.json` with paths set. */
-const tsConfigWithPaths = {
-  compilerOptions: {
-    baseUrl: '.',
-    paths: {
-      'fixtures/*': ['./__fixtures__/*'],
-      'mocks/*': ['./__mocks__/*'],
-      'tests/*': ['./__tests__/*'],
-      main: ['./src/main'],
-      types: ['./src/types']
-    }
-  }
-}
-
 /** Example `tsconfig.json` without paths set. */
 const tsConfigWithoutPaths = {
   compilerOptions: {
