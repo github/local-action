@@ -1,6 +1,7 @@
-import * as core from '@actions/core'
+/* eslint-disable @typescript-eslint/require-await */
 
-// eslint-disable-next-line @typescript-eslint/require-await
+import { setFailed } from '@actions/core'
+
 export async function run(): Promise<void> {
-  core.setFailed('TypeScript Action Failed!')
+  setFailed('TypeScript Action Failed!')
 }
