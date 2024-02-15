@@ -1,5 +1,4 @@
-#!/usr/bin/env ts-node
-
+#!/usr/bin/env tsx
 import type { Command } from 'commander'
 import { textSync } from 'figlet'
 import { makeProgram } from './command'
