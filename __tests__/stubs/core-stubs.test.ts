@@ -123,6 +123,23 @@ describe('Core', () => {
         exportVariable('TEST', 'test')
         expect(EnvMeta.env).toMatchObject({ TEST: 'test' })
       })
+
+      it('Exports undefined and null as empty strings', () => {
+        exportVariable('UNDEFINED_TEST', undefined)
+        exportVariable('NULL_TEST', undefined)
+        expect(EnvMeta.env).toMatchObject({ UNDEFINED_TEST: '', NULL_TEST: '' })
+      })
+
+      it('Exports objects as stringified JSON', () => {
+        const testVariable = {
+          my_key: 'my_value'
+        }
+
+        exportVariable('TEST', testVariable)
+        expect(EnvMeta.env).toMatchObject({
+          TEST: JSON.stringify(testVariable)
+        })
+      })
     })
 
     describe('setSecre()', () => {
