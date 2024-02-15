@@ -1,15 +1,15 @@
-import * as coreStubs from '../../src/stubs/core-stubs'
-import * as envStubs from '../../src/stubs/env-stubs'
+import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import type { EnvMetadata } from '../../src/types'
 
 /** Empty EnvMetadata Object */
 const empty: EnvMetadata = {
   actionFile: '',
   actionPath: '',
+  dotenvFile: '',
   entrypoint: '',
   env: {},
   envBackup: {},
-  envFile: '',
   inputs: {},
   outputs: {},
   path: '',
@@ -25,8 +25,8 @@ describe('Env', () => {
 
   beforeEach(() => {
     // Reset metadata
-    envStubs.ResetEnvMetadata()
-    coreStubs.ResetCoreMetadata()
+    ResetEnvMetadata()
+    ResetCoreMetadata()
   })
 
   afterEach(() => {
@@ -37,28 +37,28 @@ describe('Env', () => {
   describe('EnvMeta', () => {
     it('Tracks updates to the environment metadata', () => {
       // Initial state should be empty
-      expect(envStubs.EnvMeta).toMatchObject(empty)
+      expect(EnvMeta).toMatchObject(empty)
 
       // Update the metadata
-      envStubs.EnvMeta.actionFile = 'action.yml'
-      envStubs.EnvMeta.actionPath = '/some/path'
-      envStubs.EnvMeta.entrypoint = 'index.ts'
-      envStubs.EnvMeta.env = { TEST: 'test' }
-      envStubs.EnvMeta.envBackup = { TEST: 'testBackup' }
-      envStubs.EnvMeta.envFile = '.env'
-      envStubs.EnvMeta.inputs = { input: { description: 'test input' } }
-      envStubs.EnvMeta.outputs = { output: { description: 'test output' } }
-      envStubs.EnvMeta.path = '/usr/bin'
-      envStubs.EnvMeta.pathBackup = '/usr/bin/backup'
+      EnvMeta.actionFile = 'action.yml'
+      EnvMeta.actionPath = '/some/path'
+      EnvMeta.dotenvFile = '.env'
+      EnvMeta.entrypoint = 'index.ts'
+      EnvMeta.env = { TEST: 'test' }
+      EnvMeta.envBackup = { TEST: 'testBackup' }
+      EnvMeta.inputs = { input: { description: 'test input' } }
+      EnvMeta.outputs = { output: { description: 'test output' } }
+      EnvMeta.path = '/usr/bin'
+      EnvMeta.pathBackup = '/usr/bin/backup'
 
       // Verify the updated metadata
-      expect(envStubs.EnvMeta).toMatchObject({
+      expect(EnvMeta).toMatchObject({
         actionFile: 'action.yml',
         actionPath: '/some/path',
+        dotenvFile: '.env',
         entrypoint: 'index.ts',
         env: { TEST: 'test' },
         envBackup: { TEST: 'testBackup' },
-        envFile: '.env',
         inputs: { input: { description: 'test input' } },
         outputs: { output: { description: 'test output' } },
         path: '/usr/bin',
@@ -66,10 +66,10 @@ describe('Env', () => {
       })
 
       // Reset the metadata
-      envStubs.ResetEnvMetadata()
+      ResetEnvMetadata()
 
       // Verify the reset metadata
-      expect(envStubs.EnvMeta).toMatchObject(empty)
+      expect(EnvMeta).toMatchObject(empty)
     })
   })
 })

@@ -1,7 +1,10 @@
+/* eslint-disable import/no-namespace */
+
 import { Command } from 'commander'
 import * as command from '../src/command'
-import * as coreStubs from '../src/stubs/core-stubs'
-import * as envStubs from '../src/stubs/env-stubs'
+import { run } from '../src/index'
+import { ResetCoreMetadata } from '../src/stubs/core-stubs'
+import { ResetEnvMetadata } from '../src/stubs/env-stubs'
 
 let command_makeProgramSpy: jest.SpyInstance
 
@@ -14,17 +17,17 @@ describe('Index', () => {
     // Stub the command.makeProgram call
     command_makeProgramSpy = jest
       .spyOn(command, 'makeProgram')
-      .mockImplementation(() => {
-        return {
+      .mockImplementation(async () => {
+        return Promise.resolve({
           parse: () => {}
-        } as Command
+        } as Command)
       })
   })
 
   beforeEach(() => {
     // Reset metadata
-    envStubs.ResetEnvMetadata()
-    coreStubs.ResetCoreMetadata()
+    ResetEnvMetadata()
+    ResetCoreMetadata()
   })
 
   afterEach(() => {
@@ -34,11 +37,7 @@ describe('Index', () => {
 
   describe('run()', () => {
     it('Runs the program', async () => {
-      const index: typeof import('../src/index') = (await import(
-        '../src/index'
-      )) as typeof import('../src/index')
-
-      await index.run()
+      await run()
 
       expect(command_makeProgramSpy).toHaveBeenCalled()
     })

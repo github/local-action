@@ -1,18 +1,11 @@
-import * as path from 'path'
-import { ExitCode } from '../enums'
 import type { AnnotationProperties, CoreMetadata, InputOptions } from '../types'
 import { EnvMeta } from './env-stubs'
 
 /**
- * Metadata for the core module stub.
- *
- * @remarks
- * This is a stub for the core module, which is used to set and get environment
- * variables, inputs, and outputs, as well as other core
- * functionality.
+ * Metadata for `@actions/core`
  */
 export const CoreMeta: CoreMetadata = {
-  exitCode: ExitCode.Success,
+  exitCode: 0,
   exitMessage: '',
   outputs: {},
   secrets: [],
@@ -32,10 +25,12 @@ export const CoreMeta: CoreMetadata = {
 }
 
 /**
- * Resets the core metadata to its default values.
+ * Resets the core metadata
+ *
+ * @returns void
  */
 export function ResetCoreMetadata(): void {
-  CoreMeta.exitCode = ExitCode.Success
+  CoreMeta.exitCode = 0
   CoreMeta.exitMessage = ''
   CoreMeta.outputs = {}
   CoreMeta.secrets = []
@@ -53,8 +48,20 @@ export function ResetCoreMetadata(): void {
  *
  * @param name The name of the environment variable
  * @param value The value of the environment variable
+ * @returns void
  */
-export function exportVariable(name: string, value: string): void {
+export function exportVariable(
+  name: string,
+  value: string | undefined | null | object
+): void {
+  // Convert the value to a string
+  value =
+    value === undefined || value === null
+      ? ''
+      : typeof value === 'string' || value instanceof String
+        ? value.toString()
+        : JSON.stringify(value)
+
   EnvMeta.env[name] = value
   process.env[name] = value
 }
@@ -63,6 +70,7 @@ export function exportVariable(name: string, value: string): void {
  * Register a secret to mask it in logs
  *
  * @param secret The value to register
+ * @returns void
  */
 export function setSecret(secret: string): void {
   CoreMeta.secrets.push(secret)
@@ -72,14 +80,19 @@ export function setSecret(secret: string): void {
  * Prepends to the PATH
  *
  * @param inputPath The path to prepend to the PATH
+ * @returns void
  */
 export function addPath(inputPath: string): void {
+  // Importing with require is necessary to avoid async/await.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const path = require('path') as typeof import('path')
+
   EnvMeta.path = `${inputPath}${path.delimiter}${process.env.PATH}`
   process.env.PATH = EnvMeta.path
 }
 
 /**
- * Gets the action inputs from environment variables
+ * Gets the action input from the environment variables
  *
  * @param name The name of the input
  * @param options The options for the input
@@ -170,20 +183,23 @@ export function getBooleanInput(name: string, options?: InputOptions): boolean {
  *
  * @param name The name of the output
  * @param value The value of the output
+ * @returns void
  */
 export function setOutput(name: string, value: string): void {
   CoreMeta.outputs[name] = value
 
-  // This command is deprecated...using here to have a meaningful log output
+  // This command is deprecated...it is being used here so there's meaningful
+  // log output for debugging purposes.
   CoreMeta.colors.cyan(`::set-output name=${name}::${value}`)
 }
 
 /**
  * Enables or disables the echoing of commands into stdout.
  *
- * For local testing purposes, this currently does nothing.
+ * @todo Currently this does nothing.
  *
  * @param enabled Whether to enable command echoing
+ * @returns void
  */
 export function setCommandEcho(enabled: boolean): void {
   CoreMeta.echo = enabled
@@ -197,9 +213,10 @@ export function setCommandEcho(enabled: boolean): void {
  * Set the action status to failed
  *
  * @param message The message to log
+ * @returns void
  */
 export function setFailed(message: string | Error): void {
-  CoreMeta.exitCode = ExitCode.Failure
+  CoreMeta.exitCode = 1
   CoreMeta.exitMessage = message.toString()
 
   error(message.toString())
@@ -212,17 +229,25 @@ export function setFailed(message: string | Error): void {
 /**
  * Logs a message with optional annotations
  *
- * This is used internally by the other logging functions, and should not be
+ * This is used internally by the other logging functions. It doesn't need to be
  * called directly.
  *
  * @param type The type of log message
  * @param message The message to log
  * @param properties The annotation properties
+ * @returns void
  */
 export function log(
   type: string,
   message?: string,
-  properties: AnnotationProperties = {}
+  properties: AnnotationProperties = {
+    title: undefined,
+    file: undefined,
+    startLine: undefined,
+    endLine: undefined,
+    startColumn: undefined,
+    endColumn: undefined
+  }
 ): void {
   const params: string[] = []
 
@@ -287,9 +312,10 @@ export function isDebug(): boolean {
 /**
  * Logs a debug message to the console
  *
- * ::debug::{message}
+ * E.g. `::debug::{message}`
  *
  * @param message The message to log
+ * @returns void
  */
 export function debug(message: string): void {
   // Only log debug messages if the `stepDebug` flag is set
@@ -301,14 +327,22 @@ export function debug(message: string): void {
 /**
  * Logs an error message to the console
  *
- * ::error file={name},line={line},endLine={endLine},title={title}::{message}
+ * E.g. `::error file={name},line={line},endLine={endLine},title={title}::{message}`
  *
  * @param message The message to log
  * @param properties The annotation properties
+ * @returns void
  */
 export function error(
   message: string,
-  properties: AnnotationProperties = {}
+  properties: AnnotationProperties = {
+    title: undefined,
+    file: undefined,
+    startLine: undefined,
+    endLine: undefined,
+    startColumn: undefined,
+    endColumn: undefined
+  }
 ): void {
   log('error', message, properties)
 }
@@ -316,14 +350,22 @@ export function error(
 /**
  * Logs a warning message to the console
  *
- * ::warning file={name},line={line},endLine={endLine},title={title}::{message}
+ * E.g. `::warning file={name},line={line},endLine={endLine},title={title}::{message}`
  *
  * @param message The message to log
  * @param properties The annotation properties
+ * @returns void
  */
 export function warning(
   message: string,
-  properties: AnnotationProperties = {}
+  properties: AnnotationProperties = {
+    title: undefined,
+    file: undefined,
+    startLine: undefined,
+    endLine: undefined,
+    startColumn: undefined,
+    endColumn: undefined
+  }
 ): void {
   log('warning', message, properties)
 }
@@ -331,14 +373,22 @@ export function warning(
 /**
  * Logs a notice message to the console
  *
- * ::notice file={name},line={line},endLine={endLine},title={title}::{message}
+ * E.g. `::notice file={name},line={line},endLine={endLine},title={title}::{message}`
  *
  * @param message The message to log
  * @param properties The annotation properties
+ * @returns void
  */
 export function notice(
   message: string,
-  properties: AnnotationProperties = {}
+  properties: AnnotationProperties = {
+    title: undefined,
+    file: undefined,
+    startLine: undefined,
+    endLine: undefined,
+    startColumn: undefined,
+    endColumn: undefined
+  }
 ): void {
   log('notice', message, properties)
 }
@@ -346,9 +396,10 @@ export function notice(
 /**
  * Logs an info message to the console
  *
- * ::info::{message}
+ * E.g. `::info::{message}`
  *
  * @param message The message to log
+ * @returns void
  */
 export function info(message: string): void {
   log('info', message)
@@ -358,18 +409,34 @@ export function info(message: string): void {
  * Starts a group of log lines
  *
  * @param title The title of the group
+ * @returns void
  */
 export function startGroup(title: string): void {
-  log('group', title)
+  log('group', title, {
+    title: undefined,
+    file: undefined,
+    startLine: undefined,
+    endLine: undefined,
+    startColumn: undefined,
+    endColumn: undefined
+  })
 }
 
 /**
  * Ends a group of log lines
  *
  * @param title The title of the group
+ * @returns void
  */
 export function endGroup(): void {
-  log('endgroup')
+  log('endgroup', undefined, {
+    title: undefined,
+    file: undefined,
+    startLine: undefined,
+    endLine: undefined,
+    startColumn: undefined,
+    endColumn: undefined
+  })
 }
 
 /**
@@ -407,6 +474,7 @@ export async function group<T>(name: string, fn: () => Promise<T>): Promise<T> {
  *
  * @param name The name of the state
  * @param value The value of the state
+ * @returns void
  */
 export function saveState(name: string, value: any): void {
   if (value === undefined || value === null) CoreMeta.state[name] = ''
@@ -436,7 +504,8 @@ export function getState(name: string): string {
  * @param aud The audience for the token
  * @returns A promise that resolves the OIDC token
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/require-await
 export async function getIDToken(aud?: string): Promise<string> {
-  throw new Error('Not implemented')
+  await Promise.reject(new Error('Not implemented'))
+  /* istanbul ignore next */
+  return aud
 }

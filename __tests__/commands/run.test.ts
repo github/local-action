@@ -1,11 +1,12 @@
-import * as core from '@actions/core'
-import * as run from '../../src/commands/run'
-import * as coreStubs from '../../src/stubs/core-stubs'
-import * as envStubs from '../../src/stubs/env-stubs'
+/* eslint-disable import/no-namespace */
+
+import { setFailed } from '@actions/core'
+import { action } from '../../src/commands/run'
+import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import * as output from '../../src/utils/output'
 
-// eslint-disable-next-line no-undef
-let envBackup: NodeJS.ProcessEnv = process.env
+let envBackup: { [key: string]: string | undefined } = process.env
 
 describe('Command: run', () => {
   beforeAll(() => {
@@ -17,8 +18,8 @@ describe('Command: run', () => {
 
   beforeEach(() => {
     // Reset metadata
-    envStubs.ResetEnvMetadata()
-    coreStubs.ResetCoreMetadata()
+    ResetEnvMetadata()
+    ResetCoreMetadata()
 
     // Back up environment variables
     envBackup = process.env
@@ -34,65 +35,65 @@ describe('Command: run', () => {
 
   describe('TypeScript', () => {
     it('Action: success', async () => {
-      envStubs.EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
-      envStubs.EnvMeta.actionPath = `./__fixtures__/typescript/success`
-      envStubs.EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/index.ts`
-      envStubs.EnvMeta.envFile = `./__fixtures__/typescript/success/.env.fixture`
+      EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript/success`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript/success/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/index.ts`
 
-      await expect(run.action()).resolves.toBeUndefined()
-      expect(core.setFailed).not.toHaveBeenCalled()
+      await expect(action()).resolves.toBeUndefined()
+      expect(setFailed).not.toHaveBeenCalled()
     })
 
     it('Action: failure', async () => {
-      envStubs.EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
-      envStubs.EnvMeta.actionPath = `./__fixtures__/typescript/failure`
-      envStubs.EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/index.ts`
-      envStubs.EnvMeta.envFile = `./__fixtures__/typescript/failure/.env.fixture`
+      EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript/failure`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript/failure/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/index.ts`
 
-      await expect(run.action()).resolves.toBeUndefined()
-      expect(core.setFailed).toHaveBeenCalledWith('TypeScript Action Failed!')
+      await expect(action()).resolves.toBeUndefined()
+      expect(setFailed).toHaveBeenCalledWith('TypeScript Action Failed!')
     })
 
     it('Action: no-import', async () => {
-      envStubs.EnvMeta.actionFile = `./__fixtures__/typescript/no-import/action.yml`
-      envStubs.EnvMeta.actionPath = `./__fixtures__/typescript/no-import`
-      envStubs.EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/index.ts`
-      envStubs.EnvMeta.envFile = `./__fixtures__/typescript/no-import/.env.fixture`
+      EnvMeta.actionFile = `./__fixtures__/typescript/no-import/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript/no-import`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript/no-import/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/index.ts`
 
-      await expect(run.action()).resolves.toBeUndefined()
-      expect(core.setFailed).not.toHaveBeenCalled()
+      await expect(action()).resolves.toBeUndefined()
+      expect(setFailed).not.toHaveBeenCalled()
     })
   })
 
   describe('JavaScript', () => {
     it('Action: success', async () => {
-      envStubs.EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
-      envStubs.EnvMeta.actionPath = `./__fixtures__/javascript/success`
-      envStubs.EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/index.js`
-      envStubs.EnvMeta.envFile = `./__fixtures__/javascript/success/.env.fixture`
+      EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/javascript/success`
+      EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/index.js`
 
-      await expect(run.action()).resolves.toBeUndefined()
-      expect(core.setFailed).not.toHaveBeenCalled()
+      await expect(action()).resolves.toBeUndefined()
+      expect(setFailed).not.toHaveBeenCalled()
     })
 
     it('Action: failure', async () => {
-      envStubs.EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
-      envStubs.EnvMeta.actionPath = `./__fixtures__/javascript/failure`
-      envStubs.EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/index.js`
-      envStubs.EnvMeta.envFile = `./__fixtures__/javascript/failure/.env.fixture`
+      EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/javascript/failure`
+      EnvMeta.dotenvFile = `./__fixtures__/javascript/failure/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/index.js`
 
-      await expect(run.action()).resolves.toBeUndefined()
-      expect(core.setFailed).toHaveBeenCalled()
+      await expect(action()).resolves.toBeUndefined()
+      expect(setFailed).toHaveBeenCalled()
     })
 
     it('Action: no-import', async () => {
-      envStubs.EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
-      envStubs.EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
-      envStubs.EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/index.js`
-      envStubs.EnvMeta.envFile = `./__fixtures__/javascript/no-import/.env.fixture`
+      EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
+      EnvMeta.dotenvFile = `./__fixtures__/javascript/no-import/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/index.js`
 
-      await expect(run.action()).resolves.toBeUndefined()
-      expect(core.setFailed).not.toHaveBeenCalled()
+      await expect(action()).resolves.toBeUndefined()
+      expect(setFailed).not.toHaveBeenCalled()
     })
   })
 })

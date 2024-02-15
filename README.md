@@ -14,12 +14,18 @@ actions can be run directly on your workstation.
 >
 > This tool currently only supports JavaScript and TypeScript actions!
 
+## v1.0.0 Changes
+
+With the release of `v1.0.0`, there was a need to switch from
+[`ts-node`](https://www.npmjs.com/package/ts-node) to
+[`tsx`](https://www.npmjs.com/package/tsx). However, the bundled version of
+`tsx` is being used, so you should no longer need to install either :grinning:
+
 ## Prerequisites
 
 ### Installed Tools
 
 - [Node.js and npm](https://nodejs.org/en)
-- [`ts-node`](https://www.npmjs.com/package/ts-node)
 
 ### Action Structure
 
@@ -72,11 +78,12 @@ the following when preparing for release:
 
 - Commit the `node_modules` directory to your repository
 - Transpile your code and dependencies using tools like
+  [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) or
   [`@vercel/ncc`](https://www.npmjs.com/package/@vercel/ncc)
 
-Currently, this tool supports **non-transpiled action code only**. This is
-because it uses [`proxyquire`](https://github.com/thlorenz/proxyquire) to
-override GitHub Actions Toolkit dependencies (e.g
+**This tool supports non-transpiled action code only.** This is because it uses
+[`proxyquire`](https://github.com/thlorenz/proxyquire) to override GitHub
+Actions Toolkit dependencies (e.g
 [`@actions/core`](https://www.npmjs.com/package/@actions/core)). In transpiled
 code, this simply doesn't work.
 
@@ -84,11 +91,11 @@ For example, if you have a TypeScript action that follows the same format as the
 [template](https://github.com/actions/typescript-action), you would have both
 `src` and `dist` directories in your repository. The `dist` directory contains
 the transpiled code with any dependencies included. When running this utility,
-you will want to target the code files in the `src` directory instead. This has
-the added benefit of being able to hook into debugging utilities in your IDE
-:tada:
+you will want to target the code files in the `src` directory instead (including
+the dependencies this tool wants to replace). This has the added benefit of
+being able to hook into debugging utilities in your IDE :tada:
 
-For additional information, see
+For additional information about transpiled action code, see
 [Commit, tag, and push your action to GitHub](https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action#commit-tag-and-push-your-action-to-github).
 
 ## Installation
@@ -123,6 +130,12 @@ For additional information, see
    npm i -g .
    ```
 
+   Alternatively, you can link the package if you want to make code changes
+
+   ```bash
+   npm link .
+   ```
+
 ## Commands
 
 ### `local-action`
@@ -132,17 +145,26 @@ For additional information, see
 | `-h`, `--help`    | Display help information    |
 | `-V`, `--version` | Display version information |
 
-### `local-action run <path> <entrypoint> <env file>`
+### `local-action run <path> <entrypoint> <dotenv file>`
 
-| Argument     | Description                                          |
-| ------------ | ---------------------------------------------------- |
-| `path`       | Path to the local action directory                   |
-|              | Example: `/path/to/action.yml`                       |
-| `entrypoint` | Action entrypoint (relative to the action directory) |
-|              | Example: `src/index.ts`                              |
-| `env file`   | Path to the local `.env` file for action inputs      |
-|              | Example: `/path/to/.env`                             |
-|              | See the example [`.env.example`](.env.example)       |
+| Argument      | Description                                          |
+| ------------- | ---------------------------------------------------- |
+| `path`        | Path to the local action directory                   |
+|               | Example: `/path/to/action.yml`                       |
+| `entrypoint`  | Action entrypoint (relative to the action directory) |
+|               | Example: `src/index.ts`                              |
+| `dotenv file` | Path to the local `.env` file for action inputs      |
+|               | Example: `/path/to/.env`                             |
+|               | See the example [`.env.example`](.env.example)       |
+
+Examples:
+
+```bash
+local-action run /path/to/typescript-action src/index.ts .env
+
+# The `run` action is invoked by default as well
+local-action /path/to/typescript-action src/index.ts .env
+```
 
 #### Output
 

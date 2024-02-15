@@ -1,12 +1,20 @@
+/** Default print width for titles */
 export const printWidth: number = 80
 
-export function printTitle(color: any, title: string): void {
+/**
+ * Prints a title with a specific color
+ *
+ * @param color The color function to use
+ * @param title The title text to print
+ * @returns void
+ */
+export function printTitle(
+  color: (message: string) => void,
+  title: string
+): void {
   const spaces: string = ' '.repeat((80 - title.length) / 2)
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   color('='.repeat(printWidth))
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   color(`${spaces}${title}`)
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   color('='.repeat(printWidth))
 }

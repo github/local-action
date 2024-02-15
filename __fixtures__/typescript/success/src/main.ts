@@ -1,8 +1,9 @@
-import * as core from '@actions/core'
+/* eslint-disable @typescript-eslint/require-await */
 
-// eslint-disable-next-line @typescript-eslint/require-await
+import { getInput, info, setOutput } from '@actions/core'
+
 export async function run(): Promise<void> {
-  const myInput: string = core.getInput('myInput')
-  core.setOutput('myOutput', myInput)
-  core.info('TypeScript Action Succeeded!')
+  const myInput: string = getInput('myInput')
+  setOutput('myOutput', myInput)
+  info('TypeScript Action Succeeded!')
 }

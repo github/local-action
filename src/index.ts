@@ -1,9 +1,13 @@
-#!/usr/bin/env ts-node
-
+#!/usr/bin/env tsx
 import type { Command } from 'commander'
 import { textSync } from 'figlet'
 import { makeProgram } from './command'
 
+/**
+ * Runs the CLI program
+ *
+ * @returns A promise that resolves when the program is finished
+ */
 export async function run(): Promise<void> {
   const chalk = (await import('chalk')).default
 
@@ -11,7 +15,7 @@ export async function run(): Promise<void> {
   console.log(chalk.blue(textSync('Action Debugger')))
 
   // Run the program
-  const program: Command = makeProgram()
+  const program: Command = await makeProgram()
   program.parse()
 }
 
