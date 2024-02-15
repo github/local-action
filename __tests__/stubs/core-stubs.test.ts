@@ -1,14 +1,37 @@
-import { ExitCode } from '../../src/enums'
-import * as coreStubs from '../../src/stubs/core-stubs'
-import * as envStubs from '../../src/stubs/env-stubs'
+import {
+  CoreMeta,
+  ResetCoreMetadata,
+  exportVariable,
+  setSecret,
+  addPath,
+  getInput,
+  getMultilineInput,
+  getBooleanInput,
+  setOutput,
+  setCommandEcho,
+  setFailed,
+  log,
+  isDebug,
+  debug,
+  error,
+  warning,
+  notice,
+  info,
+  startGroup,
+  endGroup,
+  group,
+  saveState,
+  getState,
+  getIDToken
+} from '../../src/stubs/core-stubs'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import type { CoreMetadata } from '../../src/types'
 
-// eslint-disable-next-line no-undef
-let envBackup: NodeJS.ProcessEnv = process.env
+let envBackup: { [key: string]: string | undefined } = process.env
 
 /** Empty CoreMetadata Object */
 const empty: CoreMetadata = {
-  exitCode: ExitCode.Success,
+  exitCode: 0,
   exitMessage: '',
   outputs: {},
   secrets: [],
@@ -36,8 +59,8 @@ describe('Core', () => {
 
   beforeEach(() => {
     // Reset metadata
-    envStubs.ResetEnvMetadata()
-    coreStubs.ResetCoreMetadata()
+    ResetEnvMetadata()
+    ResetCoreMetadata()
 
     // Back up environment variables
     envBackup = process.env
@@ -54,65 +77,65 @@ describe('Core', () => {
   describe('CoreMeta', () => {
     it('Tracks updates to the core metadata', () => {
       // Initial state should be empty
-      expect(coreStubs.CoreMeta.exitCode).toEqual(empty.exitCode)
-      expect(coreStubs.CoreMeta.exitMessage).toEqual(empty.exitMessage)
-      expect(coreStubs.CoreMeta.outputs).toMatchObject(empty.outputs)
-      expect(coreStubs.CoreMeta.secrets).toMatchObject(empty.secrets)
-      expect(coreStubs.CoreMeta.stepDebug).toEqual(empty.stepDebug)
-      expect(coreStubs.CoreMeta.echo).toEqual(empty.echo)
-      expect(coreStubs.CoreMeta.state).toMatchObject(empty.state)
+      expect(CoreMeta.exitCode).toEqual(empty.exitCode)
+      expect(CoreMeta.exitMessage).toEqual(empty.exitMessage)
+      expect(CoreMeta.outputs).toMatchObject(empty.outputs)
+      expect(CoreMeta.secrets).toMatchObject(empty.secrets)
+      expect(CoreMeta.stepDebug).toEqual(empty.stepDebug)
+      expect(CoreMeta.echo).toEqual(empty.echo)
+      expect(CoreMeta.state).toMatchObject(empty.state)
 
       // Update the metadata
-      coreStubs.CoreMeta.exitCode = ExitCode.Failure
-      coreStubs.CoreMeta.exitMessage = 'test'
-      coreStubs.CoreMeta.outputs = { 'my-output': 'test' }
-      coreStubs.CoreMeta.secrets = ['secret-value-1234']
-      coreStubs.CoreMeta.stepDebug = true
-      coreStubs.CoreMeta.echo = true
-      coreStubs.CoreMeta.state = { 'my-state': 'test' }
+      CoreMeta.exitCode = 1
+      CoreMeta.exitMessage = 'test'
+      CoreMeta.outputs = { 'my-output': 'test' }
+      CoreMeta.secrets = ['secret-value-1234']
+      CoreMeta.stepDebug = true
+      CoreMeta.echo = true
+      CoreMeta.state = { 'my-state': 'test' }
 
       // Verify the updated metadata
-      expect(coreStubs.CoreMeta.exitCode).toEqual(ExitCode.Failure)
-      expect(coreStubs.CoreMeta.exitMessage).toEqual('test')
-      expect(coreStubs.CoreMeta.outputs).toMatchObject({ 'my-output': 'test' })
-      expect(coreStubs.CoreMeta.secrets).toMatchObject(['secret-value-1234'])
-      expect(coreStubs.CoreMeta.stepDebug).toEqual(true)
-      expect(coreStubs.CoreMeta.echo).toEqual(true)
-      expect(coreStubs.CoreMeta.state).toMatchObject({ 'my-state': 'test' })
+      expect(CoreMeta.exitCode).toEqual(1)
+      expect(CoreMeta.exitMessage).toEqual('test')
+      expect(CoreMeta.outputs).toMatchObject({ 'my-output': 'test' })
+      expect(CoreMeta.secrets).toMatchObject(['secret-value-1234'])
+      expect(CoreMeta.stepDebug).toEqual(true)
+      expect(CoreMeta.echo).toEqual(true)
+      expect(CoreMeta.state).toMatchObject({ 'my-state': 'test' })
 
       // Reset the metadata
-      coreStubs.ResetCoreMetadata()
+      ResetCoreMetadata()
 
       // Verify the reset metadata
-      expect(coreStubs.CoreMeta.exitCode).toEqual(empty.exitCode)
-      expect(coreStubs.CoreMeta.exitMessage).toEqual(empty.exitMessage)
-      expect(coreStubs.CoreMeta.outputs).toMatchObject(empty.outputs)
-      expect(coreStubs.CoreMeta.secrets).toMatchObject(empty.secrets)
-      expect(coreStubs.CoreMeta.stepDebug).toEqual(empty.stepDebug)
-      expect(coreStubs.CoreMeta.echo).toEqual(empty.echo)
-      expect(coreStubs.CoreMeta.state).toMatchObject(empty.state)
+      expect(CoreMeta.exitCode).toEqual(empty.exitCode)
+      expect(CoreMeta.exitMessage).toEqual(empty.exitMessage)
+      expect(CoreMeta.outputs).toMatchObject(empty.outputs)
+      expect(CoreMeta.secrets).toMatchObject(empty.secrets)
+      expect(CoreMeta.stepDebug).toEqual(empty.stepDebug)
+      expect(CoreMeta.echo).toEqual(empty.echo)
+      expect(CoreMeta.state).toMatchObject(empty.state)
     })
   })
 
   describe('Core Stubs', () => {
     describe('exportVariable()', () => {
       it('Exports an environment variable', () => {
-        coreStubs.exportVariable('TEST', 'test')
-        expect(envStubs.EnvMeta.env).toMatchObject({ TEST: 'test' })
+        exportVariable('TEST', 'test')
+        expect(EnvMeta.env).toMatchObject({ TEST: 'test' })
       })
     })
 
     describe('setSecre()', () => {
       it('Sets a secret to mask', () => {
-        coreStubs.setSecret('test')
-        expect(coreStubs.CoreMeta.secrets).toMatchObject(['test'])
+        setSecret('test')
+        expect(CoreMeta.secrets).toMatchObject(['test'])
       })
     })
 
     describe('addPath()', () => {
       it('Appends to the path', () => {
-        coreStubs.addPath('/usr/test')
-        expect(envStubs.EnvMeta.path.includes('/usr/test')).toBeTruthy()
+        addPath('/usr/test')
+        expect(EnvMeta.path.includes('/usr/test')).toBeTruthy()
       })
     })
 
@@ -120,29 +143,27 @@ describe('Core', () => {
       it('Gets action inputs', () => {
         // Test both upper and lower case versions of the input
         process.env.INPUT_TEST = 'test-upper'
-        expect(coreStubs.getInput('test')).toEqual('test-upper')
+        expect(getInput('test')).toEqual('test-upper')
 
         delete process.env.INPUT_TEST
 
         process.env.INPUT_test = 'test-lower'
-        expect(coreStubs.getInput('test')).toEqual('test-lower')
+        expect(getInput('test')).toEqual('test-lower')
       })
 
       it('Returns an empty string', () => {
-        expect(coreStubs.getInput('test-input-missing')).toEqual('')
+        expect(getInput('test-input-missing')).toEqual('')
       })
 
       it('Throws an error if the input is required and not found', () => {
         expect(() =>
-          coreStubs.getInput('test-input-missing', { required: true })
+          getInput('test-input-missing', { required: true })
         ).toThrow()
       })
 
       it('Trims whitespace', () => {
         process.env.INPUT_TEST = '  test  '
-        expect(coreStubs.getInput('test', { trimWhitespace: true })).toEqual(
-          'test'
-        )
+        expect(getInput('test', { trimWhitespace: true })).toEqual('test')
       })
     })
 
@@ -150,7 +171,7 @@ describe('Core', () => {
       it('Gets action inputs', () => {
         // Test both upper and lower case versions of the input
         process.env.INPUT_TEST = `test\nmultiline\nupper`
-        expect(coreStubs.getMultilineInput('test')).toMatchObject([
+        expect(getMultilineInput('test')).toMatchObject([
           'test',
           'multiline',
           'upper'
@@ -159,7 +180,7 @@ describe('Core', () => {
         delete process.env.INPUT_TEST
 
         process.env.INPUT_test = `test\nmultiline\nlower`
-        expect(coreStubs.getMultilineInput('test')).toMatchObject([
+        expect(getMultilineInput('test')).toMatchObject([
           'test',
           'multiline',
           'lower'
@@ -167,14 +188,12 @@ describe('Core', () => {
       })
 
       it('Returns an empty list if the input is not found', () => {
-        expect(coreStubs.getMultilineInput('test-input-missing')).toMatchObject(
-          []
-        )
+        expect(getMultilineInput('test-input-missing')).toMatchObject([])
       })
 
       it('Throws an error if the input is required and not found', () => {
         expect(() =>
-          coreStubs.getMultilineInput('test-input-missing', {
+          getMultilineInput('test-input-missing', {
             required: true
           })
         ).toThrow()
@@ -183,7 +202,7 @@ describe('Core', () => {
       it('Trims whitespace from the input', () => {
         process.env.INPUT_TEST = '  test  \n   muliline   \n   spaces   '
         expect(
-          coreStubs.getMultilineInput('test', { trimWhitespace: true })
+          getMultilineInput('test', { trimWhitespace: true })
         ).toMatchObject(['test', 'muliline', 'spaces'])
       })
     })
@@ -192,17 +211,17 @@ describe('Core', () => {
       it('Gets the action inputs', () => {
         // Test both upper and lower case versions of the input
         process.env.INPUT_TEST = 'true'
-        expect(coreStubs.getBooleanInput('test')).toBeTruthy()
+        expect(getBooleanInput('test')).toBeTruthy()
 
         delete process.env.INPUT_TEST
 
         process.env.INPUT_test = 'false'
-        expect(coreStubs.getBooleanInput('test')).toBeFalsy()
+        expect(getBooleanInput('test')).toBeFalsy()
       })
 
       it('Throws an error if the input is required and not found', () => {
         expect(() =>
-          coreStubs.getBooleanInput('test-input-missing', {
+          getBooleanInput('test-input-missing', {
             required: true
           })
         ).toThrow()
@@ -210,45 +229,45 @@ describe('Core', () => {
 
       it('Returns true or false for valid YAML boolean values', () => {
         process.env.INPUT_TEST = 'true'
-        expect(coreStubs.getBooleanInput('test')).toBeTruthy()
+        expect(getBooleanInput('test')).toBeTruthy()
 
         process.env.INPUT_TEST = 'True'
-        expect(coreStubs.getBooleanInput('test')).toBeTruthy()
+        expect(getBooleanInput('test')).toBeTruthy()
 
         process.env.INPUT_TEST = 'TRUE'
-        expect(coreStubs.getBooleanInput('test')).toBeTruthy()
+        expect(getBooleanInput('test')).toBeTruthy()
 
         process.env.INPUT_TEST = 'false'
-        expect(coreStubs.getBooleanInput('test')).toBeFalsy()
+        expect(getBooleanInput('test')).toBeFalsy()
 
         process.env.INPUT_TEST = 'False'
-        expect(coreStubs.getBooleanInput('test')).toBeFalsy()
+        expect(getBooleanInput('test')).toBeFalsy()
 
         process.env.INPUT_TEST = 'FALSE'
-        expect(coreStubs.getBooleanInput('test')).toBeFalsy()
+        expect(getBooleanInput('test')).toBeFalsy()
       })
 
       it('Throws an error if the input is not a valid YAML boolean value', () => {
         process.env.INPUT_TEST = 'This is not a valid boolean value'
-        expect(() => coreStubs.getBooleanInput('test')).toThrow()
+        expect(() => getBooleanInput('test')).toThrow()
       })
     })
 
     describe('setOutput()', () => {
       it('Sets the action outputs', () => {
-        jest.spyOn(coreStubs.CoreMeta.colors, 'cyan').mockImplementation()
+        jest.spyOn(CoreMeta.colors, 'cyan').mockImplementation()
 
-        coreStubs.setOutput('my-output', 'output-value')
+        setOutput('my-output', 'output-value')
 
-        expect(coreStubs.CoreMeta.outputs['my-output']).toEqual('output-value')
+        expect(CoreMeta.outputs['my-output']).toEqual('output-value')
       })
 
       it('Logs the output to the console', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'cyan')
+          .spyOn(CoreMeta.colors, 'cyan')
           .mockImplementation()
 
-        coreStubs.setOutput('my-output', 'output-value')
+        setOutput('my-output', 'output-value')
 
         expect(core_outputSpy).toHaveBeenCalledWith(
           '::set-output name=my-output::output-value'
@@ -258,29 +277,29 @@ describe('Core', () => {
 
     describe('setCommandEcho()', () => {
       it('Sets the command echo flag', () => {
-        coreStubs.setCommandEcho(true)
-        expect(coreStubs.CoreMeta.echo).toBeTruthy()
+        setCommandEcho(true)
+        expect(CoreMeta.echo).toBeTruthy()
 
-        coreStubs.setCommandEcho(false)
-        expect(coreStubs.CoreMeta.echo).toBeFalsy()
+        setCommandEcho(false)
+        expect(CoreMeta.echo).toBeFalsy()
       })
     })
 
     describe('setFailed()', () => {
       it('Sets the exit code to failure', () => {
-        jest.spyOn(coreStubs.CoreMeta.colors, 'red').mockImplementation()
+        jest.spyOn(CoreMeta.colors, 'red').mockImplementation()
 
-        coreStubs.setFailed('test')
+        setFailed('test')
 
-        expect(coreStubs.CoreMeta.exitCode).toEqual(ExitCode.Failure)
-        expect(coreStubs.CoreMeta.exitMessage).toEqual('test')
+        expect(CoreMeta.exitCode).toEqual(1)
+        expect(CoreMeta.exitMessage).toEqual('test')
       })
     })
 
     describe('log()', () => {
       it('Throws an error if startLine and endLine are different when columns are set', () => {
         expect((): void =>
-          coreStubs.log('group', 'my message', {
+          log('group', 'my message', {
             startLine: 1,
             endLine: 2,
             startColumn: 1
@@ -288,7 +307,7 @@ describe('Core', () => {
         ).toThrow()
 
         expect((): void =>
-          coreStubs.log('group', 'my message', {
+          log('group', 'my message', {
             startLine: 1,
             endLine: 2,
             endColumn: 2
@@ -298,23 +317,23 @@ describe('Core', () => {
 
       it('Logs only the color when no message is provided', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'blue')
+          .spyOn(CoreMeta.colors, 'blue')
           .mockImplementation()
 
-        coreStubs.log('group')
+        log('group')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::group::')
       })
 
       it('Redacts secrets from the output', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'blue')
+          .spyOn(CoreMeta.colors, 'blue')
           .mockImplementation()
 
         // Set a secret to mask
-        coreStubs.CoreMeta.secrets = ['secret-value-1234']
+        CoreMeta.secrets = ['secret-value-1234']
 
-        coreStubs.log('group', 'my secret is secret-value-1234')
+        log('group', 'my secret is secret-value-1234')
 
         expect(core_outputSpy).toHaveBeenCalledWith(
           '::group::my secret is ****'
@@ -323,10 +342,10 @@ describe('Core', () => {
 
       it('Includes annotations in the output', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'blue')
+          .spyOn(CoreMeta.colors, 'blue')
           .mockImplementation()
 
-        coreStubs.log('group', 'my message', {
+        log('group', 'my message', {
           title: 'my title',
           file: 'my-file.txt'
         })
@@ -338,10 +357,10 @@ describe('Core', () => {
 
       it('Defaults the endLine property to startLine', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'white')
+          .spyOn(CoreMeta.colors, 'white')
           .mockImplementation()
 
-        coreStubs.log('info', 'my message', {
+        log('info', 'my message', {
           startLine: 1
         })
 
@@ -352,10 +371,10 @@ describe('Core', () => {
 
       it('Defaults the endColumn property to startColumn', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'white')
+          .spyOn(CoreMeta.colors, 'white')
           .mockImplementation()
 
-        coreStubs.log('info', 'my message', {
+        log('info', 'my message', {
           startColumn: 1
         })
 
@@ -367,49 +386,61 @@ describe('Core', () => {
 
     describe('isDebug()', () => {
       it('Returns the step debug setting', () => {
-        coreStubs.CoreMeta.stepDebug = true
-        expect(coreStubs.isDebug()).toBeTruthy()
+        CoreMeta.stepDebug = true
+        expect(isDebug()).toBeTruthy()
 
-        coreStubs.CoreMeta.stepDebug = false
-        expect(coreStubs.isDebug()).toBeFalsy()
+        CoreMeta.stepDebug = false
+        expect(isDebug()).toBeFalsy()
       })
     })
 
     describe('debug()', () => {
       it('Logs to the console if debug logging is enabled', () => {
         // Enable step debug logging
-        coreStubs.CoreMeta.stepDebug = true
+        CoreMeta.stepDebug = true
 
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'gray')
+          .spyOn(CoreMeta.colors, 'gray')
           .mockImplementation()
 
-        coreStubs.debug('test')
+        debug('test')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::debug::test')
       })
 
       it('Does not log to the console if debug logging is disabled', () => {
         // Disable step debug logging
-        coreStubs.CoreMeta.stepDebug = false
+        CoreMeta.stepDebug = false
 
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'gray')
+          .spyOn(CoreMeta.colors, 'gray')
           .mockImplementation()
 
-        coreStubs.debug('test')
+        debug('test')
 
         expect(core_outputSpy).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('error()', () => {
+      it('Logs to the console', () => {
+        const core_outputSpy: jest.SpyInstance = jest
+          .spyOn(CoreMeta.colors, 'red')
+          .mockImplementation()
+
+        error('test')
+
+        expect(core_outputSpy).toHaveBeenCalledWith('::error::test')
       })
     })
 
     describe('warning()', () => {
       it('Logs to the console', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'yellow')
+          .spyOn(CoreMeta.colors, 'yellow')
           .mockImplementation()
 
-        coreStubs.warning('test')
+        warning('test')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::warning::test')
       })
@@ -418,10 +449,10 @@ describe('Core', () => {
     describe('notice()', () => {
       it('Logs to the console', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'magenta')
+          .spyOn(CoreMeta.colors, 'magenta')
           .mockImplementation()
 
-        coreStubs.notice('test')
+        notice('test')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::notice::test')
       })
@@ -430,10 +461,10 @@ describe('Core', () => {
     describe('info()', () => {
       it('Logs to the console', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'white')
+          .spyOn(CoreMeta.colors, 'white')
           .mockImplementation()
 
-        coreStubs.info('test')
+        info('test')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::info::test')
       })
@@ -442,10 +473,10 @@ describe('Core', () => {
     describe('startGroup()', () => {
       it('Logs to the console', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'blue')
+          .spyOn(CoreMeta.colors, 'blue')
           .mockImplementation()
 
-        coreStubs.startGroup('test')
+        startGroup('test')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::group::test')
       })
@@ -454,10 +485,10 @@ describe('Core', () => {
     describe('endGroup()', () => {
       it('Logs to the console', () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'blue')
+          .spyOn(CoreMeta.colors, 'blue')
           .mockImplementation()
 
-        coreStubs.endGroup()
+        endGroup()
 
         expect(core_outputSpy).toHaveBeenCalledWith('::endgroup::')
       })
@@ -466,19 +497,18 @@ describe('Core', () => {
     describe('group()', () => {
       it('Logs grouped messages to the console', async () => {
         const core_outputSpy: jest.SpyInstance = jest
-          .spyOn(coreStubs.CoreMeta.colors, 'blue')
+          .spyOn(CoreMeta.colors, 'blue')
           .mockImplementation()
 
         const core_infoSpy: jest.SpyInstance = jest.spyOn(
-          coreStubs.CoreMeta.colors,
+          CoreMeta.colors,
           'white'
         )
 
-        // eslint-disable-next-line @typescript-eslint/require-await
-        await coreStubs.group('my-group', async () => {
-          coreStubs.info('test')
+        await group('my-group', async () => {
+          info('test')
 
-          // Do some async work...
+          await Promise.resolve()
 
           return
         })
@@ -491,29 +521,29 @@ describe('Core', () => {
 
     describe('saveState()', () => {
       it('Saves string data', () => {
-        coreStubs.saveState(
+        saveState(
           'string-test',
           JSON.stringify({ 'my-state': 'test-string-info' })
         )
 
-        expect(coreStubs.CoreMeta.state).toMatchObject({
+        expect(CoreMeta.state).toMatchObject({
           'string-test': '{"my-state":"test-string-info"}'
         })
       })
 
       it('Saves JSON data', () => {
-        coreStubs.saveState('json-test', { 'my-state': 'test-json-info' })
+        saveState('json-test', { 'my-state': 'test-json-info' })
 
-        expect(coreStubs.CoreMeta.state).toMatchObject({
+        expect(CoreMeta.state).toMatchObject({
           'json-test': '{"my-state":"test-json-info"}'
         })
       })
 
       it('Saves null and undefined as empty strings', () => {
-        coreStubs.saveState('undefined-test', undefined)
-        coreStubs.saveState('null-test', null)
+        saveState('undefined-test', undefined)
+        saveState('null-test', null)
 
-        expect(coreStubs.CoreMeta.state).toMatchObject({
+        expect(CoreMeta.state).toMatchObject({
           'undefined-test': '',
           'null-test': ''
         })
@@ -522,21 +552,21 @@ describe('Core', () => {
 
     describe('getState()', () => {
       it('Gets the state from the environment', () => {
-        coreStubs.CoreMeta.state = {
+        CoreMeta.state = {
           test: '{"my-state":"test-info"}'
         }
 
-        expect(coreStubs.getState('test')).toEqual('{"my-state":"test-info"}')
+        expect(getState('test')).toEqual('{"my-state":"test-info"}')
       })
 
       it('Returns an empty string for values not in the state', () => {
-        expect(coreStubs.getState('nonexistent-test')).toEqual('')
+        expect(getState('nonexistent-test')).toEqual('')
       })
     })
 
     describe('getIDToken()', () => {
       it('Throws an error', async () => {
-        await expect(coreStubs.getIDToken()).rejects.toThrow('Not implemented')
+        await expect(getIDToken()).rejects.toThrow('Not implemented')
       })
     })
   })

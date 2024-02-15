@@ -1,6 +1,6 @@
-import * as coreStubs from '../../src/stubs/core-stubs'
-import * as envStubs from '../../src/stubs/env-stubs'
-import * as output from '../../src/utils/output'
+import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
+import { ResetEnvMetadata } from '../../src/stubs/env-stubs'
+import { printTitle } from '../../src/utils/output'
 
 let console_logSpy: jest.SpyInstance
 
@@ -13,8 +13,8 @@ describe('Output', () => {
 
   beforeEach(() => {
     // Reset metadata
-    envStubs.ResetEnvMetadata()
-    coreStubs.ResetCoreMetadata()
+    ResetEnvMetadata()
+    ResetCoreMetadata()
   })
 
   afterEach(() => {
@@ -24,7 +24,7 @@ describe('Output', () => {
 
   describe('printTitle()', () => {
     it('Prints the correct number of (=) signs', () => {
-      output.printTitle(console.log, 'Test')
+      printTitle(console.log, 'Test')
 
       expect(console_logSpy).toHaveBeenCalledTimes(3)
       expect(console_logSpy).toHaveBeenNthCalledWith(1, '='.repeat(80))
