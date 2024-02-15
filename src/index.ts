@@ -15,7 +15,7 @@ export async function run(): Promise<void> {
   console.log(chalk.blue(textSync('Action Debugger')))
 
   // Run the program
-  const program: Command = makeProgram()
+  const program: Command = await makeProgram()
   program.parse()
 }
 
