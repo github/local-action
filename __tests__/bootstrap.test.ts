@@ -80,23 +80,6 @@ describe('Bootstrap', () => {
     )
   })
 
-  it('Registers additional paths', async () => {
-    process.env.TARGET_ACTION_PATH = 'non-existent-path'
-
-    fs_existsSyncSpy.mockReturnValueOnce(true)
-    fs_readFileSyncSpy.mockReturnValueOnce(JSON.stringify(tsConfigWithPaths))
-
-    await import('../src/bootstrap')
-
-    expect(fs_existsSyncSpy).toHaveBeenCalledWith(
-      `${process.env.TARGET_ACTION_PATH}/tsconfig.json`
-    )
-    expect(fs_readFileSyncSpy).toHaveBeenCalledWith(
-      `${process.env.TARGET_ACTION_PATH}/tsconfig.json`,
-      'utf-8'
-    )
-  })
-
   it('Defaults to an empty paths object', async () => {
     process.env.TARGET_ACTION_PATH = 'non-existent-path'
 

@@ -1,2 +1,2 @@
-export const loadConfig = jest.fn()
-export const register = jest.fn()
+export const loadConfig = jest.fn().mockImplementation()
+export const register = jest.fn().mockImplementation()
