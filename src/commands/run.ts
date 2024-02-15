@@ -1,8 +1,5 @@
 import { config } from 'dotenv'
-import fs from 'fs'
-import path from 'path'
 import proxyquire from 'proxyquire'
-import YAML from 'yaml'
 import {
   CoreMeta,
   addPath,
@@ -34,6 +31,9 @@ import { printTitle } from '../utils/output'
 export async function action(): Promise<void> {
   const { Chalk } = await import('chalk')
   const chalk = new Chalk()
+  const fs = await import('fs')
+  const path = await import('path')
+  const YAML = await import('yaml')
 
   // Back up the environment
   EnvMeta.envBackup = { ...process.env }
@@ -72,23 +72,22 @@ export async function action(): Promise<void> {
     },
     {
       Field: 'Environment File',
-      Value: EnvMeta.envFile
+      Value: EnvMeta.dotenvFile
     }
   ])
   console.log()
 
   // Load the environment file
-  // TODO: Load this into EnvMeta directly? What about secrets...
-  config({ path: path.resolve(process.cwd(), EnvMeta.envFile) })
+  // @todo Load this into EnvMeta directly? What about secrets...
+  config({ path: path.resolve(process.cwd(), EnvMeta.dotenvFile) })
 
   // Load step debug setting
   CoreMeta.stepDebug = process.env.ACTIONS_STEP_DEBUG === 'true'
 
   // Read the action.yml file and parse the expected inputs/outputs
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const actionYaml: Action = YAML.parse(
-    fs.readFileSync(EnvMeta.actionFile, 'utf8')
-  )
+    fs.readFileSync(EnvMeta.actionFile, { encoding: 'utf8', flag: 'r' })
+  ) as Action
   EnvMeta.inputs = actionYaml.inputs || {}
   EnvMeta.outputs = actionYaml.outputs || {}
 
