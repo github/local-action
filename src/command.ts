@@ -2,6 +2,11 @@ import { Command, InvalidArgumentError } from 'commander'
 import { action as runAction } from './commands/run'
 import { EnvMeta } from './stubs/env-stubs'
 
+/**
+ * Creates the program for the CLI
+ *
+ * @returns A promise that resolves to the program Command object
+ */
 export async function makeProgram(): Promise<Command> {
   const program: Command = new Command()
   const fs = await import('fs')
