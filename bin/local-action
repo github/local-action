@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# This script is used to run the local action. It sets the NODE_OPTIONS
+# environment variable to require the bootstrap file, which sets up the
+# TypeScript environment for the action.
+
+# Set the first argument (local path to action) as an env var. This is used
+# in the bootstrap file to check for a `tsconfig.json`.
+export TARGET_ACTION_PATH="$1"
+
+# Set the NODE_OPTIONS environment variable to require the bootstrap file
+NODE_OPTIONS='--require "./src/bootstrap.js"' npx tsx "./src/index.ts" "$@"
