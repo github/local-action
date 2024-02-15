@@ -17,11 +17,16 @@ jobs:
     name: Release Version
     runs-on: ubuntu-latest
 
-    # Only run this job if it was done manually or the PR was merged
+    # Only run this job if one of the following is true:
+    # - It was done manually.
+    # - A non-fork, non-Dependabot PR was merged.
     if: |
-      (github.event_name == 'workflow_dispatch' ||
-      github.event.pull_request.merged == true) &&
-      startsWith(github.head_ref, 'dependabot/') == false
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event.pull_request.merged == true &&
+        startsWith(github.head_ref, 'dependabot/') == false &&
+        github.event.pull_request.head.repo.fork == false
+      )
 
     steps:
       - name: Checkout
