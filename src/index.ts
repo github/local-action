@@ -3,6 +3,11 @@ import type { Command } from 'commander'
 import { textSync } from 'figlet'
 import { makeProgram } from './command'
 
+/**
+ * Runs the CLI program
+ *
+ * @returns A promise that resolves when the program is finished
+ */
 export async function run(): Promise<void> {
   const chalk = (await import('chalk')).default
 
