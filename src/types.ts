@@ -184,3 +184,36 @@ export type InputOptions = {
    */
   trimWhitespace?: boolean
 }
+
+/** A table cell from a job step summary. */
+export type SummaryTableCell = {
+  /** Cell content */
+  data: string
+
+  /** Optional. Render cell as header. Defaults to `false`. */
+  header?: boolean
+
+  /** Optional. Number of columns the cell extends. Defaults to `1`. */
+  colspan?: string
+
+  /** Optional. Number of rows the cell extends. Defaults to '1'. */
+  rowspan?: string
+}
+
+/** The formatting options for an image in a job step summary. */
+export type SummaryImageOptions = {
+  /** Optional. The width of the image in pixels. */
+  width?: string
+
+  /** Optional. The height of the image in pixels. */
+  height?: string
+}
+
+/** The options for writing a job step summary. */
+export type SummaryWriteOptions = {
+  /**
+   * Optional. Replace all existing content in the summary file with the
+   * contents of the buffer. Defaults to `false`.
+   */
+  overwrite?: boolean
+}
