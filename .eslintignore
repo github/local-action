@@ -1,4 +1,9 @@
+.github/
+.vscode/
+badges/
+bin/
 dist/
 node_modules/
 coverage/
+reports/
 *.json
