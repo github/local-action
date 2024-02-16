@@ -39,6 +39,8 @@ describe('Command: run', () => {
 
   describe('TypeScript', () => {
     it('Action: success', async () => {
+      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
+
       EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/success`
       EnvMeta.dotenvFile = `./__fixtures__/typescript/success/.env.fixture`
@@ -51,6 +53,8 @@ describe('Command: run', () => {
     })
 
     it('Action: failure', async () => {
+      delete process.env.GITHUB_STEP_SUMMARY
+
       EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/failure`
       EnvMeta.dotenvFile = `./__fixtures__/typescript/failure/.env.fixture`
@@ -77,6 +81,8 @@ describe('Command: run', () => {
 
   describe('JavaScript', () => {
     it('Action: success', async () => {
+      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
+
       EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/success`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
@@ -89,6 +95,8 @@ describe('Command: run', () => {
     })
 
     it('Action: failure', async () => {
+      delete process.env.GITHUB_STEP_SUMMARY
+
       EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/failure`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/failure/.env.fixture`

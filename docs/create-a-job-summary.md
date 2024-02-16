@@ -12,7 +12,7 @@ of each job.
 > runners. If the file referenced by `GITHUB_STEP_SUMMARY` does not exist, the
 > workflow run will fail with an error like the following:
 >
-> `Unable to access summary file: '/path/to/summary'. Check if the file has correct read/write permissions.`
+> `Unable to access summary file: '/path/to/summary'.`
 >
 > However, GitHub Actions normally creates this file for you, so functionally
 > you should not see a difference :blush:

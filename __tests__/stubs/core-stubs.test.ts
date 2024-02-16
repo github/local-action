@@ -124,6 +124,20 @@ describe('Core', () => {
       expect(CoreMeta.echo).toEqual(empty.echo)
       expect(CoreMeta.state).toMatchObject(empty.state)
     })
+
+    it('Defaults stepSummaryPath to an empty string', () => {
+      delete process.env.GITHUB_STEP_SUMMARY
+
+      ResetCoreMetadata()
+      expect(CoreMeta.stepSummaryPath).toEqual('')
+    })
+
+    it('Sets stepSummaryPath from the environment', () => {
+      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
+
+      ResetCoreMetadata()
+      expect(CoreMeta.stepSummaryPath).toEqual('summary.md')
+    })
   })
 
   describe('Core Stubs', () => {
