@@ -24,6 +24,7 @@ import {
   startGroup,
   warning
 } from '../stubs/core-stubs'
+import { Summary } from '../stubs/summary-stubs'
 import { EnvMeta } from '../stubs/env-stubs'
 import type { Action } from '../types'
 import { printTitle } from '../utils/output'
@@ -81,8 +82,9 @@ export async function action(): Promise<void> {
   // @todo Load this into EnvMeta directly? What about secrets...
   config({ path: path.resolve(process.cwd(), EnvMeta.dotenvFile) })
 
-  // Load step debug setting
+  // Load action settings
   CoreMeta.stepDebug = process.env.ACTIONS_STEP_DEBUG === 'true'
+  CoreMeta.stepSummaryPath = process.env.GITHUB_STEP_SUMMARY ?? ''
 
   // Read the action.yml file and parse the expected inputs/outputs
   const actionYaml: Action = YAML.parse(
@@ -135,6 +137,7 @@ export async function action(): Promise<void> {
       setOutput,
       setSecret,
       startGroup,
+      summary: new Summary(),
       warning
     }
   })
