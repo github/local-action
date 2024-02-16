@@ -39,6 +39,9 @@ export type EnvMetadata = {
 
 /** Metadata for `@actions/core` */
 export type CoreMetadata = {
+  /** Command echo setting */
+  echo: boolean
+
   /** Exit code (0 = success, 1 = failure) */
   exitCode: 0 | 1
 
@@ -54,9 +57,6 @@ export type CoreMetadata = {
   /** Actions step debug setting */
   stepDebug: boolean
 
-  /** Command echo setting */
-  echo: boolean
-
   /** Current action state */
   state: { [key: string]: string }
 
@@ -69,6 +69,14 @@ export type CoreMetadata = {
   colors: {
     [key: string]: (message: string) => void
   }
+
+  /**
+   * The path to the step summary output file.
+   *
+   * This is not part of `@actions/core` but is included here for convenience
+   * when calling related functions.
+   */
+  stepSummaryPath: string
 }
 
 /** Properties of an `action.yml` */
@@ -199,6 +207,9 @@ export type SummaryTableCell = {
   /** Optional. Number of rows the cell extends. Defaults to '1'. */
   rowspan?: string
 }
+
+/** A row for a summary table. */
+export type SummaryTableRow = (SummaryTableCell | string)[]
 
 /** The formatting options for an image in a job step summary. */
 export type SummaryImageOptions = {
