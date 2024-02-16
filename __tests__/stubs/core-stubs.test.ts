@@ -22,10 +22,14 @@ import {
   group,
   saveState,
   getState,
-  getIDToken
+  getIDToken,
+  toWin32Path,
+  toPlatformPath,
+  toPosixPath
 } from '../../src/stubs/core-stubs'
 import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import type { CoreMetadata } from '../../src/types'
+import path from 'path'
 
 let envBackup: { [key: string]: string | undefined } = process.env
 
@@ -36,6 +40,7 @@ const empty: CoreMetadata = {
   outputs: {},
   secrets: [],
   stepDebug: process.env.ACTIONS_STEP_DEBUG === 'true',
+  stepSummaryPath: process.env.GITHUB_STEP_SUMMARY ?? '',
   echo: false,
   state: {},
   colors: {
@@ -82,6 +87,7 @@ describe('Core', () => {
       expect(CoreMeta.outputs).toMatchObject(empty.outputs)
       expect(CoreMeta.secrets).toMatchObject(empty.secrets)
       expect(CoreMeta.stepDebug).toEqual(empty.stepDebug)
+      expect(CoreMeta.stepSummaryPath).toEqual(empty.stepSummaryPath)
       expect(CoreMeta.echo).toEqual(empty.echo)
       expect(CoreMeta.state).toMatchObject(empty.state)
 
@@ -91,6 +97,7 @@ describe('Core', () => {
       CoreMeta.outputs = { 'my-output': 'test' }
       CoreMeta.secrets = ['secret-value-1234']
       CoreMeta.stepDebug = true
+      CoreMeta.stepSummaryPath = 'test'
       CoreMeta.echo = true
       CoreMeta.state = { 'my-state': 'test' }
 
@@ -100,6 +107,7 @@ describe('Core', () => {
       expect(CoreMeta.outputs).toMatchObject({ 'my-output': 'test' })
       expect(CoreMeta.secrets).toMatchObject(['secret-value-1234'])
       expect(CoreMeta.stepDebug).toEqual(true)
+      expect(CoreMeta.stepSummaryPath).toEqual('test')
       expect(CoreMeta.echo).toEqual(true)
       expect(CoreMeta.state).toMatchObject({ 'my-state': 'test' })
 
@@ -112,6 +120,7 @@ describe('Core', () => {
       expect(CoreMeta.outputs).toMatchObject(empty.outputs)
       expect(CoreMeta.secrets).toMatchObject(empty.secrets)
       expect(CoreMeta.stepDebug).toEqual(empty.stepDebug)
+      expect(CoreMeta.stepSummaryPath).toEqual(empty.stepSummaryPath)
       expect(CoreMeta.echo).toEqual(empty.echo)
       expect(CoreMeta.state).toMatchObject(empty.state)
     })
@@ -584,6 +593,34 @@ describe('Core', () => {
     describe('getIDToken()', () => {
       it('Throws an error', async () => {
         await expect(getIDToken()).rejects.toThrow('Not implemented')
+      })
+    })
+
+    describe('toPosixPath()', () => {
+      it('Returns a POSIX path', () => {
+        expect(toPosixPath('C:\\Users\\mona\\Desktop')).toEqual(
+          'C:/Users/mona/Desktop'
+        )
+      })
+    })
+
+    describe('toWin32Path()', () => {
+      it('Returns a WIN32 path', () => {
+        expect(toWin32Path('C:/Users/mona/Desktop')).toEqual(
+          'C:\\Users\\mona\\Desktop'
+        )
+      })
+    })
+
+    describe('toPlatformPath()', () => {
+      it('Returns a platform-specific path', () => {
+        expect(toPlatformPath('C:/Users/mona/Desktop')).toEqual(
+          `C:${path.sep}Users${path.sep}mona${path.sep}Desktop`
+        )
+
+        expect(toPosixPath('C:\\Users\\mona\\Desktop')).toEqual(
+          `C:${path.sep}Users${path.sep}mona${path.sep}Desktop`
+        )
       })
     })
   })
