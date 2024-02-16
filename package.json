@@ -1,7 +1,7 @@
 {
   "name": "@github/local-action",
   "description": "Local Debugging for GitHub Actions",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Nick Alteen <ncalteen@github.com>",
   "private": false,
   "homepage": "https://github.com/github/local-action",

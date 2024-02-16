@@ -14,7 +14,7 @@ actions can be run directly on your workstation.
 >
 > This tool currently only supports JavaScript and TypeScript actions!
 
-## v1.0.0 Changes
+## v1 Changes
 
 With the release of `v1.0.0`, there was a need to switch from
 [`ts-node`](https://www.npmjs.com/package/ts-node) to
@@ -209,30 +209,11 @@ $ local-action run /path/to/typescript-action src/index.ts .env
 ================================================================================
 ```
 
-## Debugging in VS Code
+## Features
 
-This package can also be used with VS Code's built-in debugging tools. You just
-need to add a `launch.json` to the project containing your local action. The
-following can be used as an example.
+The following list links to documentation on how to use various features of the
+`local-action` tool.
 
-```json
-{
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "name": "Debug Local Action",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "local-action",
-      "cwd": "${workspaceRoot}",
-      "args": [".", "src/index.ts", ".env"],
-      "console": "integratedTerminal",
-      "skipFiles": ["<node_internals>/**", "node_modules/**"]
-    }
-  ]
-}
-```
-
-In the `args` section, make sure to specify the appropriate path, entrypoint,
-and dotenv file path. After that, you can add breakpoints to your action code
-and start debugging!
+- [Supported Functionality](./docs//supported-functionality.md)
+- [Debugging in VS Code](./docs/debugging-in-vscode.md)
+- [Create a Job Summary](./docs/create-a-step-summary.md)

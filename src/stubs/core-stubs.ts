@@ -5,13 +5,15 @@ import { EnvMeta } from './env-stubs'
  * Metadata for `@actions/core`
  */
 export const CoreMeta: CoreMetadata = {
+  echo: false,
   exitCode: 0,
   exitMessage: '',
   outputs: {},
   secrets: [],
-  stepDebug: process.env.ACTIONS_STEP_DEBUG === 'true',
-  echo: false,
   state: {},
+  stepDebug: process.env.ACTIONS_STEP_DEBUG === 'true',
+  stepSummaryPath:
+    /* istanbul ignore next */ process.env.GITHUB_STEP_SUMMARY ?? '',
   colors: {
     cyan: /* istanbul ignore next */ (msg: string) => console.log(msg),
     blue: /* istanbul ignore next */ (msg: string) => console.log(msg),
@@ -30,13 +32,14 @@ export const CoreMeta: CoreMetadata = {
  * @returns void
  */
 export function ResetCoreMetadata(): void {
+  CoreMeta.echo = false
   CoreMeta.exitCode = 0
   CoreMeta.exitMessage = ''
   CoreMeta.outputs = {}
   CoreMeta.secrets = []
-  CoreMeta.stepDebug = process.env.ACTIONS_STEP_DEBUG === 'true'
-  CoreMeta.echo = false
   CoreMeta.state = {}
+  CoreMeta.stepDebug = process.env.ACTIONS_STEP_DEBUG === 'true'
+  CoreMeta.stepSummaryPath = process.env.GITHUB_STEP_SUMMARY ?? ''
 }
 
 //-----------------------------------------------------------------------
@@ -508,4 +511,45 @@ export async function getIDToken(aud?: string): Promise<string> {
   await Promise.reject(new Error('Not implemented'))
   /* istanbul ignore next */
   return aud
+}
+
+//-----------------------------------------------------------------------
+// Path exports
+//-----------------------------------------------------------------------
+
+/**
+ * Converts the given path to the posix form. On Windows, `\\` will be replaced
+ * with `/`.
+ *
+ * @param pth Path to transform
+ * @return Posix path
+ */
+export function toPosixPath(pth: string): string {
+  return pth.replace(/[\\]/g, '/')
+}
+
+/**
+ * Converts the given path to the win32 form. On Linux, `/` will be replaced
+ * with `\\`.
+ *
+ * @param pth Path to transform
+ * @return Win32 path
+ */
+export function toWin32Path(pth: string): string {
+  return pth.replace(/[/]/g, '\\')
+}
+
+/**
+ * Converts the given path to a platform-specific path. It does this by
+ * replacing instances of `/` and `\` with the platform-specific path separator.
+ *
+ * @param pth The path to platformize
+ * @return The platform-specific path
+ */
+export function toPlatformPath(pth: string): string {
+  // Importing with require is necessary to avoid async/await.
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const path = require('path') as typeof import('path')
+
+  return pth.replace(/[/\\]/g, path.sep)
 }

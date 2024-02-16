@@ -1,10 +1,14 @@
 /* eslint-disable import/no-namespace */
 
-import { setFailed } from '@actions/core'
+import { setFailed, summary } from '@actions/core'
 import { action } from '../../src/commands/run'
 import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
 import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import * as output from '../../src/utils/output'
+
+const summary_writeSpy: jest.SpyInstance = jest
+  .spyOn(summary, 'write')
+  .mockImplementation()
 
 let envBackup: { [key: string]: string | undefined } = process.env
 
@@ -35,22 +39,30 @@ describe('Command: run', () => {
 
   describe('TypeScript', () => {
     it('Action: success', async () => {
+      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
+
       EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/success`
       EnvMeta.dotenvFile = `./__fixtures__/typescript/success/.env.fixture`
       EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/index.ts`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
 
     it('Action: failure', async () => {
+      delete process.env.GITHUB_STEP_SUMMARY
+
       EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/failure`
       EnvMeta.dotenvFile = `./__fixtures__/typescript/failure/.env.fixture`
       EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/index.ts`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).toHaveBeenCalledWith('TypeScript Action Failed!')
     })
 
@@ -61,28 +73,38 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/index.ts`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).not.toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
   })
 
   describe('JavaScript', () => {
     it('Action: success', async () => {
+      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
+
       EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/success`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
       EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/index.js`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
 
     it('Action: failure', async () => {
+      delete process.env.GITHUB_STEP_SUMMARY
+
       EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/failure`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/failure/.env.fixture`
       EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/index.js`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).toHaveBeenCalled()
     })
 
@@ -93,6 +115,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/index.js`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).not.toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
   })
