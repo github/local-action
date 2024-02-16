@@ -214,5 +214,6 @@ $ local-action run /path/to/typescript-action src/index.ts .env
 The following list links to documentation on how to use various features of the
 `local-action` tool.
 
+- [Supported Functionality](./docs//supported-functionality.md)
 - [Debugging in VS Code](./docs/debugging-in-vscode.md)
 - [Create a Job Summary](./docs/create-a-step-summary.md)
