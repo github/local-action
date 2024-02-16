@@ -1,10 +1,14 @@
 /* eslint-disable import/no-namespace */
 
-import { setFailed } from '@actions/core'
+import { setFailed, summary } from '@actions/core'
 import { action } from '../../src/commands/run'
 import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
 import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import * as output from '../../src/utils/output'
+
+const summary_writeSpy: jest.SpyInstance = jest
+  .spyOn(summary, 'write')
+  .mockImplementation()
 
 let envBackup: { [key: string]: string | undefined } = process.env
 
@@ -41,6 +45,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/index.ts`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
 
@@ -51,6 +57,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/index.ts`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).toHaveBeenCalledWith('TypeScript Action Failed!')
     })
 
@@ -61,6 +69,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/index.ts`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).not.toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
   })
@@ -73,6 +83,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/index.js`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
 
@@ -83,6 +95,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/index.js`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).toHaveBeenCalled()
       expect(setFailed).toHaveBeenCalled()
     })
 
@@ -93,6 +107,8 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/index.js`
 
       await expect(action()).resolves.toBeUndefined()
+
+      expect(summary_writeSpy).not.toHaveBeenCalled()
       expect(setFailed).not.toHaveBeenCalled()
     })
   })
