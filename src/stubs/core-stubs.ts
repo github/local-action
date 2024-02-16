@@ -12,7 +12,8 @@ export const CoreMeta: CoreMetadata = {
   secrets: [],
   state: {},
   stepDebug: process.env.ACTIONS_STEP_DEBUG === 'true',
-  stepSummaryPath: process.env.GITHUB_STEP_SUMMARY ?? '',
+  stepSummaryPath:
+    /* istanbul ignore next */ process.env.GITHUB_STEP_SUMMARY ?? '',
   colors: {
     cyan: /* istanbul ignore next */ (msg: string) => console.log(msg),
     blue: /* istanbul ignore next */ (msg: string) => console.log(msg),
