@@ -10,8 +10,6 @@ const summary_writeSpy: jest.SpyInstance = jest
   .spyOn(summary, 'write')
   .mockImplementation()
 
-let envBackup: { [key: string]: string | undefined } = process.env
-
 describe('Command: run', () => {
   beforeAll(() => {
     // Prevent output during tests
@@ -24,17 +22,11 @@ describe('Command: run', () => {
     // Reset metadata
     ResetEnvMetadata()
     ResetCoreMetadata()
-
-    // Back up environment variables
-    envBackup = process.env
   })
 
   afterEach(() => {
     // Reset all spies
     jest.resetAllMocks()
-
-    // Restore environment variables
-    process.env = envBackup
   })
 
   describe('TypeScript', () => {

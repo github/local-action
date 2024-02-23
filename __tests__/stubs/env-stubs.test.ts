@@ -9,11 +9,9 @@ const empty: EnvMetadata = {
   dotenvFile: '',
   entrypoint: '',
   env: {},
-  envBackup: {},
   inputs: {},
   outputs: {},
-  path: '',
-  pathBackup: ''
+  path: ''
 }
 
 describe('Env', () => {
@@ -45,11 +43,9 @@ describe('Env', () => {
       EnvMeta.dotenvFile = '.env'
       EnvMeta.entrypoint = 'index.ts'
       EnvMeta.env = { TEST: 'test' }
-      EnvMeta.envBackup = { TEST: 'testBackup' }
       EnvMeta.inputs = { input: { description: 'test input' } }
       EnvMeta.outputs = { output: { description: 'test output' } }
       EnvMeta.path = '/usr/bin'
-      EnvMeta.pathBackup = '/usr/bin/backup'
 
       // Verify the updated metadata
       expect(EnvMeta).toMatchObject({
@@ -58,11 +54,9 @@ describe('Env', () => {
         dotenvFile: '.env',
         entrypoint: 'index.ts',
         env: { TEST: 'test' },
-        envBackup: { TEST: 'testBackup' },
         inputs: { input: { description: 'test input' } },
         outputs: { output: { description: 'test output' } },
-        path: '/usr/bin',
-        pathBackup: '/usr/bin/backup'
+        path: '/usr/bin'
       })
 
       // Reset the metadata

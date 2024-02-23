@@ -9,11 +9,9 @@ export const EnvMeta: EnvMetadata = {
   dotenvFile: '',
   entrypoint: '',
   env: {},
-  envBackup: {},
   inputs: {},
   outputs: {},
-  path: '',
-  pathBackup: ''
+  path: ''
 }
 
 /**
@@ -27,9 +25,7 @@ export function ResetEnvMetadata(): void {
   EnvMeta.dotenvFile = ''
   EnvMeta.entrypoint = ''
   EnvMeta.env = {}
-  EnvMeta.envBackup = {}
   EnvMeta.inputs = {}
   EnvMeta.outputs = {}
   EnvMeta.path = ''
-  EnvMeta.pathBackup = ''
 }

@@ -2,8 +2,6 @@ import fs from 'fs'
 import { ResetCoreMetadata } from '../src/stubs/core-stubs'
 import { ResetEnvMetadata } from '../src/stubs/env-stubs'
 
-let envBackup: { [key: string]: string | undefined } = process.env
-
 let fs_existsSyncSpy: jest.SpyInstance
 let fs_readFileSyncSpy: jest.SpyInstance
 
@@ -17,9 +15,6 @@ describe('Bootstrap', () => {
     // Reset metadata
     ResetEnvMetadata()
     ResetCoreMetadata()
-
-    // Back up environment variables
-    envBackup = process.env
   })
 
   afterEach(() => {
@@ -28,9 +23,6 @@ describe('Bootstrap', () => {
 
     // Reset module imports
     jest.resetModules()
-
-    // Restore environment variables
-    process.env = envBackup
   })
 
   it('Does nothing if no target action path is provided', async () => {
