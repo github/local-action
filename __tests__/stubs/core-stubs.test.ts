@@ -31,8 +31,6 @@ import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
 import type { CoreMetadata } from '../../src/types'
 import path from 'path'
 
-let envBackup: { [key: string]: string | undefined } = process.env
-
 /** Empty CoreMetadata Object */
 const empty: CoreMetadata = {
   exitCode: 0,
@@ -66,17 +64,11 @@ describe('Core', () => {
     // Reset metadata
     ResetEnvMetadata()
     ResetCoreMetadata()
-
-    // Back up environment variables
-    envBackup = process.env
   })
 
   afterEach(() => {
     // Reset all spies
     jest.resetAllMocks()
-
-    // Restore environment variables
-    process.env = envBackup
   })
 
   describe('CoreMeta', () => {

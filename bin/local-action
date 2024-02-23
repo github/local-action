@@ -2,6 +2,10 @@
 const path = require('path')
 const { execSync } = require('child_process')
 
+// Back up the environment
+const envBackup = { ...process.env }
+const pathBackup = process.env.PATH
+
 /**
  * This script is used to run the local action. It sets the NODE_OPTIONS
  * environment variable to require the bootstrap file, which sets up the
@@ -35,4 +39,8 @@ try {
   execSync(command, { cwd: packagePath, stdio: 'inherit' })
 } catch (error) {
   process.exit(error.status)
+} finally {
+  // Restore the environment
+  process.env = { ...envBackup }
+  process.env.PATH = pathBackup
 }

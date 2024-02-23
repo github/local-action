@@ -15,17 +15,8 @@ export type EnvMetadata = {
     TZ?: string | undefined
   }
 
-  /** Backup of environment variables prior to action invocation */
-  envBackup: {
-    [key: string]: string | undefined
-    TZ?: string | undefined
-  }
-
   /** System path */
   path: string
-
-  /** Backup of system path prior to action invocation */
-  pathBackup: string | undefined
 
   /** Inputs defined in `action.yml` */
   inputs: { [key: string]: Input }

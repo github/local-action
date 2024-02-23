@@ -36,10 +36,6 @@ export async function action(): Promise<void> {
   const path = await import('path')
   const YAML = await import('yaml')
 
-  // Back up the environment
-  EnvMeta.envBackup = { ...process.env }
-  EnvMeta.pathBackup = process.env.PATH
-
   CoreMeta.colors = {
     cyan: /* istanbul ignore next */ (msg: string) =>
       console.log(chalk.cyan(msg)),
@@ -141,8 +137,4 @@ export async function action(): Promise<void> {
       warning
     }
   })
-
-  // Reset environment and PATH
-  process.env = EnvMeta.envBackup
-  process.env.PATH = EnvMeta.pathBackup
 }
