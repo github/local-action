@@ -1,12 +1,38 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
+const path = require('path')
+const { execSync } = require('child_process')
 
-# This script is used to run the local action. It sets the NODE_OPTIONS
-# environment variable to require the bootstrap file, which sets up the
-# TypeScript environment for the action.
+/**
+ * This script is used to run the local action. It sets the NODE_OPTIONS
+ * environment variable to require the bootstrap file, which sets up the
+ * TypeScript environment for the action.
+ */
 
-# Set the first argument (local path to action) as an env var. This is used
-# in the bootstrap file to check for a `tsconfig.json`.
-export TARGET_ACTION_PATH="$1"
+// Set the first argument (path to action directory) as an environment variable.
+// This is used in the bootstrap file to check for a `tsconfig.json`.
+const actionPath = process.argv[2] ? path.resolve(process.argv[2]) : ''
+process.env.TARGET_ACTION_PATH = actionPath
 
-# Set the NODE_OPTIONS environment variable to require the bootstrap file
-NODE_OPTIONS='--require "./src/bootstrap.js"' npx tsx "./src/index.ts" "$@"
+// Get the other arguments, if present. Validation and error handling is done
+// within the package itself.
+const entrypoint = process.argv[3] ?? ''
+const dotenvFile = process.argv[4] ? path.resolve(process.argv[4]) : ''
+
+// Get the absolute path to the `@github/local-action` package.
+const packagePath = path.resolve(__dirname, '..')
+const packageIndex = path.join(packagePath, 'src', 'index.ts')
+
+// Set the NODE_OPTIONS environment variable to require the bootstrap file
+const options = `--require "${path.join(packagePath, 'src', 'bootstrap.js')}"`
+process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
+  ? `${process.env.NODE_OPTIONS} ${options}`
+  : options
+
+// Run the action
+const command = `npx tsx "${packageIndex}" "${actionPath}" "${entrypoint}" "${dotenvFile}"`
+
+try {
+  execSync(command, { cwd: packagePath, stdio: 'inherit' })
+} catch (error) {
+  process.exit(error.status)
+}
