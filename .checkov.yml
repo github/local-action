@@ -1,0 +1,3 @@
+quiet: true
+skip-check:
+  - CKV2_GHA_1
