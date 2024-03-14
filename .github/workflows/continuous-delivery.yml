@@ -78,7 +78,7 @@ jobs:
 
       - name: Test
         id: test
-        run: npm ci-test
+        run: npm run ci-test
 
       - name: Update npm Version
         id: version
