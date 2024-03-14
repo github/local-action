@@ -100,15 +100,7 @@ For additional information about transpiled action code, see
 
 ## Installation
 
-### Option 1: Install from GitHub Packages
-
-1. [Authenticate to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry)
-
-   ```bash
-   $ npm login --registry=https://npm.pkg.github.com
-   Username: <your username>
-   Password: <your personal access token>
-   ```
+### Option 1: Install from npm
 
 1. Install via `npm`
 
