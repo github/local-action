@@ -1,7 +1,7 @@
 {
   "name": "@github/local-action",
   "description": "Local Debugging for GitHub Actions",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "Nick Alteen <ncalteen@github.com>",
   "private": false,
   "homepage": "https://github.com/github/local-action",
@@ -25,9 +25,6 @@
   },
   "bin": {
     "local-action": "./bin/local-action"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "ci-test": "NODE_OPTIONS=\"$NODE_OPTIONS --no-warnings --experimental-vm-modules\" jest --ci --reporters=default --reporters=jest-junit --no-cache",
