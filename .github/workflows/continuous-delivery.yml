@@ -80,11 +80,6 @@ jobs:
         id: test
         run: npm run ci-test
 
-      - name: Update npm Version
-        id: version
-        run:
-          npm version ${{ needs.release.outputs.tag }} --git-tag-version false
-
       - name: Publish
         id: publish
         env:
