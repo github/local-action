@@ -10,16 +10,15 @@ on:
 
 permissions:
   contents: write
-  packages: write
 
 jobs:
   release:
-    name: Release Version
+    name: Create Release
     runs-on: ubuntu-latest
 
     # Only run this job if one of the following is true:
-    # - It was done manually.
-    # - A non-fork, non-Dependabot PR was merged.
+    # - It was run manually.
+    # - A PR was merged that was not from Dependabot or a fork.
     if: |
       github.event_name == 'workflow_dispatch' ||
       (
@@ -28,13 +27,15 @@ jobs:
         github.event.pull_request.head.repo.fork == false
       )
 
+    outputs:
+      tag: v${{ steps.tag.outputs.version }}
+
     steps:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
         with:
           fetch-tags: true
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tag
         id: tag
@@ -50,8 +51,8 @@ jobs:
         with:
           tag: v${{ steps.tag.outputs.version }}
 
-  publish-github:
-    name: Publish to GitHub Packages
+  publish-npm:
+    name: Publish to npm
     runs-on: ubuntu-latest
 
     needs: release
@@ -63,28 +64,31 @@ jobs:
         with:
           fetch-tags: true
 
-      - name: Setup Node.js (npm)
-        id: setup-node-npm
+      - name: Setup Node.js
+        id: setup-node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
           cache: npm
-          registry-url: https://registry.npmjs.org
+          node-version-file: .node-version
+          registry-url: https://registry.npmjs.org/
 
       - name: Install Dependencies
         id: install
         run: npm ci
 
-      - name: Setup Node.js (gh-pkg)
-        id: setup-node-gh
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-          registry-url: https://npm.pkg.github.com
+      - name: Test
+        id: test
+        run: npm ci-test
+
+      - name: Update npm Version
+        id: version
+        run:
+          npm version ${{ needs.release.outputs.tag }} --git-tag-version false
 
       - name: Publish
         id: publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm whoami
+          npm publish --ignore-scripts --access public
