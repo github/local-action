@@ -24,7 +24,7 @@
     ".": "./src/index.ts"
   },
   "bin": {
-    "local-action": "./bin/local-action"
+    "local-action": "bin/local-action"
   },
   "scripts": {
     "ci-test": "NODE_OPTIONS=\"$NODE_OPTIONS --no-warnings --experimental-vm-modules\" jest --ci --reporters=default --reporters=jest-junit --no-cache",
