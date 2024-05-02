@@ -116,6 +116,12 @@ For additional information about transpiled action code, see
    git clone https://github.com/github/local-action.git
    ```
 
+1. Install dependencies
+
+   ```bash
+   npm ci
+   ```
+
 1. Install via `npm`
 
    ```bash
