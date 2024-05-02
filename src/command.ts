@@ -100,7 +100,7 @@ export async function makeProgram(): Promise<Command> {
       'Action entrypoint (relative to the action directory)',
       checkEntrypoint
     )
-    .argument('<env file>', 'Path to the local .env file', checkDotenvFile)
+    .argument('<dotenv file>', 'Path to the local .env file', checkDotenvFile)
     .action(async () => {
       await runAction()
     })
