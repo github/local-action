@@ -194,7 +194,7 @@ describe('Commmand', () => {
       process_stderrSpy.mockRestore()
     })
 
-    it('Throws if the env file does not exist', async () => {
+    it('Throws if the dotenv file does not exist', async () => {
       process_stderrSpy = jest
         .spyOn(process.stderr, 'write')
         .mockImplementation()

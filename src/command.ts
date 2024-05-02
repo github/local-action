@@ -26,11 +26,9 @@ export async function makeProgram(): Promise<Command> {
       if (!fs.statSync(actionPath).isDirectory())
         throw new InvalidArgumentError('Action path must be a directory')
     } catch (err: any) {
-      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       if ('code' in err && err.code === 'ENOENT')
         throw new InvalidArgumentError('Action path does not exist')
       else throw new InvalidArgumentError(err.message as string)
-      /* eslint-enable @typescript-eslint/no-unsafe-member-access */
     }
 
     // Save the action path to environment metadata
@@ -91,7 +89,9 @@ export async function makeProgram(): Promise<Command> {
   program
     .name('local-action')
     .description('Test a GitHub Action locally')
-    .version('1.0.0')
+    .version(
+      `Version: ${JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf-8')).version as string}`
+    )
 
   program
     .command('run', { isDefault: true })
@@ -102,7 +102,7 @@ export async function makeProgram(): Promise<Command> {
       'Action entrypoint (relative to the action directory)',
       checkEntrypoint
     )
-    .argument('<env file>', 'Path to the local .env file', checkDotenvFile)
+    .argument('<dotenv file>', 'Path to the local .env file', checkDotenvFile)
     .action(async () => {
       await runAction()
     })

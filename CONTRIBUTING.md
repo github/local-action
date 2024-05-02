@@ -56,10 +56,10 @@ against various repositories with different configurations.
 1. Test your updated version
 
    ```bash
-   local-action run <path> <entrypoint> <env file>
+   local-action run <path> <entrypoint> <dotenv file>
 
    # Or...
-   npm exec local-action run <path> <entrypoint> <env file>
+   npm exec local-action run <path> <entrypoint> <dotenv file>
    ```
 
 Once you're finished testing, make sure to unlink!
