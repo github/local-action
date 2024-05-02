@@ -89,7 +89,9 @@ export async function makeProgram(): Promise<Command> {
   program
     .name('local-action')
     .description('Test a GitHub Action locally')
-    .version('1.0.0')
+    .version(
+      `Version: ${JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', 'package.json'), 'utf-8')).version as string}`
+    )
 
   program
     .command('run', { isDefault: true })
