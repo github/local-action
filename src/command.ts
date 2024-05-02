@@ -33,15 +33,19 @@ export async function makeProgram(): Promise<Command> {
       /* eslint-enable @typescript-eslint/no-unsafe-member-access */
     }
 
-    const actionFile: string = path.resolve(actionPath, 'action.yml')
-
-    // Confirm there is an `action.yml` in the directory
-    if (!fs.existsSync(actionFile))
-      throw new InvalidArgumentError('Path must contain an action.yml file')
-
-    // Save the action path and file to environment metadata
+    // Save the action path to environment metadata
     EnvMeta.actionPath = actionPath
-    EnvMeta.actionFile = path.resolve(EnvMeta.actionPath, 'action.yml')
+
+    // Confirm there is an `action.yml` or `action.yaml` in the directory and
+    // save the path to environment metadata
+    if (fs.existsSync(path.resolve(actionPath, 'action.yml')))
+      EnvMeta.actionFile = path.resolve(EnvMeta.actionPath, 'action.yml')
+    else if (fs.existsSync(path.resolve(actionPath, 'action.yaml')))
+      EnvMeta.actionFile = path.resolve(EnvMeta.actionPath, 'action.yaml')
+    else
+      throw new InvalidArgumentError(
+        'Path must contain an action.yml / action.yaml file'
+      )
 
     return path.resolve(value)
   }
