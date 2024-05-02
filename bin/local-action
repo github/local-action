@@ -1,46 +1,72 @@
 #!/usr/bin/env node
+const fs = require('fs')
 const path = require('path')
 const { execSync } = require('child_process')
 
-// Back up the environment
-const envBackup = { ...process.env }
-const pathBackup = process.env.PATH
-
 /**
  * This script is used to run the local action. It sets the NODE_OPTIONS
- * environment variable to require the bootstrap file, which sets up the
+ * environment variable to require the bootstrap script, which sets up the
  * TypeScript environment for the action.
  */
 
-// Set the first argument (path to action directory) as an environment variable.
-// This is used in the bootstrap file to check for a `tsconfig.json`.
-const actionPath = process.argv[2] ? path.resolve(process.argv[2]) : ''
-process.env.TARGET_ACTION_PATH = actionPath
+function entrypoint() {
+  // Save the current environment and path.
+  const envBackup = { ...process.env }
+  const pathBackup = process.env.PATH
 
-// Get the other arguments, if present. Validation and error handling is done
-// within the package itself.
-const entrypoint = process.argv[3] ?? ''
-const dotenvFile = process.argv[4] ? path.resolve(process.argv[4]) : ''
+  // Delete the TARGET_ACTION_PATH environment variable.
+  delete process.env.TARGET_ACTION_PATH
 
-// Get the absolute path to the `@github/local-action` package.
-const packagePath = path.resolve(__dirname, '..')
-const packageIndex = path.join(packagePath, 'src', 'index.ts')
+  try {
+    // Get the absolute path to the `@github/local-action` package.
+    const packagePath = path.resolve(__dirname, '..')
 
-// Set the NODE_OPTIONS environment variable to require the bootstrap file
-const options = `--require "${path.join(packagePath, 'src', 'bootstrap.js')}"`
-process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
-  ? `${process.env.NODE_OPTIONS} ${options}`
-  : options
+    // Get the absolute path to the bootstrap script. On Windows systems, this
+    // need to be double-escaped so the path resolves correctly.
+    const bootstrapPath =
+      process.platform === 'win32'
+        ? path.join(packagePath, 'src', 'bootstrap.js').replaceAll('\\', '\\\\')
+        : path.join(packagePath, 'src', 'bootstrap.js')
 
-// Run the action
-const command = `npx tsx "${packageIndex}" "${actionPath}" "${entrypoint}" "${dotenvFile}"`
+    // Require the bootstrap script in NODE_OPTIONS.
+    process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
+      ? `${process.env.NODE_OPTIONS} --require ${bootstrapPath}`
+      : `--require ${bootstrapPath}`
 
-try {
-  execSync(command, { cwd: packagePath, stdio: 'inherit' })
-} catch (error) {
-  process.exit(error.status)
-} finally {
-  // Restore the environment
-  process.env = { ...envBackup }
-  process.env.PATH = pathBackup
+    // Start building the command to run local-action.
+    let command = `npx tsx "${path.join(packagePath, 'src', 'index.ts')}"`
+
+    // Process the input arguments.
+    if (process.argv.length === 2) {
+      // No arguments...display the help message.
+      command += ' --help'
+    } else {
+      // Iterate over the arguments and build the command.
+      for (const arg of process.argv.slice(2)) {
+        // If the argument is a directory and TARGET_ACTION_PATH is not set, set
+        // it to the absolute path of the directory. The first directory is the
+        // target action path.
+        if (
+          !process.env.TARGET_ACTION_PATH &&
+          fs.existsSync(path.resolve(arg)) &&
+          fs.lstatSync(path.resolve(arg)).isDirectory()
+        )
+          process.env.TARGET_ACTION_PATH = path.resolve(arg)
+
+        // Append the argument to the command.
+        command += ` ${arg}`
+      }
+    }
+
+    // Run the command.
+    execSync(command, { cwd: packagePath, stdio: 'inherit' })
+  } catch (error) {
+    process.exit(error.status)
+  } finally {
+    // Restore the environment.
+    process.env = { ...envBackup }
+    process.env.PATH = pathBackup
+  }
 }
+
+entrypoint()
