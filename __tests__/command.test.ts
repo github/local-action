@@ -48,7 +48,7 @@ describe('Commmand', () => {
       )
     })
 
-    it('Runs if all arguments are provided', async () => {
+    it('Runs if all arguments are provided (action.yml)', async () => {
       await (
         await makeProgram()
       ).parseAsync(
@@ -56,6 +56,24 @@ describe('Commmand', () => {
           './__fixtures__/typescript/success',
           'src/index.ts',
           './__fixtures__/typescript/success/.env.fixture'
+        ],
+        {
+          from: 'user'
+        }
+      )
+
+      expect(process_exitSpy).not.toHaveBeenCalled()
+      expect(run_actionSpy).toHaveBeenCalled()
+    })
+
+    it('Runs if all arguments are provided (action.yaml)', async () => {
+      await (
+        await makeProgram()
+      ).parseAsync(
+        [
+          './__fixtures__/typescript/success-yaml',
+          'src/index.ts',
+          './__fixtures__/typescript/success-yaml/.env.fixture'
         ],
         {
           from: 'user'
@@ -142,7 +160,7 @@ describe('Commmand', () => {
       process_stderrSpy.mockRestore()
     })
 
-    it('Exits if the action path does not contain an action.yml', async () => {
+    it('Exits if the action path does not contain an action.yml or action.yaml', async () => {
       process_stderrSpy = jest
         .spyOn(process.stderr, 'write')
         .mockImplementation()
@@ -154,7 +172,7 @@ describe('Commmand', () => {
             from: 'user'
           }
         )
-      ).rejects.toThrow('Path must contain an action.yml file')
+      ).rejects.toThrow('Path must contain an action.yml / action.yaml file')
 
       process_stderrSpy.mockRestore()
     })
