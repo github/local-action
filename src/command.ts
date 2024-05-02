@@ -26,11 +26,9 @@ export async function makeProgram(): Promise<Command> {
       if (!fs.statSync(actionPath).isDirectory())
         throw new InvalidArgumentError('Action path must be a directory')
     } catch (err: any) {
-      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       if ('code' in err && err.code === 'ENOENT')
         throw new InvalidArgumentError('Action path does not exist')
       else throw new InvalidArgumentError(err.message as string)
-      /* eslint-enable @typescript-eslint/no-unsafe-member-access */
     }
 
     // Save the action path to environment metadata
