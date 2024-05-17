@@ -59,7 +59,7 @@ function entrypoint() {
     }
 
     // Run the command.
-    execSync(command, { cwd: packagePath, stdio: 'inherit' })
+    execSync(command, { stdio: 'inherit' })
   } catch (error) {
     process.exit(error.status)
   } finally {
