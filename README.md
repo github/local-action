@@ -214,4 +214,4 @@ The following list links to documentation on how to use various features of the
 
 - [Supported Functionality](./docs//supported-functionality.md)
 - [Debugging in VS Code](./docs/debugging-in-vscode.md)
-- [Create a Job Summary](./docs/create-a-step-summary.md)
+- [Create a Job Summary](./docs/create-a-job-summary.md)
