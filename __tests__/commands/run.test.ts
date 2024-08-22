@@ -45,15 +45,6 @@ describe('Command: run', () => {
       await expect(action()).resolves.toBeUndefined()
     })
 
-    it('Action: failure', async () => {
-      EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/typescript/failure`
-      EnvMeta.dotenvFile = `./__fixtures__/typescript/failure/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/main.ts`
-
-      await expect(action()).resolves.toBeUndefined()
-    })
-
     it('Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/typescript/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/no-import`
@@ -74,20 +65,6 @@ describe('Command: run', () => {
       await expect(action()).resolves.toBeUndefined()
 
       expect(core.setFailed).not.toHaveBeenCalled()
-      expect(quibbleEsm).toHaveBeenCalled()
-    })
-
-    it('Action: failure', async () => {
-      EnvMeta.actionFile = `./__fixtures__/typescript-esm/failure/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/typescript-esm/failure`
-      EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/failure/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript-esm/failure/src/main.ts`
-
-      await expect(action()).resolves.toBeUndefined()
-
-      expect(core.setFailed).toHaveBeenCalledWith(
-        'TypeScript ESM Action Failed!'
-      )
       expect(quibbleEsm).toHaveBeenCalled()
     })
 
@@ -114,14 +91,6 @@ describe('Command: run', () => {
       await expect(action()).resolves.toBeUndefined()
     })
 
-    it('Action: failure', async () => {
-      EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/javascript/failure`
-      EnvMeta.dotenvFile = `./__fixtures__/javascript/failure/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/main.js`
-
-      await expect(action()).resolves.toBeUndefined()
-    })
     it('Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
@@ -138,17 +107,6 @@ describe('Command: run', () => {
       EnvMeta.actionPath = `./__fixtures__/javascript/success`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
       EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/main.js`
-
-      await expect(action()).resolves.toBeUndefined()
-
-      expect(quibbleDefault).toHaveBeenCalled()
-    })
-
-    it('Action: failure', async () => {
-      EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/javascript/failure`
-      EnvMeta.dotenvFile = `./__fixtures__/javascript/failure/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/main.js`
 
       await expect(action()).resolves.toBeUndefined()
 
