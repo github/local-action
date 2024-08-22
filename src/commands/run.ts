@@ -57,6 +57,7 @@ export async function action(): Promise<void> {
 
   // Load action settings
   CoreMeta.stepDebug = process.env.ACTIONS_STEP_DEBUG === 'true'
+  /* istanbul ignore next */
   CoreMeta.stepSummaryPath = process.env.GITHUB_STEP_SUMMARY ?? ''
 
   // Read the action.yml file and parse the expected inputs/outputs
