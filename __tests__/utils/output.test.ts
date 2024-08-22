@@ -1,16 +1,14 @@
-import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
-import { ResetEnvMetadata } from '../../src/stubs/env-stubs'
-import { printTitle } from '../../src/utils/output'
+import { jest } from '@jest/globals'
+import { ResetCoreMetadata } from '../../src/stubs/core-stubs.js'
+import { ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
+import { printTitle } from '../../src/utils/output.js'
 
-let console_logSpy: jest.SpyInstance
+// Prevent output during tests
+const console_logSpy: jest.SpiedFunction<typeof console.log> = jest
+  .spyOn(console, 'log')
+  .mockImplementation(() => {})
 
 describe('Output', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    console_logSpy = jest.spyOn(console, 'log').mockImplementation()
-    jest.spyOn(console, 'table').mockImplementation()
-  })
-
   beforeEach(() => {
     // Reset metadata
     ResetEnvMetadata()
@@ -18,7 +16,6 @@ describe('Output', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 

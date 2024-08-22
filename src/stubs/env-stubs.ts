@@ -1,4 +1,4 @@
-import type { EnvMetadata } from '../types'
+import type { EnvMetadata } from '../types.js'
 
 /**
  * Environment Metdata

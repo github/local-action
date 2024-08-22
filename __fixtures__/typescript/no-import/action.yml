@@ -5,7 +5,7 @@ inputs:
   myInput:
     description: An input
     required: true
-    default: 'default value'
+    default: value
 
 outputs:
   myOutput:

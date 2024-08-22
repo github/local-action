@@ -1,29 +1,23 @@
-/* eslint-disable import/no-namespace */
+import { jest } from '@jest/globals'
+import { ResetCoreMetadata } from '../src/stubs/core-stubs.js'
+import { ResetEnvMetadata } from '../src/stubs/env-stubs.js'
 
-import { Command } from 'commander'
-import * as command from '../src/command'
-import { run } from '../src/index'
-import { ResetCoreMetadata } from '../src/stubs/core-stubs'
-import { ResetEnvMetadata } from '../src/stubs/env-stubs'
+const makeProgram = jest.fn().mockResolvedValue({
+  parse: jest.fn()
+} as never)
 
-let command_makeProgramSpy: jest.SpyInstance
+jest.unstable_mockModule('../src/command.js', () => {
+  return {
+    makeProgram
+  }
+})
+
+// Prevent output during tests
+jest.spyOn(console, 'log').mockImplementation(() => {})
+
+const { run } = await import('../src/index.js')
 
 describe('Index', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    jest.spyOn(console, 'log').mockImplementation()
-    jest.spyOn(console, 'table').mockImplementation()
-
-    // Stub the command.makeProgram call
-    command_makeProgramSpy = jest
-      .spyOn(command, 'makeProgram')
-      .mockImplementation(async () => {
-        return Promise.resolve({
-          parse: () => {}
-        } as Command)
-      })
-  })
-
   beforeEach(() => {
     // Reset metadata
     ResetEnvMetadata()
@@ -31,15 +25,13 @@ describe('Index', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 
   describe('run()', () => {
     it('Runs the program', async () => {
       await run()
-
-      expect(command_makeProgramSpy).toHaveBeenCalled()
+      expect(makeProgram).toHaveBeenCalled()
     })
   })
 })

@@ -1,17 +1,16 @@
+import { jest } from '@jest/globals'
 import fs from 'fs'
 import { EOL } from 'os'
 import path from 'path'
-import { Summary } from '../../src/stubs/summary-stubs'
-import { CoreMeta, ResetCoreMetadata } from '../../src/stubs/core-stubs'
+import { CoreMeta, ResetCoreMetadata } from '../../src/stubs/core-stubs.js'
+import { Summary } from '../../src/stubs/summary-stubs.js'
 
 let summary: Summary = new Summary()
 
-describe('Summary', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    jest.spyOn(console, 'log').mockImplementation()
-  })
+// Prevent output during tests
+jest.spyOn(console, 'log').mockImplementation(() => {})
 
+describe('Summary', () => {
   beforeEach(() => {
     // Reset the summary instance
     summary = new Summary()
@@ -20,7 +19,6 @@ describe('Summary', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
 
     // Restore environment metadata
@@ -34,12 +32,14 @@ describe('Summary', () => {
   })
 
   describe('filePath()', () => {
-    let fs_accessSyncSpy: jest.SpyInstance
-    let fs_existsSyncSpy: jest.SpyInstance
-    let path_resolveSpy: jest.SpyInstance
+    let fs_accessSyncSpy: jest.SpiedFunction<typeof fs.accessSync>
+    let fs_existsSyncSpy: jest.SpiedFunction<typeof fs.existsSync>
+    let path_resolveSpy: jest.SpiedFunction<typeof path.resolve>
 
     beforeEach(() => {
-      fs_accessSyncSpy = jest.spyOn(fs, 'accessSync').mockImplementation()
+      fs_accessSyncSpy = jest
+        .spyOn(fs, 'accessSync')
+        .mockImplementation(() => {})
       fs_existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true)
       path_resolveSpy = jest
         .spyOn(path, 'resolve')
@@ -115,19 +115,23 @@ describe('Summary', () => {
   })
 
   describe('write()', () => {
-    let fs_accessSyncSpy: jest.SpyInstance
-    let fs_appendFileSyncSpy: jest.SpyInstance
-    let fs_existsSyncSpy: jest.SpyInstance
-    let fs_writeFileSyncSpy: jest.SpyInstance
-    let path_resolveSpy: jest.SpyInstance
+    let fs_accessSyncSpy: jest.SpiedFunction<typeof fs.accessSync>
+    let fs_appendFileSyncSpy: jest.SpiedFunction<typeof fs.appendFileSync>
+    let fs_existsSyncSpy: jest.SpiedFunction<typeof fs.existsSync>
+    let fs_writeFileSyncSpy: jest.SpiedFunction<typeof fs.writeFileSync>
+    let path_resolveSpy: jest.SpiedFunction<typeof path.resolve>
 
     beforeEach(() => {
-      fs_accessSyncSpy = jest.spyOn(fs, 'accessSync').mockImplementation()
+      fs_accessSyncSpy = jest
+        .spyOn(fs, 'accessSync')
+        .mockImplementation(() => {})
       fs_appendFileSyncSpy = jest
         .spyOn(fs, 'appendFileSync')
-        .mockImplementation()
+        .mockImplementation(() => {})
       fs_existsSyncSpy = jest.spyOn(fs, 'existsSync').mockReturnValueOnce(true)
-      fs_writeFileSyncSpy = jest.spyOn(fs, 'writeFileSync').mockImplementation()
+      fs_writeFileSyncSpy = jest
+        .spyOn(fs, 'writeFileSync')
+        .mockImplementation(() => {})
       path_resolveSpy = jest
         .spyOn(path, 'resolve')
         .mockReturnValueOnce('/path/to/summary.md')
@@ -192,11 +196,12 @@ describe('Summary', () => {
 
   describe('clear()', () => {
     it('Clears the buffer', async () => {
-      const summary_emptyBufferSpy = jest.fn().mockReturnValue(summary)
-      const summary_writeSpy = jest.fn().mockResolvedValue(summary)
-
-      summary.emptyBuffer = summary_emptyBufferSpy
-      summary.write = summary_writeSpy
+      const summary_emptyBufferSpy = jest
+        .spyOn(summary, 'emptyBuffer')
+        .mockReturnValue(summary)
+      const summary_writeSpy = jest
+        .spyOn(summary, 'write')
+        .mockResolvedValue(summary)
 
       await summary.clear()
 
@@ -243,9 +248,9 @@ describe('Summary', () => {
     })
 
     it('Adds an EOL', () => {
-      const summary_addEOLSpy = jest.fn().mockReturnValue(summary)
-
-      summary.addEOL = summary_addEOLSpy
+      const summary_addEOLSpy = jest
+        .spyOn(summary, 'addEOL')
+        .mockReturnValue(summary)
 
       summary.addRaw('text', true)
 
@@ -256,9 +261,9 @@ describe('Summary', () => {
 
   describe('addEOL()', () => {
     it('Adds an EOL', () => {
-      const summary_addRawSpy = jest.fn().mockReturnValue(summary)
-
-      summary.addRaw = summary_addRawSpy
+      const summary_addRawSpy = jest
+        .spyOn(summary, 'addRaw')
+        .mockReturnValue(summary)
 
       summary.addEOL()
 

@@ -1,7 +1,6 @@
 #!/usr/bin/env tsx
 import type { Command } from 'commander'
-import { textSync } from 'figlet'
-import { makeProgram } from './command'
+import { makeProgram } from './command.js'
 
 /**
  * Runs the CLI program
@@ -10,6 +9,7 @@ import { makeProgram } from './command'
  */
 export async function run(): Promise<void> {
   const chalk = (await import('chalk')).default
+  const { textSync } = (await import('figlet')).default
 
   // Print the header
   console.log(chalk.blue(textSync('Action Debugger')))
@@ -21,4 +21,4 @@ export async function run(): Promise<void> {
 
 /* istanbul ignore next */
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-if (require.main === module) run()
+run()

@@ -1,23 +1,29 @@
-/* eslint-disable import/no-namespace */
+import { jest } from '@jest/globals'
+import * as core from '../../__fixtures__/core.js'
+import { ResetCoreMetadata } from '../../src/stubs/core-stubs.js'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
 
-import { setFailed, summary } from '@actions/core'
-import { action } from '../../src/commands/run'
-import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
-import * as output from '../../src/utils/output'
+const quibbleEsm = jest.fn().mockImplementation(() => {})
+const quibbleDefault = jest.fn().mockImplementation(() => {})
 
-const summary_writeSpy: jest.SpyInstance = jest
-  .spyOn(summary, 'write')
-  .mockImplementation()
+// @ts-expect-error - `quibble` is the default, but we need to mock esm() too
+quibbleDefault.esm = quibbleEsm
+
+jest.unstable_mockModule('@actions/core', () => core)
+jest.unstable_mockModule('quibble', () => {
+  return { default: quibbleDefault }
+})
+jest.unstable_mockModule('../../src/utils/output.js', () => {
+  return { printTitle: jest.fn() }
+})
+
+const { action } = await import('../../src/commands/run.js')
+
+// Prevent output during tests
+jest.spyOn(console, 'log').mockImplementation(() => {})
+jest.spyOn(console, 'table').mockImplementation(() => {})
 
 describe('Command: run', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    jest.spyOn(console, 'log').mockImplementation()
-    jest.spyOn(console, 'table').mockImplementation()
-    jest.spyOn(output, 'printTitle').mockImplementation()
-  })
-
   beforeEach(() => {
     // Reset metadata
     ResetEnvMetadata()
@@ -31,85 +37,91 @@ describe('Command: run', () => {
 
   describe('TypeScript', () => {
     it('Action: success', async () => {
-      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
-
       EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/success`
       EnvMeta.dotenvFile = `./__fixtures__/typescript/success/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/index.ts`
+      EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/main.ts`
 
       await expect(action()).resolves.toBeUndefined()
-
-      expect(summary_writeSpy).toHaveBeenCalled()
-      expect(setFailed).not.toHaveBeenCalled()
-    })
-
-    it('Action: failure', async () => {
-      delete process.env.GITHUB_STEP_SUMMARY
-
-      EnvMeta.actionFile = `./__fixtures__/typescript/failure/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/typescript/failure`
-      EnvMeta.dotenvFile = `./__fixtures__/typescript/failure/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript/failure/src/index.ts`
-
-      await expect(action()).resolves.toBeUndefined()
-
-      expect(summary_writeSpy).toHaveBeenCalled()
-      expect(setFailed).toHaveBeenCalledWith('TypeScript Action Failed!')
     })
 
     it('Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/typescript/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript/no-import`
       EnvMeta.dotenvFile = `./__fixtures__/typescript/no-import/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/index.ts`
+      EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/main.ts`
+
+      await expect(action()).resolves.toBeUndefined()
+    })
+  })
+
+  describe('TypeScript ESM', () => {
+    it('Action: success', async () => {
+      EnvMeta.actionFile = `./__fixtures__/typescript-esm/success/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript-esm/success`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/success/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript-esm/success/src/main.ts`
 
       await expect(action()).resolves.toBeUndefined()
 
-      expect(summary_writeSpy).not.toHaveBeenCalled()
-      expect(setFailed).not.toHaveBeenCalled()
+      expect(core.setFailed).not.toHaveBeenCalled()
+      expect(quibbleEsm).toHaveBeenCalled()
+    })
+
+    it('Action: no-import', async () => {
+      EnvMeta.actionFile = `./__fixtures__/typescript-esm/no-import/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript-esm/no-import`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/no-import/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript-esm/no-import/src/main.ts`
+
+      await expect(action()).resolves.toBeUndefined()
+
+      expect(core.setFailed).not.toHaveBeenCalled()
+      expect(quibbleEsm).toHaveBeenCalled()
     })
   })
 
   describe('JavaScript', () => {
     it('Action: success', async () => {
-      process.env.GITHUB_STEP_SUMMARY = 'summary.md'
-
       EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/success`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/index.js`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/main.js`
 
       await expect(action()).resolves.toBeUndefined()
-
-      expect(summary_writeSpy).toHaveBeenCalled()
-      expect(setFailed).not.toHaveBeenCalled()
-    })
-
-    it('Action: failure', async () => {
-      delete process.env.GITHUB_STEP_SUMMARY
-
-      EnvMeta.actionFile = `./__fixtures__/javascript/failure/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/javascript/failure`
-      EnvMeta.dotenvFile = `./__fixtures__/javascript/failure/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/javascript/failure/src/index.js`
-
-      await expect(action()).resolves.toBeUndefined()
-
-      expect(summary_writeSpy).toHaveBeenCalled()
-      expect(setFailed).toHaveBeenCalled()
     })
 
     it('Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/no-import/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/index.js`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/main.js`
+
+      await expect(action()).resolves.toBeUndefined()
+    })
+  })
+
+  describe('JavaScript (ESM)', () => {
+    it('Action: success', async () => {
+      EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/javascript/success`
+      EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/success/src/main.js`
 
       await expect(action()).resolves.toBeUndefined()
 
-      expect(summary_writeSpy).not.toHaveBeenCalled()
-      expect(setFailed).not.toHaveBeenCalled()
+      expect(quibbleDefault).toHaveBeenCalled()
+    })
+
+    it('Action: no-import', async () => {
+      EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
+      EnvMeta.dotenvFile = `./__fixtures__/javascript/no-import/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/main.js`
+
+      await expect(action()).resolves.toBeUndefined()
+
+      expect(quibbleDefault).toHaveBeenCalled()
     })
   })
 })

@@ -1,12 +1,12 @@
 import fs from 'fs'
 import { EOL } from 'os'
 import path from 'path'
-import { CoreMeta } from './core-stubs'
 import type {
   SummaryImageOptions,
   SummaryTableRow,
   SummaryWriteOptions
-} from '../types'
+} from '../types.js'
+import { CoreMeta } from './core-stubs.js'
 
 /**
  * A class for creating and writing job step summaries.

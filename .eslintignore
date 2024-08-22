@@ -1,3 +1,7 @@
+__fixtures__/javascript
+__fixtures__/javascript-esm
+__fixtures__/typescript
+__fixtures__/typescript-esm
 .github/
 .vscode/
 badges/

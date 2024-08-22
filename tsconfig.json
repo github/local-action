@@ -1,20 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "allowJs": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "lib": ["ES2022"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmit": true,
-    "noImplicitAny": false,
-    "paths": {},
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    "strict": false,
     "target": "ES2022"
   },
-  "exclude": ["__fixtures__", "__tests__", "coverage", "node_modules"]
+  "include": ["src", "types"],
+  "exclude": [
+    "__fixtures__/core.ts",
+    "__fixtures__/tsconfig-paths.ts",
+    "__tests__",
+    "coverage",
+    "node_modules"
+  ]
 }

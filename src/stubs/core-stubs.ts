@@ -1,5 +1,36 @@
-import type { AnnotationProperties, CoreMetadata, InputOptions } from '../types'
-import { EnvMeta } from './env-stubs'
+import path from 'path'
+import type {
+  AnnotationProperties,
+  CoreMetadata,
+  InputOptions
+} from '../types.js'
+import { EnvMeta } from './env-stubs.js'
+import { Summary } from './summary-stubs.js'
+
+export const CORE_STUBS = {
+  addPath,
+  debug,
+  endGroup,
+  error,
+  exportVariable,
+  getBooleanInput,
+  getIDToken,
+  getInput,
+  getMultilineInput,
+  getState,
+  group,
+  info,
+  isDebug,
+  notice,
+  saveState,
+  setCommandEcho,
+  setFailed,
+  setOutput,
+  setSecret,
+  startGroup,
+  summary: new Summary(),
+  warning
+}
 
 /**
  * Metadata for `@actions/core`
@@ -86,10 +117,6 @@ export function setSecret(secret: string): void {
  * @returns void
  */
 export function addPath(inputPath: string): void {
-  // Importing with require is necessary to avoid async/await.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const path = require('path') as typeof import('path')
-
   EnvMeta.path = `${inputPath}${path.delimiter}${process.env.PATH}`
   process.env.PATH = EnvMeta.path
 }
@@ -507,10 +534,9 @@ export function getState(name: string): string {
  * @param aud The audience for the token
  * @returns A promise that resolves the OIDC token
  */
+// eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars
 export async function getIDToken(aud?: string): Promise<string> {
-  await Promise.reject(new Error('Not implemented'))
-  /* istanbul ignore next */
-  return aud
+  throw new Error('Not implemented')
 }
 
 //-----------------------------------------------------------------------
@@ -547,9 +573,5 @@ export function toWin32Path(pth: string): string {
  * @return The platform-specific path
  */
 export function toPlatformPath(pth: string): string {
-  // Importing with require is necessary to avoid async/await.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const path = require('path') as typeof import('path')
-
   return pth.replace(/[/\\]/g, path.sep)
 }
