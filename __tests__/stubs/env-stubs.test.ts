@@ -1,6 +1,7 @@
-import { ResetCoreMetadata } from '../../src/stubs/core-stubs'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
-import type { EnvMetadata } from '../../src/types'
+import { jest } from '@jest/globals'
+import { ResetCoreMetadata } from '../../src/stubs/core-stubs.js'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
+import type { EnvMetadata } from '../../src/types.js'
 
 /** Empty EnvMetadata Object */
 const empty: EnvMetadata = {
@@ -14,13 +15,10 @@ const empty: EnvMetadata = {
   path: ''
 }
 
-describe('Env', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    jest.spyOn(console, 'log').mockImplementation()
-    jest.spyOn(console, 'table').mockImplementation()
-  })
+// Prevent output during tests
+jest.spyOn(console, 'log').mockImplementation(() => {})
 
+describe('Env', () => {
   beforeEach(() => {
     // Reset metadata
     ResetEnvMetadata()
@@ -28,7 +26,6 @@ describe('Env', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 

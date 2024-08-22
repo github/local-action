@@ -1,11 +1,11 @@
-name: TypeScript (Success)
-description: This action returns without error
+name: JavaScript (Failing)
+description: This action sets a failure status
 
 inputs:
   myInput:
     description: An input
     required: true
-    default: 'default value'
+    default: value
 
 outputs:
   myOutput:

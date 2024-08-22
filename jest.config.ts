@@ -1,15 +1,15 @@
-import type { Config } from 'jest'
+import type { JestConfigWithTsJest } from 'ts-jest'
 
-const config: Config = {
-  //extensionsToTreatAsEsm: ['.ts'],
-  // "moduleNameMapper": {
-  //   "^fixtures/(.*)$": "<rootDir>/__fixtures__/$1",
-  // }
+const config: JestConfigWithTsJest = {
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.ts'],
+  collectCoverageFrom: ['src/**'],
   coverageDirectory: 'coverage',
-  coveragePathIgnorePatterns: ['node_modules'],
+  coveragePathIgnorePatterns: [
+    'node_modules',
+    'src/bootstrap.mts',
+    'src/types/quibble.d.ts'
+  ],
   coverageReporters: ['json-summary', 'lcov', 'text'],
   coverageThreshold: {
     global: {
@@ -19,12 +19,14 @@ const config: Config = {
       statements: 100
     }
   },
-  moduleDirectories: ['node_modules', 'src'],
+  extensionsToTreatAsEsm: ['.ts'],
   moduleFileExtensions: ['js', 'ts'],
   preset: 'ts-jest',
   reporters: ['default', 'jest-junit'],
   resolver: 'ts-jest-resolver',
+  roots: ['<rootDir>/src/', '<rootDir>/__fixtures__/', '<rootDir>/__tests__/'],
   testMatch: ['**/*.test.ts'],
+  testPathIgnorePatterns: ['/dist/', '/megalinter-reports/', '/node_modules/'],
   transform: {
     '\\.[jt]sx?$': [
       'ts-jest',

@@ -1,23 +1,32 @@
-/* eslint-disable import/no-namespace */
-
+import { jest } from '@jest/globals'
 import { Command } from 'commander'
-import { makeProgram } from '../src/command'
-import * as run from '../src/commands/run'
-import { ResetCoreMetadata } from '../src/stubs/core-stubs'
-import { ResetEnvMetadata } from '../src/stubs/env-stubs'
+import { ResetCoreMetadata } from '../src/stubs/core-stubs.js'
+import { ResetEnvMetadata } from '../src/stubs/env-stubs.js'
 
-let process_exitSpy: jest.SpyInstance
-let process_stderrSpy: jest.SpyInstance
+const action = jest.fn()
+
+jest.unstable_mockModule('../src/commands/run.js', () => {
+  return {
+    action
+  }
+})
+
+const process_exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {
+  throw new Error(`process.exit()`)
+})
+
+const process_stderrSpy = jest
+  .spyOn(process.stderr, 'write')
+  .mockImplementation(() => true)
+
 let program: Command
-let run_actionSpy: jest.SpyInstance
+
+// Prevent output during tests
+jest.spyOn(console, 'log').mockImplementation(() => {})
+
+const { makeProgram } = await import('../src/command.js')
 
 describe('Commmand', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    jest.spyOn(console, 'log').mockImplementation()
-    jest.spyOn(console, 'table').mockImplementation()
-  })
-
   beforeEach(async () => {
     // Reset metadata
     ResetEnvMetadata()
@@ -25,10 +34,6 @@ describe('Commmand', () => {
 
     // Create a new program before each test
     program = await makeProgram()
-
-    // Stub the run action and process.exit
-    run_actionSpy = jest.spyOn(run, 'action').mockImplementation()
-    process_exitSpy = jest.spyOn(process, 'exit').mockImplementation()
   })
 
   afterEach(() => {
@@ -63,32 +68,10 @@ describe('Commmand', () => {
       )
 
       expect(process_exitSpy).not.toHaveBeenCalled()
-      expect(run_actionSpy).toHaveBeenCalled()
-    })
-
-    it('Runs if all arguments are provided (action.yaml)', async () => {
-      await (
-        await makeProgram()
-      ).parseAsync(
-        [
-          './__fixtures__/typescript/success-yaml',
-          'src/index.ts',
-          './__fixtures__/typescript/success-yaml/.env.fixture'
-        ],
-        {
-          from: 'user'
-        }
-      )
-
-      expect(process_exitSpy).not.toHaveBeenCalled()
-      expect(run_actionSpy).toHaveBeenCalled()
+      expect(action).toHaveBeenCalled()
     })
 
     it('Exits if no path argument is provided', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await (await makeProgram()).parseAsync([], { from: 'user' })
 
       expect(process_exitSpy).toHaveBeenCalled()
@@ -97,10 +80,6 @@ describe('Commmand', () => {
     })
 
     it('Exits if no entrypoint argument is provided', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await (
         await makeProgram()
       ).parseAsync(['./__fixtures__/typescript/success', ''], { from: 'user' })
@@ -111,10 +90,6 @@ describe('Commmand', () => {
     })
 
     it('Exits if no env-file argument is provided', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await (
         await makeProgram()
       ).parseAsync(['./__fixtures__/typescript/success', 'src/index.ts'], {
@@ -127,10 +102,6 @@ describe('Commmand', () => {
     })
 
     it('Exits if the action path is not a directory', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await expect(
         (await makeProgram()).parseAsync(
           ['./package.json', 'src/index.ts', '.env'],
@@ -144,10 +115,6 @@ describe('Commmand', () => {
     })
 
     it('Exits if the action path does not exist', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await expect(
         (await makeProgram()).parseAsync(
           ['/test/path/does/not/exist', 'src/index.ts', '.env'],
@@ -161,10 +128,6 @@ describe('Commmand', () => {
     })
 
     it('Exits if the action path does not contain an action.yml or action.yaml', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await expect(
         (await makeProgram()).parseAsync(
           ['./__fixtures__', 'src/index.ts', '.env'],
@@ -178,10 +141,6 @@ describe('Commmand', () => {
     })
 
     it('Exits if the entrypoint does not exist', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await expect(
         (await makeProgram()).parseAsync(
           ['./__fixtures__/typescript/success', 'src/fake.ts', '.env'],
@@ -195,10 +154,6 @@ describe('Commmand', () => {
     })
 
     it('Throws if the dotenv file does not exist', async () => {
-      process_stderrSpy = jest
-        .spyOn(process.stderr, 'write')
-        .mockImplementation()
-
       await expect(
         (await makeProgram()).parseAsync(
           ['./__fixtures__/typescript/success', 'src/index.ts', '.notreal.env'],

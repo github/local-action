@@ -1,0 +1,13 @@
+{
+  "name": "javascript-action",
+  "description": "GitHub Actions JavaScript template",
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.1"
+  },
+  "devDependencies": {}
+}

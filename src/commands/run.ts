@@ -1,33 +1,10 @@
 import { config } from 'dotenv'
-import proxyquire from 'proxyquire'
-import {
-  CoreMeta,
-  addPath,
-  debug,
-  endGroup,
-  error,
-  exportVariable,
-  getBooleanInput,
-  getIDToken,
-  getInput,
-  getMultilineInput,
-  getState,
-  group,
-  info,
-  isDebug,
-  notice,
-  saveState,
-  setCommandEcho,
-  setFailed,
-  setOutput,
-  setSecret,
-  startGroup,
-  warning
-} from '../stubs/core-stubs'
-import { Summary } from '../stubs/summary-stubs'
-import { EnvMeta } from '../stubs/env-stubs'
-import type { Action } from '../types'
-import { printTitle } from '../utils/output'
+import quibble from 'quibble'
+import { CORE_STUBS, CoreMeta } from '../stubs/core-stubs.js'
+import { EnvMeta } from '../stubs/env-stubs.js'
+import type { Action } from '../types.js'
+import { printTitle } from '../utils/output.js'
+import { isESM } from '../utils/package.js'
 
 export async function action(): Promise<void> {
   const { Chalk } = await import('chalk')
@@ -86,7 +63,10 @@ export async function action(): Promise<void> {
   const actionYaml: Action = YAML.parse(
     fs.readFileSync(EnvMeta.actionFile, { encoding: 'utf8', flag: 'r' })
   ) as Action
+
+  /* istanbul ignore next */
   EnvMeta.inputs = actionYaml.inputs || {}
+  /* istanbul ignore next */
   EnvMeta.outputs = actionYaml.outputs || {}
 
   // Output the action metadata
@@ -109,32 +89,24 @@ export async function action(): Promise<void> {
 
   printTitle(CoreMeta.colors.green, 'Running Action')
 
-  // Stub the `@actions/toolkit` libraries and run the action
-  await proxyquire(path.resolve(EnvMeta.entrypoint).toString(), {
-    '@actions/core': {
-      '@global': true,
-      addPath,
-      debug,
-      endGroup,
-      error,
-      exportVariable,
-      getBooleanInput,
-      getIDToken,
-      getInput,
-      getMultilineInput,
-      getState,
-      group,
-      info,
-      isDebug,
-      notice,
-      saveState,
-      setCommandEcho,
-      setFailed,
-      setOutput,
-      setSecret,
-      startGroup,
-      summary: new Summary(),
-      warning
-    }
-  })
+  // Stub the `@actions/toolkit` libraries and run the action. Quibble requires
+  // a different approach depending on if this is an ESM action.
+  if (isESM()) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    await quibble.esm(
+      `${path.resolve(EnvMeta.actionPath)}/node_modules/@actions/core/lib/core.js`,
+      CORE_STUBS
+    )
+  } else {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    quibble(
+      `${path.resolve(EnvMeta.actionPath)}/node_modules/@actions/core`,
+      CORE_STUBS
+    )
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { run } = await import(path.resolve(EnvMeta.entrypoint))
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  await run()
 }

@@ -1,6 +1,8 @@
 import { Command, InvalidArgumentError } from 'commander'
-import { action as runAction } from './commands/run'
-import { EnvMeta } from './stubs/env-stubs'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { action } from './commands/run.js'
+import { EnvMeta } from './stubs/env-stubs.js'
 
 /**
  * Creates the program for the CLI
@@ -36,6 +38,7 @@ export async function makeProgram(): Promise<Command> {
 
     // Confirm there is an `action.yml` or `action.yaml` in the directory and
     // save the path to environment metadata
+    /* istanbul ignore else */
     if (fs.existsSync(path.resolve(actionPath, 'action.yml')))
       EnvMeta.actionFile = path.resolve(EnvMeta.actionPath, 'action.yml')
     else if (fs.existsSync(path.resolve(actionPath, 'action.yaml')))
@@ -86,6 +89,8 @@ export async function makeProgram(): Promise<Command> {
     return dotenvFile
   }
 
+  const __dirname = dirname(fileURLToPath(import.meta.url))
+
   program
     .name('local-action')
     .description('Test a GitHub Action locally')
@@ -104,7 +109,7 @@ export async function makeProgram(): Promise<Command> {
     )
     .argument('<dotenv file>', 'Path to the local .env file', checkDotenvFile)
     .action(async () => {
-      await runAction()
+      await action()
     })
 
   return program

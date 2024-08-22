@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-const fs = require('fs')
-const path = require('path')
-const { execSync } = require('child_process')
+import * as fs from 'fs'
+import { execSync } from 'node:child_process'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import * as path from 'path'
 
 /**
  * This script is used to run the local action. It sets the NODE_OPTIONS
@@ -10,6 +12,8 @@ const { execSync } = require('child_process')
  */
 
 function entrypoint() {
+  const __dirname = dirname(fileURLToPath(import.meta.url))
+
   // Save the current environment and path.
   const envBackup = { ...process.env }
   const pathBackup = process.env.PATH
@@ -25,8 +29,10 @@ function entrypoint() {
     // need to be double-escaped so the path resolves correctly.
     const bootstrapPath =
       process.platform === 'win32'
-        ? path.join(packagePath, 'src', 'bootstrap.js').replaceAll('\\', '\\\\')
-        : path.join(packagePath, 'src', 'bootstrap.js')
+        ? path
+            .join(packagePath, 'src', 'bootstrap.mts')
+            .replaceAll('\\', '\\\\')
+        : path.join(packagePath, 'src', 'bootstrap.mts')
 
     // Require the bootstrap script in NODE_OPTIONS.
     process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
@@ -34,7 +40,7 @@ function entrypoint() {
       : `--require ${bootstrapPath}`
 
     // Start building the command to run local-action.
-    let command = `npx tsx "${path.join(packagePath, 'src', 'index.ts')}"`
+    let command = `npx tsx --loader=quibble "${path.join(packagePath, 'src', 'index.ts')}"`
 
     // Process the input arguments.
     if (process.argv.length === 2) {

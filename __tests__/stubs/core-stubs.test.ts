@@ -1,35 +1,36 @@
+import { jest } from '@jest/globals'
+import path from 'path'
 import {
   CoreMeta,
   ResetCoreMetadata,
-  exportVariable,
-  setSecret,
   addPath,
+  debug,
+  endGroup,
+  error,
+  exportVariable,
+  getBooleanInput,
+  getIDToken,
   getInput,
   getMultilineInput,
-  getBooleanInput,
-  setOutput,
+  getState,
+  group,
+  info,
+  isDebug,
+  log,
+  notice,
+  saveState,
   setCommandEcho,
   setFailed,
-  log,
-  isDebug,
-  debug,
-  error,
-  warning,
-  notice,
-  info,
+  setOutput,
+  setSecret,
   startGroup,
-  endGroup,
-  group,
-  saveState,
-  getState,
-  getIDToken,
-  toWin32Path,
   toPlatformPath,
-  toPosixPath
-} from '../../src/stubs/core-stubs'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs'
-import type { CoreMetadata } from '../../src/types'
-import path from 'path'
+  toPosixPath,
+  toWin32Path,
+  warning
+} from '../../src/stubs/core-stubs.js'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
+import type { CoreMetadata } from '../../src/types.js'
 
 /** Empty CoreMetadata Object */
 const empty: CoreMetadata = {
@@ -53,13 +54,11 @@ const empty: CoreMetadata = {
   }
 }
 
-describe('Core', () => {
-  beforeAll(() => {
-    // Prevent output during tests
-    jest.spyOn(console, 'log').mockImplementation()
-    jest.spyOn(console, 'table').mockImplementation()
-  })
+// Prevent output during tests
+jest.spyOn(console, 'log').mockImplementation(() => {})
+jest.spyOn(console, 'table').mockImplementation(() => {})
 
+describe('Core', () => {
   beforeEach(() => {
     // Reset metadata
     ResetEnvMetadata()
@@ -287,7 +286,7 @@ describe('Core', () => {
 
     describe('setOutput()', () => {
       it('Sets the action outputs', () => {
-        jest.spyOn(CoreMeta.colors, 'cyan').mockImplementation()
+        jest.spyOn(CoreMeta.colors, 'cyan').mockImplementation(() => {})
 
         setOutput('my-output', 'output-value')
 
@@ -295,9 +294,9 @@ describe('Core', () => {
       })
 
       it('Logs the output to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'cyan')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         setOutput('my-output', 'output-value')
 
@@ -319,7 +318,7 @@ describe('Core', () => {
 
     describe('setFailed()', () => {
       it('Sets the exit code to failure', () => {
-        jest.spyOn(CoreMeta.colors, 'red').mockImplementation()
+        jest.spyOn(CoreMeta.colors, 'red').mockImplementation(() => {})
 
         setFailed('test')
 
@@ -348,9 +347,9 @@ describe('Core', () => {
       })
 
       it('Logs only the color when no message is provided', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'blue')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         log('group')
 
@@ -358,9 +357,9 @@ describe('Core', () => {
       })
 
       it('Redacts secrets from the output', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'blue')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         // Set a secret to mask
         CoreMeta.secrets = ['secret-value-1234']
@@ -373,9 +372,9 @@ describe('Core', () => {
       })
 
       it('Includes annotations in the output', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'blue')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         log('group', 'my message', {
           title: 'my title',
@@ -388,9 +387,9 @@ describe('Core', () => {
       })
 
       it('Defaults the endLine property to startLine', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'white')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         log('info', 'my message', {
           startLine: 1
@@ -402,9 +401,9 @@ describe('Core', () => {
       })
 
       it('Defaults the endColumn property to startColumn', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'white')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         log('info', 'my message', {
           startColumn: 1
@@ -431,9 +430,9 @@ describe('Core', () => {
         // Enable step debug logging
         CoreMeta.stepDebug = true
 
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'gray')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         debug('test')
 
@@ -444,9 +443,9 @@ describe('Core', () => {
         // Disable step debug logging
         CoreMeta.stepDebug = false
 
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'gray')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         debug('test')
 
@@ -456,9 +455,9 @@ describe('Core', () => {
 
     describe('error()', () => {
       it('Logs to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'red')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         error('test')
 
@@ -468,9 +467,9 @@ describe('Core', () => {
 
     describe('warning()', () => {
       it('Logs to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'yellow')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         warning('test')
 
@@ -480,9 +479,9 @@ describe('Core', () => {
 
     describe('notice()', () => {
       it('Logs to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'magenta')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         notice('test')
 
@@ -492,9 +491,9 @@ describe('Core', () => {
 
     describe('info()', () => {
       it('Logs to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'white')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         info('test')
 
@@ -504,9 +503,9 @@ describe('Core', () => {
 
     describe('startGroup()', () => {
       it('Logs to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'blue')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         startGroup('test')
 
@@ -516,9 +515,9 @@ describe('Core', () => {
 
     describe('endGroup()', () => {
       it('Logs to the console', () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'blue')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
         endGroup()
 
@@ -528,14 +527,11 @@ describe('Core', () => {
 
     describe('group()', () => {
       it('Logs grouped messages to the console', async () => {
-        const core_outputSpy: jest.SpyInstance = jest
+        const core_outputSpy = jest
           .spyOn(CoreMeta.colors, 'blue')
-          .mockImplementation()
+          .mockImplementation(() => {})
 
-        const core_infoSpy: jest.SpyInstance = jest.spyOn(
-          CoreMeta.colors,
-          'white'
-        )
+        const core_infoSpy = jest.spyOn(CoreMeta.colors, 'white')
 
         await group('my-group', async () => {
           info('test')
