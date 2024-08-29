@@ -1,8 +1,8 @@
-# Debugging in VS Code
+# Debugging in Visual Studio Code
 
-This package can also be used with VS Code's built-in debugging tools. You just
-need to add a `launch.json` to the project containing your local action. The
-following can be used as an example.
+This package can also be used with Visual Studio Code's built-in debugging
+tools. You just need to add a `launch.json` to the project containing your local
+action. The following can be used as an example.
 
 ```json
 {

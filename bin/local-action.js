@@ -39,29 +39,39 @@ function entrypoint() {
       ? `${process.env.NODE_OPTIONS} --require ${bootstrapPath}`
       : `--require ${bootstrapPath}`
 
+    // Disable experimental warnings.
+    process.env.NODE_NO_WARNINGS = 1
+
     // Start building the command to run local-action.
-    let command = `npx tsx --loader=quibble "${path.join(packagePath, 'src', 'index.ts')}"`
+    let command = `npx tsx "${path.join(packagePath, 'src', 'index.ts')}"`
 
-    // Process the input arguments.
-    if (process.argv.length === 2) {
-      // No arguments...display the help message.
-      command += ' --help'
-    } else {
-      // Iterate over the arguments and build the command.
-      for (const arg of process.argv.slice(2)) {
-        // If the argument is a directory and TARGET_ACTION_PATH is not set, set
-        // it to the absolute path of the directory. The first directory is the
-        // target action path.
-        if (
-          !process.env.TARGET_ACTION_PATH &&
-          fs.existsSync(path.resolve(arg)) &&
-          fs.lstatSync(path.resolve(arg)).isDirectory()
-        )
-          process.env.TARGET_ACTION_PATH = path.resolve(arg)
+    // If there are no input arguments, or the only argument is the help flag,
+    // display the help message.
+    if (
+      process.argv.length === 2 ||
+      ['--help', '-h'].includes(process.argv[2])
+    ) {
+      command += ` --help`
 
-        // Append the argument to the command.
-        command += ` ${arg}`
-      }
+      // Run the command.
+      execSync(command, { stdio: 'inherit' })
+      return
+    }
+
+    // Iterate over the arguments and build the command.
+    for (const arg of process.argv.slice(2)) {
+      // If the argument is a directory and TARGET_ACTION_PATH is not set, set
+      // it to the absolute path of the directory. The first directory is the
+      // target action path.
+      if (
+        !process.env.TARGET_ACTION_PATH &&
+        fs.existsSync(path.resolve(arg)) &&
+        fs.lstatSync(path.resolve(arg)).isDirectory()
+      )
+        process.env.TARGET_ACTION_PATH = path.resolve(arg)
+
+      // Append the argument to the command.
+      command += ` ${arg}`
     }
 
     // Run the command.

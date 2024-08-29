@@ -4,7 +4,7 @@
 ![Continuous Integration](https://github.com/github/local-action/actions/workflows/continuous-integration.yml/badge.svg)
 ![Code Coverage](badges/coverage.svg)
 
-Run custom GitHub Actions locally and test them in VS Code!
+Run custom GitHub Actions locally and test them in Visual Studio Code!
 
 This command-line tool emulates some **basic** functionality of the
 [GitHub Actions Toolkit](https://github.com/actions/toolkit) so that custom
@@ -13,6 +13,12 @@ actions can be run directly on your workstation.
 > [!NOTE]
 >
 > This tool currently only supports JavaScript and TypeScript actions!
+
+## v2 Changes
+
+As of version `2.0.0`, the `local-action` tool has been updated to require
+**Node.js v20.6.0** or higher. This is necessary to support ESM loaders to
+override dependencies in the GitHub Actions Toolkit.
 
 ## v1 Changes
 
@@ -213,5 +219,5 @@ The following list links to documentation on how to use various features of the
 `local-action` tool.
 
 - [Supported Functionality](./docs//supported-functionality.md)
-- [Debugging in VS Code](./docs/debugging-in-vscode.md)
+- [Debugging in Visual Studio Code](./docs/debugging-in-vscode.md)
 - [Create a Job Summary](./docs/create-a-job-summary.md)
