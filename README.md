@@ -14,6 +14,12 @@ actions can be run directly on your workstation.
 >
 > This tool currently only supports JavaScript and TypeScript actions!
 
+## v2 Changes
+
+As of version `2.0.0`, the `local-action` tool has been updated to require
+**Node.js v20.6.0** or higher. This is necessary to support ESM loaders to
+override dependencies in the GitHub Actions Toolkit.
+
 ## v1 Changes
 
 With the release of `v1.0.0`, there was a need to switch from
