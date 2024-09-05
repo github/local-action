@@ -1,10 +1,13 @@
 import { config } from 'dotenv'
+import { createRequire } from 'module'
 import quibble from 'quibble'
 import { CORE_STUBS, CoreMeta } from '../stubs/core-stubs.js'
 import { EnvMeta } from '../stubs/env-stubs.js'
 import type { Action } from '../types.js'
 import { printTitle } from '../utils/output.js'
 import { isESM } from '../utils/package.js'
+
+const require = createRequire(import.meta.url)
 
 export async function action(): Promise<void> {
   const { Chalk } = await import('chalk')
@@ -90,24 +93,45 @@ export async function action(): Promise<void> {
 
   printTitle(CoreMeta.colors.green, 'Running Action')
 
-  // Stub the `@actions/toolkit` libraries and run the action. Quibble requires
-  // a different approach depending on if this is an ESM action.
+  // Get the node_modules path, starting with the entrypoint.
+  let nodeModulesDir = path.dirname(EnvMeta.entrypoint)
+  while (nodeModulesDir !== '/') {
+    // Check if the current directory has a node_modules directory.
+    if (fs.existsSync(path.join(nodeModulesDir, 'node_modules'))) break
+
+    // Move up the directory tree.
+    nodeModulesDir = path.dirname(nodeModulesDir)
+  }
+  /* istanbul ignore if */
+  if (nodeModulesDir === '/')
+    throw new Error('Could not find node_modules directory')
+
+  // Stub the `@actions/toolkit` libraries and run the action. Quibble and
+  // local-action require a different approach depending on if the called action
+  // is written in ESM.
   if (isESM()) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await quibble.esm(
-      `${path.resolve(EnvMeta.actionPath)}/node_modules/@actions/core/lib/core.js`,
+      `${path.resolve(nodeModulesDir)}/node_modules/@actions/core/lib/core.js`,
       CORE_STUBS
     )
+
+    // ESM actions need to be imported, not required.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const { run } = await import(path.resolve(EnvMeta.entrypoint))
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    await run()
   } else {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     quibble(
-      `${path.resolve(EnvMeta.actionPath)}/node_modules/@actions/core`,
+      `${path.resolve(nodeModulesDir)}/node_modules/@actions/core/lib/core.js`,
       CORE_STUBS
     )
-  }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { run } = await import(path.resolve(EnvMeta.entrypoint))
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  await run()
+    // CJS actions need to be required, not imported.
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, import/no-dynamic-require
+    const { run } = require(path.resolve(EnvMeta.entrypoint))
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    await run()
+  }
 }
