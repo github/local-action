@@ -5,3 +5,6 @@ node_modules
 npm-debug.log*
 reports
 Thumbs.db
+
+# Hack to keep the fake node_modules dirs for tests
+!__fixtures__/**/node_modules
