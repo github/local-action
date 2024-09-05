@@ -88,8 +88,8 @@ the following when preparing for release:
   [`@vercel/ncc`](https://www.npmjs.com/package/@vercel/ncc)
 
 **This tool supports non-transpiled action code only.** This is because it uses
-[`proxyquire`](https://github.com/thlorenz/proxyquire) to override GitHub
-Actions Toolkit dependencies (e.g
+[`quibble`](https://github.com/testdouble/quibble) to override GitHub Actions
+Toolkit dependencies (e.g
 [`@actions/core`](https://www.npmjs.com/package/@actions/core)). In transpiled
 code, this simply doesn't work.
 
