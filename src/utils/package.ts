@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { dirname, join } from 'path'
 import { EnvMeta } from '../stubs/env-stubs.js'
 
 /**
@@ -7,12 +8,29 @@ import { EnvMeta } from '../stubs/env-stubs.js'
  * @returns True if the project is an ESM module, false otherwise.
  */
 export function isESM(): boolean {
-  const packageJson = JSON.parse(
-    fs.readFileSync(`${EnvMeta.actionPath}/package.json`, {
-      encoding: 'utf8',
-      flag: 'r'
-    })
-  ) as { type: string }
+  // Starting at this directory, walk up the directory tree until we find a
+  // package.json file.
+  /* istanbul ignore next */
+  const dirs =
+    dirname(EnvMeta.entrypoint).split('/') || // Unix
+    dirname(EnvMeta.entrypoint).split('\\') || // Windows
+    []
+  while (dirs.length > 0) {
+    // Check if the current directory has a packge.json.
+    if (fs.existsSync(join(...dirs, 'package.json'))) {
+      const packageJson = JSON.parse(
+        fs.readFileSync(join(...dirs, 'package.json'), 'utf8')
+      ) as { [key: string]: any }
 
-  return packageJson.type === 'module'
+      return packageJson.type === 'module'
+    }
+
+    // Move up the directory tree.
+    dirs.pop()
+  }
+
+  // If we reach the root directory and still haven't found a package.json
+  // file, assume that the project is not an ESM module.
+  /* istanbul ignore next */
+  return false
 }

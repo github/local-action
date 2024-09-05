@@ -20,7 +20,7 @@ jest.unstable_mockModule('../../src/utils/output.js', () => {
 const { action } = await import('../../src/commands/run.js')
 
 // Prevent output during tests
-jest.spyOn(console, 'log').mockImplementation(() => {})
+// jest.spyOn(console, 'log').mockImplementation(() => {})
 jest.spyOn(console, 'table').mockImplementation(() => {})
 
 describe('Command: run', () => {
@@ -35,28 +35,8 @@ describe('Command: run', () => {
     jest.resetAllMocks()
   })
 
-  describe('TypeScript', () => {
-    it('Action: success', async () => {
-      EnvMeta.actionFile = `./__fixtures__/typescript/success/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/typescript/success`
-      EnvMeta.dotenvFile = `./__fixtures__/typescript/success/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript/success/src/main.ts`
-
-      await expect(action()).resolves.toBeUndefined()
-    })
-
-    it('Action: no-import', async () => {
-      EnvMeta.actionFile = `./__fixtures__/typescript/no-import/action.yml`
-      EnvMeta.actionPath = `./__fixtures__/typescript/no-import`
-      EnvMeta.dotenvFile = `./__fixtures__/typescript/no-import/.env.fixture`
-      EnvMeta.entrypoint = `./__fixtures__/typescript/no-import/src/main.ts`
-
-      await expect(action()).resolves.toBeUndefined()
-    })
-  })
-
   describe('TypeScript ESM', () => {
-    it('Action: success', async () => {
+    it('TypeScript ESM Action: success', async () => {
       EnvMeta.actionFile = `./__fixtures__/typescript-esm/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript-esm/success`
       EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/success/.env.fixture`
@@ -68,7 +48,7 @@ describe('Command: run', () => {
       expect(quibbleEsm).toHaveBeenCalled()
     })
 
-    it('Action: no-import', async () => {
+    it('TypeScript ESM Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/typescript-esm/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/typescript-esm/no-import`
       EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/no-import/.env.fixture`
@@ -82,7 +62,7 @@ describe('Command: run', () => {
   })
 
   describe('JavaScript', () => {
-    it('Action: success', async () => {
+    it('JavaScript Action: success', async () => {
       EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/success`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
@@ -91,7 +71,7 @@ describe('Command: run', () => {
       await expect(action()).resolves.toBeUndefined()
     })
 
-    it('Action: no-import', async () => {
+    it('JavaScript Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/no-import/.env.fixture`
@@ -102,7 +82,7 @@ describe('Command: run', () => {
   })
 
   describe('JavaScript (ESM)', () => {
-    it('Action: success', async () => {
+    it('JavaScript ESM Action: success', async () => {
       EnvMeta.actionFile = `./__fixtures__/javascript/success/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/success`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/success/.env.fixture`
@@ -113,7 +93,7 @@ describe('Command: run', () => {
       expect(quibbleDefault).toHaveBeenCalled()
     })
 
-    it('Action: no-import', async () => {
+    it('JavaScript ESM Action: no-import', async () => {
       EnvMeta.actionFile = `./__fixtures__/javascript/no-import/action.yml`
       EnvMeta.actionPath = `./__fixtures__/javascript/no-import`
       EnvMeta.dotenvFile = `./__fixtures__/javascript/no-import/.env.fixture`

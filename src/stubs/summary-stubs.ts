@@ -59,8 +59,7 @@ export class Summary {
         CoreMeta.stepSummaryPath,
         fs.constants.R_OK | fs.constants.W_OK
       )
-    } catch (error) {
-      console.error(error)
+    } catch {
       throw new Error(
         `Unable to access summary file: '${CoreMeta.stepSummaryPath}'. Check if the file has correct read/write permissions.`
       )
