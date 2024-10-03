@@ -6,6 +6,9 @@ import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
 const quibbleEsm = jest.fn().mockImplementation(() => {})
 const quibbleDefault = jest.fn().mockImplementation(() => {})
 
+// Stub console.log to reduce noise
+console.log = jest.fn().mockImplementation(() => {})
+
 // @ts-expect-error - `quibble` is the default, but we need to mock esm() too
 quibbleDefault.esm = quibbleEsm
 
@@ -59,6 +62,17 @@ describe('Command: run', () => {
       expect(core.setFailed).not.toHaveBeenCalled()
       expect(quibbleEsm).toHaveBeenCalled()
     })
+
+    it('TypeScript ESM Action: Throws if run is not exported', async () => {
+      EnvMeta.actionFile = `./__fixtures__/typescript-esm/no-export/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript-esm/no-export`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/no-export/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript-esm/no-export/src/main.ts`
+
+      await expect(action()).rejects.toThrow(
+        `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
+      )
+    })
   })
 
   describe('JavaScript', () => {
@@ -78,6 +92,17 @@ describe('Command: run', () => {
       EnvMeta.entrypoint = `./__fixtures__/javascript/no-import/src/main.js`
 
       await expect(action()).resolves.toBeUndefined()
+    })
+
+    it('JavaScript Action: Throws if run is not exported', async () => {
+      EnvMeta.actionFile = `./__fixtures__/javascript/no-export/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/javascript/no-export`
+      EnvMeta.dotenvFile = `./__fixtures__/javascript/no-export/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/javascript/no-export/src/main.js`
+
+      await expect(action()).rejects.toThrow(
+        `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
+      )
     })
   })
 
