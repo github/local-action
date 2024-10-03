@@ -130,6 +130,13 @@ export async function action(): Promise<void> {
     // ESM actions need to be imported, not required.
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { run } = await import(path.resolve(EnvMeta.entrypoint))
+
+    // Check if the required path is a function.
+    if (typeof run !== 'function')
+      throw new Error(
+        `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
+      )
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await run()
   } else {
@@ -149,6 +156,13 @@ export async function action(): Promise<void> {
     // CJS actions need to be required, not imported.
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, import/no-dynamic-require
     const { run } = require(path.resolve(EnvMeta.entrypoint))
+
+    // Check if the required path is a function.
+    if (typeof run !== 'function')
+      throw new Error(
+        `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
+      )
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await run()
   }

@@ -1,0 +1,17 @@
+name: The name of your action here
+description: Provide a description here
+author: Your name or organization here
+
+inputs:
+  milliseconds:
+    description: Your input description here
+    required: true
+    default: '1000'
+
+outputs:
+  time:
+    description: Your output description here
+
+runs:
+  using: node20
+  main: dist/index.js
