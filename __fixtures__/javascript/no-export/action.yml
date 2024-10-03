@@ -1,0 +1,16 @@
+name: JavaScript (No Import)
+description: This action doesn't import any dependencies
+
+inputs:
+  myInput:
+    description: An input
+    required: true
+    default: value
+
+outputs:
+  myOutput:
+    description: An output
+
+runs:
+  using: node20
+  main: dist/index.js
