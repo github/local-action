@@ -151,15 +151,15 @@ For additional information about transpiled action code, see
 
 ### `local-action run <path> <logic entrypoint> <dotenv file>`
 
-| Argument           | Description                                                |
-| ------------------ | ---------------------------------------------------------- |
-| `path`             | Path to the local action directory                         |
-|                    | Example: `/path/to/action.yml`                             |
-| `logic entrypoint` | Action logic entrypoint (relative to the action directory) |
-|                    | Example: `src/main.ts`                                     |
-| `dotenv file`      | Path to the local `.env` file for action inputs            |
-|                    | Example: `/path/to/.env`                                   |
-|                    | See the example [`.env.example`](.env.example)             |
+| Argument           | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| `path`             | Path to the local action directory                     |
+|                    | Example: `/path/to/action.yml`                         |
+| `logic entrypoint` | Action logic entrypoint (relative to action directory) |
+|                    | Example: `src/main.ts`                                 |
+| `dotenv file`      | Path to the local `.env` file for action inputs        |
+|                    | Example: `/path/to/.env`                               |
+|                    | See the example [`.env.example`](.env.example)         |
 
 Examples:
 
