@@ -24,7 +24,7 @@ export type EnvMetadata = {
   /** Outputs defined in `action.yml` */
   outputs: { [key: string]: Output }
 
-  /** Pre-transpilation entrypoint for the action (e.g. `src/index.ts`) */
+  /** Pre-transpilation entrypoint for the action (e.g. `src/main.ts`) */
   entrypoint: string
 }
 

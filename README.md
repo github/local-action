@@ -149,31 +149,31 @@ For additional information about transpiled action code, see
 | `-h`, `--help`    | Display help information    |
 | `-V`, `--version` | Display version information |
 
-### `local-action run <path> <entrypoint> <dotenv file>`
+### `local-action run <path> <logic entrypoint> <dotenv file>`
 
-| Argument      | Description                                          |
-| ------------- | ---------------------------------------------------- |
-| `path`        | Path to the local action directory                   |
-|               | Example: `/path/to/action.yml`                       |
-| `entrypoint`  | Action entrypoint (relative to the action directory) |
-|               | Example: `src/index.ts`                              |
-| `dotenv file` | Path to the local `.env` file for action inputs      |
-|               | Example: `/path/to/.env`                             |
-|               | See the example [`.env.example`](.env.example)       |
+| Argument           | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| `path`             | Path to the local action directory                     |
+|                    | Example: `/path/to/action.yml`                         |
+| `logic entrypoint` | Action logic entrypoint (relative to action directory) |
+|                    | Example: `src/main.ts`                                 |
+| `dotenv file`      | Path to the local `.env` file for action inputs        |
+|                    | Example: `/path/to/.env`                               |
+|                    | See the example [`.env.example`](.env.example)         |
 
 Examples:
 
 ```bash
-local-action run /path/to/typescript-action src/index.ts .env
+local-action run /path/to/typescript-action src/main.ts .env
 
 # The `run` action is invoked by default as well
-local-action /path/to/typescript-action src/index.ts .env
+local-action /path/to/typescript-action src/main.ts .env
 ```
 
 #### Output
 
 ```console
-$ local-action run /path/to/typescript-action src/index.ts .env
+$ local-action run /path/to/typescript-action src/main.ts .env
      _        _   _               ____       _
     / \   ___| |_(_) ___  _ __   |  _ \  ___| |__  _   _  __ _  __ _  ___ _ __
    / _ \ / __| __| |/ _ \| '_ \  | | | |/ _ \ '_ \| | | |/ _` |/ _` |/ _ \ '__|
@@ -188,7 +188,7 @@ $ local-action run /path/to/typescript-action src/index.ts .env
 │ (index) │       Field        │                  Value                    │
 ├─────────┼────────────────────┼───────────────────────────────────────────┤
 │    0    │   'Action Path'    │       '/path/to/typescript-action'        │
-│    1    │    'Entrypoint'    │ '/path/to/typescript-action/src/index.ts' │
+│    1    │    'Entrypoint'    │ '/path/to/typescript-action/src/main.ts'  │
 │    2    │ 'Environment File' │   '/path/to/local-action-debugger/.env'   │
 └─────────┴────────────────────┴───────────────────────────────────────────┘
 

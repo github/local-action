@@ -82,12 +82,12 @@ your updates using the following GitHub Actions repositories:
    ```bash
    npm exec local-action \
    "/<action repository clone path>/typescript-action" \
-   "src/index.ts" \
+   "src/main.ts" \
    "<path to your .env file>"
 
    npm exec local-action \
    "/<action repository clone path>/javascript-action" \
-   "src/index.ts" \
+   "src/main.ts" \
    "<path to your .env file>"
    ```
 
