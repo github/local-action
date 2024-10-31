@@ -14,7 +14,7 @@ action. The following can be used as an example.
       "request": "launch",
       "runtimeExecutable": "local-action",
       "cwd": "${workspaceRoot}",
-      "args": [".", "src/index.ts", ".env"],
+      "args": [".", "src/main.ts", ".env"],
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**", "node_modules/**"]
     }

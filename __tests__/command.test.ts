@@ -59,7 +59,7 @@ describe('Commmand', () => {
       ).parseAsync(
         [
           './__fixtures__/typescript/success',
-          'src/index.ts',
+          'src/main.ts',
           './__fixtures__/typescript/success/.env.fixture'
         ],
         {
@@ -92,7 +92,7 @@ describe('Commmand', () => {
     it('Exits if no env-file argument is provided', async () => {
       await (
         await makeProgram()
-      ).parseAsync(['./__fixtures__/typescript/success', 'src/index.ts'], {
+      ).parseAsync(['./__fixtures__/typescript/success', 'src/main.ts'], {
         from: 'user'
       })
 
@@ -104,7 +104,7 @@ describe('Commmand', () => {
     it('Exits if the action path is not a directory', async () => {
       await expect(
         (await makeProgram()).parseAsync(
-          ['./package.json', 'src/index.ts', '.env'],
+          ['./package.json', 'src/main.ts', '.env'],
           {
             from: 'user'
           }
@@ -117,7 +117,7 @@ describe('Commmand', () => {
     it('Exits if the action path does not exist', async () => {
       await expect(
         (await makeProgram()).parseAsync(
-          ['/test/path/does/not/exist', 'src/index.ts', '.env'],
+          ['/test/path/does/not/exist', 'src/main.ts', '.env'],
           {
             from: 'user'
           }
@@ -130,7 +130,7 @@ describe('Commmand', () => {
     it('Exits if the action path does not contain an action.yml or action.yaml', async () => {
       await expect(
         (await makeProgram()).parseAsync(
-          ['./__fixtures__', 'src/index.ts', '.env'],
+          ['./__fixtures__', 'src/main.ts', '.env'],
           {
             from: 'user'
           }
@@ -156,7 +156,7 @@ describe('Commmand', () => {
     it('Throws if the dotenv file does not exist', async () => {
       await expect(
         (await makeProgram()).parseAsync(
-          ['./__fixtures__/typescript/success', 'src/index.ts', '.notreal.env'],
+          ['./__fixtures__/typescript/success', 'src/main.ts', '.notreal.env'],
           {
             from: 'user'
           }

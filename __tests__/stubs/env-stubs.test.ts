@@ -38,7 +38,7 @@ describe('Env', () => {
       EnvMeta.actionFile = 'action.yml'
       EnvMeta.actionPath = '/some/path'
       EnvMeta.dotenvFile = '.env'
-      EnvMeta.entrypoint = 'index.ts'
+      EnvMeta.entrypoint = 'main.ts'
       EnvMeta.env = { TEST: 'test' }
       EnvMeta.inputs = { input: { description: 'test input' } }
       EnvMeta.outputs = { output: { description: 'test output' } }
@@ -49,7 +49,7 @@ describe('Env', () => {
         actionFile: 'action.yml',
         actionPath: '/some/path',
         dotenvFile: '.env',
-        entrypoint: 'index.ts',
+        entrypoint: 'main.ts',
         env: { TEST: 'test' },
         inputs: { input: { description: 'test input' } },
         outputs: { output: { description: 'test output' } },
