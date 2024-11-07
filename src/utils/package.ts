@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { dirname, join } from 'path'
+import * as path from 'path'
 import { EnvMeta } from '../stubs/env-stubs.js'
 
 /**
@@ -10,16 +10,16 @@ import { EnvMeta } from '../stubs/env-stubs.js'
 export function isESM(): boolean {
   // Starting at this directory, walk up the directory tree until we find a
   // package.json file.
-  /* istanbul ignore next */
-  const dirs =
-    dirname(EnvMeta.entrypoint).split('/') || // Unix
-    dirname(EnvMeta.entrypoint).split('\\') || // Windows
-    []
+  const dirs = path.dirname(EnvMeta.entrypoint).split(path.sep)
+
   while (dirs.length > 0) {
     // Check if the current directory has a packge.json.
-    if (fs.existsSync(join(...dirs, 'package.json'))) {
+    if (fs.existsSync(path.resolve(dirs.join(path.sep), 'package.json'))) {
       const packageJson = JSON.parse(
-        fs.readFileSync(join(...dirs, 'package.json'), 'utf8')
+        fs.readFileSync(
+          path.resolve(dirs.join(path.sep), 'package.json'),
+          'utf8'
+        )
       ) as { [key: string]: any }
 
       return packageJson.type === 'module'
