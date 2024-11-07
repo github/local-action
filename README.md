@@ -213,6 +213,16 @@ $ local-action run /path/to/typescript-action src/main.ts .env
 ================================================================================
 ```
 
+## (TypeScript) TSConfig Requirements
+
+If you are testing TypeScript actions, there are a few settings that **must** be
+configured in your `tsconfig.json` file (either explicitly or via their default
+values).
+
+| Property                                                      | Required Value |
+| ------------------------------------------------------------- | -------------- |
+| [`allowJs`](https://www.typescriptlang.org/tsconfig/#allowJs) | `false`        |
+
 ## Features
 
 The following list links to documentation on how to use various features of the
