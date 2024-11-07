@@ -94,18 +94,23 @@ export async function action(): Promise<void> {
   printTitle(CoreMeta.colors.green, 'Running Action')
 
   // Get the node_modules path, starting with the entrypoint.
-  /* istanbul ignore next */
-  const dirs =
-    path.dirname(EnvMeta.entrypoint).split('/') || // Unix
-    path.dirname(EnvMeta.entrypoint).split('\\') || // Windows
-    []
+  const dirs = path.dirname(EnvMeta.entrypoint).split(path.sep)
+
+  // Move up the directory tree until we find a node_modules directory.
   while (dirs.length > 0) {
+    const nodeModulesPath = path.join(dirs.join(path.sep), 'node_modules')
+
     // Check if the current directory has a node_modules directory.
-    if (fs.existsSync(path.join(...dirs, 'node_modules'))) break
+    if (
+      fs.existsSync(nodeModulesPath) &&
+      fs.lstatSync(nodeModulesPath).isDirectory()
+    )
+      break
 
     // Move up the directory tree.
     dirs.pop()
   }
+
   /* istanbul ignore if */
   if (dirs.length === 0)
     throw new Error('Could not find node_modules directory')
@@ -117,7 +122,7 @@ export async function action(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await quibble.esm(
       path.resolve(
-        ...dirs,
+        dirs.join(path.sep),
         'node_modules',
         '@actions',
         'core',
@@ -143,7 +148,7 @@ export async function action(): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     quibble(
       path.resolve(
-        ...dirs,
+        dirs.join(path.sep),
         'node_modules',
         '@actions',
         'core',
