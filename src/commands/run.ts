@@ -101,11 +101,15 @@ export async function action(): Promise<void> {
     const nodeModulesPath = path.join(dirs.join(path.sep), 'node_modules')
 
     // Check if the current directory has a node_modules directory.
-    if (
-      fs.existsSync(nodeModulesPath) &&
-      fs.lstatSync(nodeModulesPath).isDirectory()
-    )
-      break
+    try {
+      if (
+        fs.existsSync(nodeModulesPath) &&
+        fs.lstatSync(nodeModulesPath).isDirectory()
+      )
+        break
+    } catch {
+      // Do nothing
+    }
 
     // Move up the directory tree.
     dirs.pop()
