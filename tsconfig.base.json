@@ -2,7 +2,6 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "declaration": true,
