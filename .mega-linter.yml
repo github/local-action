@@ -163,6 +163,8 @@ PRINT_ALL_FILES: false
 # Set to simple to avoid external images in generated markdown
 REPORTERS_MARKDOWN_TYPE: advanced
 
+REPOSITORY_GRYPE_CONFIG_FILE: .grype.yml
+
 # Additional list of secured environment variables to hide when calling linters.
 # SECURED_ENV_VARIABLES: []
 
