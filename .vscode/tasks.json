@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Workspace: Lint",
+      "type": "shell",
+      "group": "test",
+      "command": "npx mega-linter-runner --flavor cupcake",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "npm: Test",
+      "type": "shell",
+      "group": "test",
+      "command": "npm test",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "npm: Lint",
+      "type": "shell",
+      "group": "test",
+      "command": "npm run lint",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "npm: Format (Check)",
+      "group": "test",
+      "type": "shell",
+      "command": "npm run format:check",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "npm: Format (Write)",
+      "group": "test",
+      "type": "shell",
+      "command": "npm run format:write",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}

@@ -5,16 +5,16 @@ on:
     branches:
       - main
 
+permissions:
+  actions: read
+  checks: write
+  contents: read
+  statuses: write
+
 jobs:
   continuous-integration:
     name: Continuous Integration
     runs-on: ubuntu-latest
-
-    permissions:
-      actions: read
-      checks: write
-      contents: read
-      statuses: write
 
     steps:
       - name: Checkout
