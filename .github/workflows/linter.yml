@@ -5,15 +5,17 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  issues: write
+  packages: read
+  pull-requests: write
+  statuses: write
+
 jobs:
   lint:
     name: Lint Codebase
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
 
     steps:
       - name: Checkout
@@ -34,15 +36,8 @@ jobs:
         run: npm ci
 
       - name: Lint Codebase
-        id: super-linter
-        uses: super-linter/super-linter/slim@v7
+        id: lint-codebase
         env:
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          JAVASCRIPT_DEFAULT_STYLE: prettier
-          LINTER_RULES_PATH: .
-          TYPESCRIPT_DEFAULT_STYLE: prettier
-          VALIDATE_ALL_CODEBASE: false
-          VALIDATE_JAVASCRIPT_STANDARD: false
-          VALIDATE_JSCPD: false
-          VALIDATE_TYPESCRIPT_STANDARD: false
+          DEFAULT_WORKSPACE: ${{ github.workspace }}
+          GITHUB_TOKEN: ${{ github.token }}
+        uses: oxsecurity/megalinter/flavors/cupcake@v8

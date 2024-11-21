@@ -506,7 +506,7 @@ export async function group<T>(name: string, fn: () => Promise<T>): Promise<T> {
  * @param value The value of the state
  * @returns void
  */
-export function saveState(name: string, value: any): void {
+export function saveState(name: string, value: unknown): void {
   if (value === undefined || value === null) CoreMeta.state[name] = ''
   else if (typeof value === 'string' || value instanceof String)
     CoreMeta.state[name] = value as string
@@ -534,7 +534,7 @@ export function getState(name: string): string {
  * @param aud The audience for the token
  * @returns A promise that resolves the OIDC token
  */
-// eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getIDToken(aud?: string): Promise<string> {
   throw new Error('Not implemented')
 }

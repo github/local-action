@@ -1,6 +1,7 @@
 .env
 .DS_Store
 coverage
+megalinter-reports
 node_modules
 npm-debug.log*
 reports

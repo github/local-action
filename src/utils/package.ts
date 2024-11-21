@@ -20,7 +20,7 @@ export function isESM(): boolean {
           path.resolve(dirs.join(path.sep), 'package.json'),
           'utf8'
         )
-      ) as { [key: string]: any }
+      ) as { [key: string]: unknown }
 
       return packageJson.type === 'module'
     }

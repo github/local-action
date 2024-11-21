@@ -47,9 +47,8 @@ The following packages are under investigation for how to integrate with
 `local-action`. Make sure to check back later!
 
 - [`@actions/artifact`](https://github.com/actions/toolkit/tree/main/packages/artifact)
+- [`@actions/attest`](https://github.com/actions/toolkit/tree/main/packages/attest)
 - [`@actions/cache`](https://github.com/actions/toolkit/tree/main/packages/cache)
-- [`@actions/github`](https://github.com/actions/toolkit/tree/main/packages/github)
-- [`@actions/tool-cache`](https://github.com/actions/toolkit/tree/main/packages/tool-cache)
 
 ## No Action Needed
 
@@ -60,6 +59,8 @@ this doesn't work correctly, please
 [open an issue!](https://github.com/github/local-action/issues/new)
 
 - [`@actions/exec`](https://github.com/actions/toolkit/tree/main/packages/exec)
+- [`@actions/github`](https://github.com/actions/toolkit/tree/main/packages/github)
 - [`@actions/glob`](https://github.com/actions/toolkit/tree/main/packages/glob)
 - [`@actions/http-client`](https://github.com/actions/toolkit/tree/main/packages/http-client)
 - [`@actions/io`](https://github.com/actions/toolkit/tree/main/packages/io)
+- [`@actions/tool-cache`](https://github.com/actions/toolkit/tree/main/packages/tool-cache)
