@@ -20,5 +20,4 @@ export async function run(): Promise<void> {
 }
 
 /* istanbul ignore next */
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
 run()

@@ -27,6 +27,7 @@ export async function makeProgram(): Promise<Command> {
       // Confirm the value is a directory
       if (!fs.statSync(actionPath).isDirectory())
         throw new InvalidArgumentError('Action path must be a directory')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if ('code' in err && err.code === 'ENOENT')
         throw new InvalidArgumentError('Action path does not exist')

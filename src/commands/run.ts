@@ -123,7 +123,6 @@ export async function action(): Promise<void> {
   // local-action require a different approach depending on if the called action
   // is written in ESM.
   if (isESM()) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await quibble.esm(
       path.resolve(
         dirs.join(path.sep),
@@ -137,7 +136,6 @@ export async function action(): Promise<void> {
     )
 
     // ESM actions need to be imported, not required.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { run } = await import(path.resolve(EnvMeta.entrypoint))
 
     // Check if the required path is a function.
@@ -146,10 +144,8 @@ export async function action(): Promise<void> {
         `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
       )
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await run()
   } else {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     quibble(
       path.resolve(
         dirs.join(path.sep),
@@ -163,7 +159,6 @@ export async function action(): Promise<void> {
     )
 
     // CJS actions need to be required, not imported.
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, import/no-dynamic-require
     const { run } = require(path.resolve(EnvMeta.entrypoint))
 
     // Check if the required path is a function.
@@ -172,7 +167,6 @@ export async function action(): Promise<void> {
         `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
       )
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await run()
   }
 }

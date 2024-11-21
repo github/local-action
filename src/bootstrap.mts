@@ -1,6 +1,3 @@
-/* eslint-disable github/no-then */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-
 /**
  * This file is used to bootstrap the environment for the action.
  *
@@ -18,7 +15,6 @@ import('fs').then(({ existsSync, readFileSync }) => {
       // Check if the action has a `tsconfig.json` file.
       if (existsSync(`${process.env.TARGET_ACTION_PATH}/tsconfig.json`)) {
         // Load the `tsconfig.json` from the action directory.
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const actionTsConfig = JSON.parse(
           readFileSync(
             `${process.env.TARGET_ACTION_PATH}/tsconfig.json`,
@@ -30,7 +26,6 @@ import('fs').then(({ existsSync, readFileSync }) => {
         loadConfig(__dirname)
 
         // Get the paths from the action's `tsconfig.json`, if any.
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const paths = actionTsConfig.compilerOptions.paths ?? {}
 
         // Add any path mappings from the imported action. Replace the base URL with
@@ -38,7 +33,6 @@ import('fs').then(({ existsSync, readFileSync }) => {
         // @todo Should this take into account the previous `baseUrl` value?
         register({
           baseUrl: process.env.TARGET_ACTION_PATH,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           paths,
           addMatchAll: true
         })

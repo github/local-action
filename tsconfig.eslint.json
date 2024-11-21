@@ -10,6 +10,7 @@
     "__tests__",
     "src",
     "types",
+    "eslint.config.mjs",
     "jest.config.ts"
   ],
   "exclude": ["node_modules", "coverage"]
