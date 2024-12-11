@@ -227,7 +227,8 @@ values).
 
 Possible errors that can arise from not having `allowJs: false`:
 
-- `TypeError [ERR_INVALID_URL_SCHEME]: The URL must be of scheme file` from tsx when trying to run `npx local-action`.
+- `TypeError [ERR_INVALID_URL_SCHEME]: The URL must be of scheme file` from tsx
+  when trying to run `npx local-action`.
 
 ## Features
 
