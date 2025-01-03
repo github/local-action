@@ -45,7 +45,7 @@
     "@actions/core": "^1.11.1",
     "@octokit/core": "^6.1.2",
     "chalk": "^5.3.0",
-    "commander": "^12.1.0",
+    "commander": "^13.0.0",
     "dotenv": "^16.4.5",
     "figlet": "^1.8.0",
     "quibble": "^0.9.2",
