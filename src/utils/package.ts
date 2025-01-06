@@ -1,6 +1,6 @@
 import fs from 'fs'
 import * as path from 'path'
-import { EnvMeta } from '../stubs/env-stubs.js'
+import { EnvMeta } from '../stubs/env.js'
 
 /**
  * Checks if the JavaScript/TypeScript project is an ESM module.

@@ -6,7 +6,7 @@ import type {
   SummaryTableRow,
   SummaryWriteOptions
 } from '../types.js'
-import { CoreMeta } from './core-stubs.js'
+import { CoreMeta } from './core.js'
 
 /**
  * A class for creating and writing job step summaries.

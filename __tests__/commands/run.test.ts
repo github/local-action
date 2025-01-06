@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals'
 import * as core from '../../__fixtures__/core.js'
-import { ResetCoreMetadata } from '../../src/stubs/core-stubs.js'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
+import { ResetCoreMetadata } from '../../src/stubs/core.js'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env.js'
 
 const quibbleEsm = jest.fn().mockImplementation(() => {})
 const quibbleDefault = jest.fn().mockImplementation(() => {})

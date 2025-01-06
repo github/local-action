@@ -4,8 +4,8 @@ import type {
   CoreMetadata,
   InputOptions
 } from '../types.js'
-import { EnvMeta } from './env-stubs.js'
-import { Summary } from './summary-stubs.js'
+import { EnvMeta } from './env.js'
+import { Summary } from './summary.js'
 
 export const CORE_STUBS = {
   addPath,
