@@ -2,7 +2,7 @@ import { Command, InvalidArgumentError } from 'commander'
 import { dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { action } from './commands/run.js'
-import { EnvMeta } from './stubs/env-stubs.js'
+import { EnvMeta } from './stubs/env.js'
 
 /**
  * Creates the program for the CLI

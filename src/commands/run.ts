@@ -1,8 +1,9 @@
 import { config } from 'dotenv'
 import { createRequire } from 'module'
 import quibble from 'quibble'
-import { CORE_STUBS, CoreMeta } from '../stubs/core-stubs.js'
-import { EnvMeta } from '../stubs/env-stubs.js'
+import { ARTIFACT_STUBS } from '../stubs/artifact/artifact.js'
+import { CORE_STUBS, CoreMeta } from '../stubs/core.js'
+import { EnvMeta } from '../stubs/env.js'
 import type { Action } from '../types.js'
 import { printTitle } from '../utils/output.js'
 import { isESM } from '../utils/package.js'
@@ -134,6 +135,17 @@ export async function action(): Promise<void> {
       ),
       CORE_STUBS
     )
+    await quibble.esm(
+      path.resolve(
+        dirs.join(path.sep),
+        'node_modules',
+        '@actions',
+        'artifact',
+        'lib',
+        'artifact.js'
+      ),
+      ARTIFACT_STUBS
+    )
 
     // ESM actions need to be imported, not required.
     const { run } = await import(path.resolve(EnvMeta.entrypoint))
@@ -156,6 +168,17 @@ export async function action(): Promise<void> {
         'core.js'
       ),
       CORE_STUBS
+    )
+    quibble(
+      path.resolve(
+        dirs.join(path.sep),
+        'node_modules',
+        '@actions',
+        'artifact',
+        'lib',
+        'artifact.js'
+      ),
+      ARTIFACT_STUBS
     )
 
     // CJS actions need to be required, not imported.

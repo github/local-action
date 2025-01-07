@@ -5,7 +5,10 @@
     "allowJs": true
   },
   "include": [
+    "__fixtures__/stream/",
     "__fixtures__/core.ts",
+    "__fixtures__/crypto.ts",
+    "__fixtures__/fs.ts",
     "__fixtures__/tsconfig-paths.ts",
     "__tests__",
     "src",

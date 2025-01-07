@@ -1,12 +1,13 @@
 import { jest } from '@jest/globals'
-import { ResetCoreMetadata } from '../../src/stubs/core-stubs.js'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
+import { ResetCoreMetadata } from '../../src/stubs/core.js'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env.js'
 import type { EnvMetadata } from '../../src/types.js'
 
 /** Empty EnvMetadata Object */
 const empty: EnvMetadata = {
   actionFile: '',
   actionPath: '',
+  artifacts: [],
   dotenvFile: '',
   entrypoint: '',
   env: {},
@@ -37,6 +38,7 @@ describe('Env', () => {
       // Update the metadata
       EnvMeta.actionFile = 'action.yml'
       EnvMeta.actionPath = '/some/path'
+      EnvMeta.artifacts = [{ id: 1, name: 'test', size: 0 }]
       EnvMeta.dotenvFile = '.env'
       EnvMeta.entrypoint = 'main.ts'
       EnvMeta.env = { TEST: 'test' }
@@ -48,6 +50,7 @@ describe('Env', () => {
       expect(EnvMeta).toMatchObject({
         actionFile: 'action.yml',
         actionPath: '/some/path',
+        artifacts: [{ id: 1, name: 'test', size: 0 }],
         dotenvFile: '.env',
         entrypoint: 'main.ts',
         env: { TEST: 'test' },

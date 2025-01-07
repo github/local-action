@@ -28,8 +28,8 @@ import {
   toPosixPath,
   toWin32Path,
   warning
-} from '../../src/stubs/core-stubs.js'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env-stubs.js'
+} from '../../src/stubs/core.js'
+import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env.js'
 import type { CoreMetadata } from '../../src/types.js'
 
 /** Empty CoreMetadata Object */

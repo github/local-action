@@ -6,6 +6,7 @@ import type { EnvMetadata } from '../types.js'
 export const EnvMeta: EnvMetadata = {
   actionFile: '',
   actionPath: '',
+  artifacts: [],
   dotenvFile: '',
   entrypoint: '',
   env: {},
@@ -22,6 +23,7 @@ export const EnvMeta: EnvMetadata = {
 export function ResetEnvMetadata(): void {
   EnvMeta.actionFile = ''
   EnvMeta.actionPath = ''
+  EnvMeta.artifacts = []
   EnvMeta.dotenvFile = ''
   EnvMeta.entrypoint = ''
   EnvMeta.env = {}

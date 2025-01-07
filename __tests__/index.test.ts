@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
-import { ResetCoreMetadata } from '../src/stubs/core-stubs.js'
-import { ResetEnvMetadata } from '../src/stubs/env-stubs.js'
+import { ResetCoreMetadata } from '../src/stubs/core.js'
+import { ResetEnvMetadata } from '../src/stubs/env.js'
 
 const makeProgram = jest.fn().mockResolvedValue({
   parse: jest.fn()
