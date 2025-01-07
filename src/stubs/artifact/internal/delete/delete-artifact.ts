@@ -19,6 +19,7 @@ import { getUserAgentString } from '../shared/user-agent.js'
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export async function deleteArtifactPublic(
   artifactName: string,
   workflowRunId: number,

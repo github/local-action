@@ -18,6 +18,7 @@ import { getUserAgentString } from '../shared/user-agent.js'
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 const scrubQueryParameters = (url: string): string => {
   const parsed = new URL(url)
   parsed.search = ''
@@ -27,6 +28,7 @@ const scrubQueryParameters = (url: string): string => {
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 async function exists(path: string): Promise<boolean> {
   try {
     fs.accessSync(path)
@@ -41,6 +43,7 @@ async function exists(path: string): Promise<boolean> {
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 async function streamExtract(url: string, directory: string): Promise<void> {
   let retryCount = 0
   while (retryCount < 5) {
@@ -64,6 +67,7 @@ async function streamExtract(url: string, directory: string): Promise<void> {
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export async function streamExtractExternal(
   url: string,
   directory: string
@@ -111,6 +115,7 @@ export async function streamExtractExternal(
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export async function downloadArtifactPublic(
   artifactId: number,
   repositoryOwner: string,
@@ -208,6 +213,7 @@ export async function downloadArtifactInternal(
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 async function resolveOrCreateDirectory(
   downloadPath = getGitHubWorkspaceDir()
 ): Promise<string> {

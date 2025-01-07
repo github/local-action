@@ -1,6 +1,7 @@
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export function getUploadChunkSize(): number {
   return 8 * 1024 * 1024 // 8 MB Chunks
 }
@@ -8,6 +9,7 @@ export function getUploadChunkSize(): number {
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export function isGhes(): boolean {
   const ghUrl = new URL(
     process.env['GITHUB_SERVER_URL'] || 'https://github.com'

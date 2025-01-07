@@ -30,6 +30,7 @@ import { uploadArtifact } from './upload/upload-artifact.js'
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export interface ArtifactClient {
   /**
    * Uploads an artifact.

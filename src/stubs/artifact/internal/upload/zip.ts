@@ -1,6 +1,7 @@
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore file */
 
 import archiver from 'archiver'
 import { realpath } from 'fs/promises'

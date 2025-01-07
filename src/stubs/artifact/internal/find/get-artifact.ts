@@ -16,6 +16,7 @@ import { getRetryOptions } from './retry-options.js'
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export async function getArtifactPublic(
   artifactName: string,
   workflowRunId: number,

@@ -1,6 +1,7 @@
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore file */
 
 import { info } from '../../../core.js'
 

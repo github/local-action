@@ -17,6 +17,7 @@ const maxNumberOfPages = maximumArtifactCount / paginationCount
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 export async function listArtifactsPublic(
   workflowRunId: number,
   repositoryOwner: string,
@@ -132,6 +133,7 @@ export async function listArtifactsInternal(
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore next */
 function filterLatest(artifacts: Artifact[]): Artifact[] {
   artifacts.sort((a, b) => b.id - a.id)
   const latestArtifacts: Artifact[] = []

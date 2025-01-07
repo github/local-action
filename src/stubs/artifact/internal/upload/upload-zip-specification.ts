@@ -1,6 +1,7 @@
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore file */
 
 import * as fs from 'fs'
 import { normalize, resolve } from 'path'

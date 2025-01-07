@@ -1,6 +1,7 @@
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore file */
 
 import type { OctokitOptions } from '@octokit/core'
 import type { RequestRequestOptions } from '@octokit/types'

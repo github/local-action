@@ -1,6 +1,8 @@
 /**
  * @github/local-action Unmodified
  */
+/* istanbul ignore file */
+
 export class FilesNotFoundError extends Error {
   files: string[]
 
@@ -16,9 +18,6 @@ export class FilesNotFoundError extends Error {
   }
 }
 
-/**
- * @github/local-action Unmodified
- */
 export class InvalidResponseError extends Error {
   constructor(message: string) {
     super(message)
@@ -26,9 +25,6 @@ export class InvalidResponseError extends Error {
   }
 }
 
-/**
- * @github/local-action Unmodified
- */
 export class ArtifactNotFoundError extends Error {
   constructor(message = 'Artifact not found') {
     super(message)
@@ -36,9 +32,6 @@ export class ArtifactNotFoundError extends Error {
   }
 }
 
-/**
- * @github/local-action Unmodified
- */
 export class GHESNotSupportedError extends Error {
   constructor(
     message = '@actions/artifact v2.0.0+, upload-artifact@v4+ and download-artifact@v4+ are not currently supported on GHES.'
