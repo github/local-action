@@ -7,6 +7,7 @@ import type { EnvMetadata } from '../../src/types.js'
 const empty: EnvMetadata = {
   actionFile: '',
   actionPath: '',
+  artifacts: [],
   dotenvFile: '',
   entrypoint: '',
   env: {},
@@ -37,6 +38,7 @@ describe('Env', () => {
       // Update the metadata
       EnvMeta.actionFile = 'action.yml'
       EnvMeta.actionPath = '/some/path'
+      EnvMeta.artifacts = [{ id: 1, name: 'test', size: 0 }]
       EnvMeta.dotenvFile = '.env'
       EnvMeta.entrypoint = 'main.ts'
       EnvMeta.env = { TEST: 'test' }
@@ -48,6 +50,7 @@ describe('Env', () => {
       expect(EnvMeta).toMatchObject({
         actionFile: 'action.yml',
         actionPath: '/some/path',
+        artifacts: [{ id: 1, name: 'test', size: 0 }],
         dotenvFile: '.env',
         entrypoint: 'main.ts',
         env: { TEST: 'test' },

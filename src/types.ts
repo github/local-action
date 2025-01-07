@@ -1,4 +1,4 @@
-import { Artifact } from './stubs/artifact/artifact.js'
+import type { Artifact } from './stubs/artifact/internal/shared/interfaces.js'
 
 /** Environment Metadata */
 export type EnvMetadata = {
