@@ -1,11 +1,11 @@
 import { jest } from '@jest/globals'
 import * as core from '../../../../../__fixtures__/core.js'
 import * as fs from '../../../../../__fixtures__/fs.js'
-import { ResetCoreMetadata } from '../../../../../src/stubs/core.js'
+import { ResetCoreMetadata } from '../../../../../src/stubs/core/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../../src/stubs/env.js'
 
 jest.unstable_mockModule('fs', () => fs)
-jest.unstable_mockModule('../../../../../src/stubs/core.js', () => core)
+jest.unstable_mockModule('../../../../../src/stubs/core/core.js', () => core)
 
 const deleteArtifact = await import(
   '../../../../../src/stubs/artifact/internal/delete/delete-artifact.js'

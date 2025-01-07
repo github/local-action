@@ -5,7 +5,7 @@
 
 import type { OctokitOptions } from '@octokit/core'
 import type { RequestRequestOptions } from '@octokit/types'
-import * as core from '../../../core.js'
+import * as core from '../../../core/core.js'
 
 export type RetryOptions = {
   doNotRetry?: number[]

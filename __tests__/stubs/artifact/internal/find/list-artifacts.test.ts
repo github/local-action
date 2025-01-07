@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import * as core from '../../../../../__fixtures__/core.js'
-import { ResetCoreMetadata } from '../../../../../src/stubs/core.js'
+import { ResetCoreMetadata } from '../../../../../src/stubs/core/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../../src/stubs/env.js'
 
 jest.unstable_mockModule('@actions/core', () => core)

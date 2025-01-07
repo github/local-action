@@ -5,7 +5,7 @@ import path from 'path'
 import { finished } from 'stream/promises'
 import unzip from 'unzip-stream'
 import { EnvMeta } from '../../../../stubs/env.js'
-import * as core from '../../../core.js'
+import * as core from '../../../core/core.js'
 import { getGitHubWorkspaceDir } from '../shared/config.js'
 import { ArtifactNotFoundError } from '../shared/errors.js'
 import type {

@@ -6,7 +6,7 @@ import { retry } from '@octokit/plugin-retry'
 import fs from 'fs'
 import path from 'path'
 import { EnvMeta } from '../../../../stubs/env.js'
-import * as core from '../../../core.js'
+import * as core from '../../../core/core.js'
 import { getArtifactPublic } from '../find/get-artifact.js'
 import { getRetryOptions } from '../find/retry-options.js'
 import {

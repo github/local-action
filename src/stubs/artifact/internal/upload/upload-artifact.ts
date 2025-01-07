@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { finished } from 'stream/promises'
 import { EnvMeta } from '../../../../stubs/env.js'
-import * as core from '../../../core.ts'
+import * as core from '../../../core/core.ts'
 import { FilesNotFoundError, InvalidResponseError } from '../shared/errors.js'
 import type {
   Artifact,

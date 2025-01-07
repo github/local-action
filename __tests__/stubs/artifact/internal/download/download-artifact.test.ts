@@ -3,7 +3,7 @@ import * as core from '../../../../../__fixtures__/core.js'
 import * as crypto from '../../../../../__fixtures__/crypto.js'
 import * as fs from '../../../../../__fixtures__/fs.js'
 import * as stream from '../../../../../__fixtures__/stream/promises.js'
-import { ResetCoreMetadata } from '../../../../../src/stubs/core.js'
+import { ResetCoreMetadata } from '../../../../../src/stubs/core/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../../src/stubs/env.js'
 
 const readStream = {
@@ -14,7 +14,7 @@ const readStream = {
 jest.unstable_mockModule('crypto', () => crypto)
 jest.unstable_mockModule('fs', () => fs)
 jest.unstable_mockModule('stream/promises', () => stream)
-jest.unstable_mockModule('../../../../../src/stubs/core.js', () => core)
+jest.unstable_mockModule('../../../../../src/stubs/core/core.js', () => core)
 
 const downloadArtifact = await import(
   '../../../../../src/stubs/artifact/internal/download/download-artifact.js'

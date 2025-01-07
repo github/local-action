@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import { getGitHubWorkspaceDir } from '../../../../../src/stubs/artifact/internal/shared/config.js'
-import { ResetCoreMetadata } from '../../../../../src/stubs/core.js'
+import { ResetCoreMetadata } from '../../../../../src/stubs/core/core.js'
 import { ResetEnvMetadata } from '../../../../../src/stubs/env.js'
 
 describe('config', () => {

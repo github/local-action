@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import { Command } from 'commander'
-import { ResetCoreMetadata } from '../src/stubs/core.js'
+import { ResetCoreMetadata } from '../src/stubs/core/core.js'
 import { ResetEnvMetadata } from '../src/stubs/env.js'
 
 const action = jest.fn()
