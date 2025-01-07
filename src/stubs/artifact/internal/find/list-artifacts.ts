@@ -5,7 +5,7 @@ import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
 import { EnvMeta } from '../../../../stubs/env.js'
 import * as core from '../../../core.js'
-import { Artifact, ListArtifactsResponse } from '../shared/interfaces.js'
+import type { Artifact, ListArtifactsResponse } from '../shared/interfaces.js'
 import { getUserAgentString } from '../shared/user-agent.js'
 import { getRetryOptions } from './retry-options.js'
 

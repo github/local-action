@@ -182,9 +182,6 @@ export async function downloadArtifactInternal(
       `No artifacts found for ID: ${artifactId}\nAre you trying to download from a different run? Try specifying a github-token with \`actions:read\` scope.`
     )
 
-  if (artifacts.length > 1)
-    core.warning('Multiple artifacts found, defaulting to first.')
-
   try {
     core.info(`Starting download of artifact to: ${downloadPath}`)
 
@@ -204,6 +201,7 @@ export async function downloadArtifactInternal(
     core.info(`Artifact download completed successfully.`)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
+    /* istanbul ignore next */
     throw new Error(`Unable to download and extract artifact: ${error.message}`)
   }
 

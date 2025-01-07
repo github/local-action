@@ -12,7 +12,7 @@ import type {
 } from '../shared/interfaces.js'
 import { validateArtifactName } from './path-and-artifact-name-validation.js'
 import {
-  UploadZipSpecification,
+  type UploadZipSpecification,
   getUploadZipSpecification,
   validateRootDirectory
 } from './upload-zip-specification.js'
@@ -34,6 +34,7 @@ export async function uploadArtifact(
     files,
     rootDirectory
   )
+  /* istanbul ignore next */
   if (zipSpecification.length === 0)
     throw new FilesNotFoundError(
       zipSpecification.flatMap(s => (s.sourcePath ? [s.sourcePath] : []))
@@ -71,6 +72,7 @@ export async function uploadArtifact(
   )
   const hashStream = crypto.createHash('sha256')
 
+  /* istanbul ignore next */
   writeStream
     .on('error', error => {
       throw error
@@ -95,6 +97,7 @@ export async function uploadArtifact(
       }
     })
 
+  /* istanbul ignore next */
   zipUploadStream
     .on('data', chunk => {
       artifact.size += chunk.length

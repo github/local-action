@@ -28,9 +28,5 @@ export function isGhes(): boolean {
  */
 export function getGitHubWorkspaceDir(): string {
   // Default to current working directory
-  const ghWorkspaceDir = process.env['GITHUB_WORKSPACE'] || process.cwd()
-  if (!ghWorkspaceDir) {
-    throw new Error('Unable to get the GITHUB_WORKSPACE env variable')
-  }
-  return ghWorkspaceDir
+  return process.env['GITHUB_WORKSPACE'] || process.cwd()
 }
