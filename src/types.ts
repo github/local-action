@@ -1,3 +1,5 @@
+import { Artifact } from './stubs/artifact/artifact.js'
+
 /** Environment Metadata */
 export type EnvMetadata = {
   /** Path to the `action.yml` file */
@@ -5,6 +7,9 @@ export type EnvMetadata = {
 
   /** Path to the action directory */
   actionPath: string
+
+  /** Map of Action Artifacts */
+  artifacts: Artifact[]
 
   /** Path to the `.env` file */
   dotenvFile: string
