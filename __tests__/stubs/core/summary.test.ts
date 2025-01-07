@@ -2,8 +2,8 @@ import { jest } from '@jest/globals'
 import fs from 'fs'
 import { EOL } from 'os'
 import path from 'path'
-import { CoreMeta, ResetCoreMetadata } from '../../src/stubs/core.js'
-import { Summary } from '../../src/stubs/summary.js'
+import { CoreMeta, ResetCoreMetadata } from '../../../src/stubs/core/core.js'
+import { Summary } from '../../../src/stubs/core/summary.js'
 
 let summary: Summary = new Summary()
 

@@ -1,10 +1,8 @@
 import path from 'path'
-import type {
-  AnnotationProperties,
-  CoreMetadata,
-  InputOptions
-} from '../types.js'
-import { EnvMeta } from './env.js'
+import type { CoreMetadata } from '../../types.js'
+import { EnvMeta } from '../env.js'
+import { toPlatformPath, toPosixPath, toWin32Path } from './path-utils.js'
+import * as platform from './platform.js'
 import { Summary } from './summary.js'
 
 export const CORE_STUBS = {
@@ -22,6 +20,7 @@ export const CORE_STUBS = {
   info,
   isDebug,
   notice,
+  platform,
   saveState,
   setCommandEcho,
   setFailed,
@@ -29,6 +28,9 @@ export const CORE_STUBS = {
   setSecret,
   startGroup,
   summary: new Summary(),
+  toPlatformPath,
+  toPosixPath,
+  toWin32Path,
   warning
 }
 
@@ -73,11 +75,81 @@ export function ResetCoreMetadata(): void {
   CoreMeta.stepSummaryPath = process.env.GITHUB_STEP_SUMMARY ?? ''
 }
 
+/**
+ * @github/local-action Unmodified
+ *
+ * Optional properties that can be sent with annotation commands (notice, error,
+ * and warning).
+ */
+export type AnnotationProperties = {
+  /** A title for the annotation. */
+  title?: string
+
+  /** The path of the file for which the annotation should be created. */
+  file?: string
+
+  /** The start line for the annotation. */
+  startLine?: number
+
+  /**
+   * The end line for the annotation. Defaults to `startLine` when `startLine`
+   * is provided.
+   */
+  endLine?: number
+
+  /**
+   * The start column for the annotation. Cannot be sent when `startLine` and
+   * `endLine` are different values.
+   */
+  startColumn?: number
+
+  /**
+   * The end column for the annotation. Cannot be sent when `startLine` and
+   * `endLine` are different values. Defaults to `startColumn` when
+   * `startColumn` is provided.
+   */
+  endColumn?: number
+}
+
+/**
+ * @github/local-action Unmodified
+ *
+ * Options for getInput.
+ */
+export type InputOptions = {
+  /**
+   * Optional. Whether the input is required. If required and not present,
+   * will throw. Defaults to false.
+   */
+  required?: boolean
+
+  /**
+   * Optional. Whether leading/trailing whitespace will be trimmed for the
+   * input. Defaults to true.
+   */
+  trimWhitespace?: boolean
+}
+
+/**
+ * @github/local-action Modified
+ *
+ * Prepends to the PATH
+ *
+ * @param inputPath The path to prepend to the PATH
+ * @returns void
+ */
+export function addPath(inputPath: string): void {
+  EnvMeta.path = `${inputPath}${path.delimiter}${process.env.PATH}`
+  process.env.PATH = EnvMeta.path
+}
+
 //-----------------------------------------------------------------------
 // Variables
 //-----------------------------------------------------------------------
 
 /**
+ * @github/local-action Modified
+ *
  * Saves an environment variable
  *
  * @param name The name of the environment variable
@@ -101,6 +173,8 @@ export function exportVariable(
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Register a secret to mask it in logs
  *
  * @param secret The value to register
@@ -111,17 +185,8 @@ export function setSecret(secret: string): void {
 }
 
 /**
- * Prepends to the PATH
+ * @github/local-action Modified
  *
- * @param inputPath The path to prepend to the PATH
- * @returns void
- */
-export function addPath(inputPath: string): void {
-  EnvMeta.path = `${inputPath}${path.delimiter}${process.env.PATH}`
-  process.env.PATH = EnvMeta.path
-}
-
-/**
  * Gets the action input from the environment variables
  *
  * @param name The name of the input
@@ -146,6 +211,8 @@ export function getInput(name: string, options?: InputOptions): string {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Gets multiline inputs from environment variables
  *
  * @param name The name of the input
@@ -177,6 +244,8 @@ export function getMultilineInput(
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Gets boolean inputs from environment variables
  *
  * @param name The name of the input
@@ -209,6 +278,8 @@ export function getBooleanInput(name: string, options?: InputOptions): boolean {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Saves outputs and logs to the console
  *
  * @param name The name of the output
@@ -224,6 +295,8 @@ export function setOutput(name: string, value: string): void {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Enables or disables the echoing of commands into stdout.
  *
  * @todo Currently this does nothing.
@@ -240,6 +313,8 @@ export function setCommandEcho(enabled: boolean): void {
 //-----------------------------------------------------------------------
 
 /**
+ * @github/local-action Modified
+ *
  * Set the action status to failed
  *
  * @param message The message to log
@@ -257,6 +332,8 @@ export function setFailed(message: string | Error): void {
 //-----------------------------------------------------------------------
 
 /**
+ * @github/local-action New
+ *
  * Logs a message with optional annotations
  *
  * This is used internally by the other logging functions. It doesn't need to be
@@ -331,6 +408,8 @@ export function log(
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Returns true if debugging is enabled
  *
  * @returns Whether debugging is enabled
@@ -340,6 +419,8 @@ export function isDebug(): boolean {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Logs a debug message to the console
  *
  * E.g. `::debug::{message}`
@@ -355,6 +436,8 @@ export function debug(message: string): void {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Logs an error message to the console
  *
  * E.g. `::error file={name},line={line},endLine={endLine},title={title}::{message}`
@@ -364,7 +447,7 @@ export function debug(message: string): void {
  * @returns void
  */
 export function error(
-  message: string,
+  message: string | Error,
   properties: AnnotationProperties = {
     title: undefined,
     file: undefined,
@@ -374,10 +457,17 @@ export function error(
     endColumn: undefined
   }
 ): void {
-  log('error', message, properties)
+  log(
+    'error',
+    /* istanbul ignore next */
+    message instanceof Error ? message.toString() : message,
+    properties
+  )
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Logs a warning message to the console
  *
  * E.g. `::warning file={name},line={line},endLine={endLine},title={title}::{message}`
@@ -387,7 +477,7 @@ export function error(
  * @returns void
  */
 export function warning(
-  message: string,
+  message: string | Error,
   properties: AnnotationProperties = {
     title: undefined,
     file: undefined,
@@ -397,10 +487,17 @@ export function warning(
     endColumn: undefined
   }
 ): void {
-  log('warning', message, properties)
+  log(
+    'warning',
+    /* istanbul ignore next */
+    message instanceof Error ? message.toString() : message,
+    properties
+  )
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Logs a notice message to the console
  *
  * E.g. `::notice file={name},line={line},endLine={endLine},title={title}::{message}`
@@ -410,7 +507,7 @@ export function warning(
  * @returns void
  */
 export function notice(
-  message: string,
+  message: string | Error,
   properties: AnnotationProperties = {
     title: undefined,
     file: undefined,
@@ -420,10 +517,17 @@ export function notice(
     endColumn: undefined
   }
 ): void {
-  log('notice', message, properties)
+  log(
+    'notice',
+    /* istanbul ignore next */
+    message instanceof Error ? message.toString() : message,
+    properties
+  )
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Logs an info message to the console
  *
  * E.g. `::info::{message}`
@@ -436,6 +540,8 @@ export function info(message: string): void {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Starts a group of log lines
  *
  * @param title The title of the group
@@ -453,6 +559,8 @@ export function startGroup(title: string): void {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Ends a group of log lines
  *
  * @param title The title of the group
@@ -470,6 +578,8 @@ export function endGroup(): void {
 }
 
 /**
+ * @github/local-action Unmodified
+ *
  * Wraps an asynchronous function call in a group
  *
  * @param name The name of the group
@@ -497,6 +607,8 @@ export async function group<T>(name: string, fn: () => Promise<T>): Promise<T> {
 //-----------------------------------------------------------------------
 
 /**
+ * @github/local-action Modified
+ *
  * Save the state of the action.
  *
  * For testing purposes, this does nothing other than save it to the `state`
@@ -514,6 +626,8 @@ export function saveState(name: string, value: unknown): void {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Get the state for the action.
  *
  * For testing purposes, this does nothing other than return the value from the
@@ -527,6 +641,8 @@ export function getState(name: string): string {
 }
 
 /**
+ * @github/local-action Modified
+ *
  * Gets an OIDC token
  *
  * @todo Implement
@@ -537,41 +653,4 @@ export function getState(name: string): string {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getIDToken(aud?: string): Promise<string> {
   throw new Error('Not implemented')
-}
-
-//-----------------------------------------------------------------------
-// Path exports
-//-----------------------------------------------------------------------
-
-/**
- * Converts the given path to the posix form. On Windows, `\\` will be replaced
- * with `/`.
- *
- * @param pth Path to transform
- * @return Posix path
- */
-export function toPosixPath(pth: string): string {
-  return pth.replace(/[\\]/g, '/')
-}
-
-/**
- * Converts the given path to the win32 form. On Linux, `/` will be replaced
- * with `\\`.
- *
- * @param pth Path to transform
- * @return Win32 path
- */
-export function toWin32Path(pth: string): string {
-  return pth.replace(/[/]/g, '\\')
-}
-
-/**
- * Converts the given path to a platform-specific path. It does this by
- * replacing instances of `/` and `\` with the platform-specific path separator.
- *
- * @param pth The path to platformize
- * @return The platform-specific path
- */
-export function toPlatformPath(pth: string): string {
-  return pth.replace(/[/\\]/g, path.sep)
 }

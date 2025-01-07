@@ -5,7 +5,7 @@
 
 import * as fs from 'fs'
 import { normalize, resolve } from 'path'
-import * as core from '../../../core.js'
+import * as core from '../../../core/core.js'
 import { validateFilePath } from './path-and-artifact-name-validation.js'
 
 export interface UploadZipSpecification {

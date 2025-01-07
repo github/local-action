@@ -1,5 +1,4 @@
 import { jest } from '@jest/globals'
-import path from 'path'
 import {
   CoreMeta,
   ResetCoreMetadata,
@@ -24,13 +23,10 @@ import {
   setOutput,
   setSecret,
   startGroup,
-  toPlatformPath,
-  toPosixPath,
-  toWin32Path,
   warning
-} from '../../src/stubs/core.js'
-import { EnvMeta, ResetEnvMetadata } from '../../src/stubs/env.js'
-import type { CoreMetadata } from '../../src/types.js'
+} from '../../../src/stubs/core/core.js'
+import { EnvMeta, ResetEnvMetadata } from '../../../src/stubs/env.js'
+import type { CoreMetadata } from '../../../src/types.js'
 
 /** Empty CoreMetadata Object */
 const empty: CoreMetadata = {
@@ -595,34 +591,6 @@ describe('Core', () => {
     describe('getIDToken()', () => {
       it('Throws an error', async () => {
         await expect(getIDToken()).rejects.toThrow('Not implemented')
-      })
-    })
-
-    describe('toPosixPath()', () => {
-      it('Returns a POSIX path', () => {
-        expect(toPosixPath('C:\\Users\\mona\\Desktop')).toEqual(
-          'C:/Users/mona/Desktop'
-        )
-      })
-    })
-
-    describe('toWin32Path()', () => {
-      it('Returns a WIN32 path', () => {
-        expect(toWin32Path('C:/Users/mona/Desktop')).toEqual(
-          'C:\\Users\\mona\\Desktop'
-        )
-      })
-    })
-
-    describe('toPlatformPath()', () => {
-      it('Returns a platform-specific path', () => {
-        expect(toPlatformPath('C:/Users/mona/Desktop')).toEqual(
-          `C:${path.sep}Users${path.sep}mona${path.sep}Desktop`
-        )
-
-        expect(toPosixPath('C:\\Users\\mona\\Desktop')).toEqual(
-          `C:${path.sep}Users${path.sep}mona${path.sep}Desktop`
-        )
       })
     })
   })

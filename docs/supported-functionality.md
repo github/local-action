@@ -66,7 +66,7 @@ to the `local-action` command.
 | `toPosixPath()`       | :white_check_mark: |                                 |
 | `toWin32Path()`       | :white_check_mark: |                                 |
 | `toPlatformPath()`    | :white_check_mark: |                                 |
-| `platform.*`          | :no_entry:         |                                 |
+| `platform.*`          | :white_check_mark: |                                 |
 
 ## Under Investigation
 

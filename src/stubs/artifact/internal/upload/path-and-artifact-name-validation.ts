@@ -3,7 +3,7 @@
  */
 /* istanbul ignore file */
 
-import { info } from '../../../core.js'
+import { info } from '../../../core/core.js'
 
 /**
  * Invalid characters that cannot be in the artifact name or an uploaded file. Will be rejected

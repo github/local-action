@@ -14,6 +14,14 @@ actions can be run directly on your workstation.
 >
 > This tool currently only supports JavaScript and TypeScript actions!
 
+The following table tracks the versions of the GitHub Actions Toolkit that are
+currently implemented by this tool.
+
+| Package             | Version  |
+| ------------------- | -------- |
+| `@actions/artifact` | `2.2.0`  |
+| `@actions/core`     | `1.11.1` |
+
 ## v2 Changes
 
 As of version `2.0.0`, the `local-action` tool has been updated to require

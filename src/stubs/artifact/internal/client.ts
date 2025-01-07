@@ -1,4 +1,4 @@
-import { warning } from '../../core.js'
+import { warning } from '../../core/core.js'
 import {
   deleteArtifactInternal,
   deleteArtifactPublic

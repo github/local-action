@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import * as core from '../../../../__fixtures__/core.js'
-import { ResetCoreMetadata } from '../../../../src/stubs/core.js'
+import { ResetCoreMetadata } from '../../../../src/stubs/core/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../src/stubs/env.js'
 
 const isGhes = jest.fn().mockReturnValue(false)
@@ -58,7 +58,7 @@ jest.unstable_mockModule(
     deleteArtifactPublic
   })
 )
-jest.unstable_mockModule('../../../../src/stubs/core.js', () => core)
+jest.unstable_mockModule('../../../../src/stubs/core/core.js', () => core)
 
 const { DefaultArtifactClient } = await import(
   '../../../../src/stubs/artifact/internal/client.js'

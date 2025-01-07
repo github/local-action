@@ -1,12 +1,66 @@
 import fs from 'fs'
 import { EOL } from 'os'
 import path from 'path'
-import type {
-  SummaryImageOptions,
-  SummaryTableRow,
-  SummaryWriteOptions
-} from '../types.js'
 import { CoreMeta } from './core.js'
+
+/**
+ * @github/local-action Unmodified
+ *
+ * A row for a summary table.
+ */
+export type SummaryTableRow = (SummaryTableCell | string)[]
+
+/**
+ * @github/local-action Unmodified
+ */
+export interface SummaryTableCell {
+  /**
+   * Cell content
+   */
+  data: string
+  /**
+   * Render cell as header
+   * (optional) default: false
+   */
+  header?: boolean
+  /**
+   * Number of columns the cell extends
+   * (optional) default: '1'
+   */
+  colspan?: string
+  /**
+   * Number of rows the cell extends
+   * (optional) default: '1'
+   */
+  rowspan?: string
+}
+
+/**
+ * @github/local-action Unmodified
+ */
+export interface SummaryImageOptions {
+  /**
+   * The width of the image in pixels. Must be an integer without a unit.
+   * (optional)
+   */
+  width?: string
+  /**
+   * The height of the image in pixels. Must be an integer without a unit.
+   * (optional)
+   */
+  height?: string
+}
+
+/**
+ * @github/local-action Unmodified
+ */
+export interface SummaryWriteOptions {
+  /**
+   * Replace all existing content in summary file with buffer contents
+   * (optional) default: false
+   */
+  overwrite?: boolean
+}
 
 /**
  * A class for creating and writing job step summaries.
@@ -19,6 +73,8 @@ export class Summary {
   private _filePath?: string
 
   /**
+   * @github/local-action Unmodified
+   *
    * Initialize with an empty buffer.
    */
   constructor() {
@@ -26,6 +82,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Finds the summary file path from the environment. Rejects if the
    * environment variable is not set/empty or the file does not exist.
    *
@@ -70,6 +128,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Wraps content in the provided HTML tag and adds any specified attributes.
    *
    * @param tag HTML tag to wrap. Example: 'html', 'body', 'div', etc.
@@ -92,6 +152,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Writes the buffer to the summary file and empties the buffer. This can
    * append (default) or overwrite the file.
    *
@@ -117,6 +179,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Clears the buffer and summary file.
    *
    * @returns A promise that resolve to the Summary instance for chaining.
@@ -126,6 +190,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Returns the current buffer as a string.
    *
    * @returns Current buffer contents.
@@ -135,6 +201,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Returns `true` the buffer is empty, `false` otherwise.
    *
    * @returns Whether the buffer is empty.
@@ -144,6 +212,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Resets the buffer without writing to the summary file.
    *
    * @returns The Summary instance for chaining.
@@ -154,6 +224,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Adds raw text to the buffer.
    *
    * @param text The content to add.
@@ -167,6 +239,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Unmodified
+   *
    * Adds the operating system-specific `EOL` marker to the buffer.
    *
    * @returns The Summary instance for chaining.
@@ -176,6 +250,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a code block (\<code\>) to the buffer.
    *
    * @param code Content to render within the code block.
@@ -189,6 +265,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a list (\<li\>) element to the buffer.
    *
    * @param items List of items to render.
@@ -205,6 +283,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a table (\<table\>) element to the buffer.
    *
    * @param rows Table rows to render.
@@ -238,6 +318,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a details (\<details\>) element to the buffer.
    *
    * @param label Text for the \<summary\> element.
@@ -251,6 +333,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds an image (\<img\>) element to the buffer.
    *
    * @param src Path to the image to embed.
@@ -274,6 +358,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a heading (\<hX\>) element to the buffer.
    *
    * @param text Heading text to render.
@@ -295,6 +381,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a horizontal rule (\<hr\>) element to the buffer.
    *
    * @returns Summary instance for chaining.
@@ -304,6 +392,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a line break (\<br\>) to the buffer.
    *
    * @returns Summary instance for chaining.
@@ -313,6 +403,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds a block quote \<blockquote\> element to the buffer.
    *
    * @param text Quote text to render.
@@ -326,6 +418,8 @@ export class Summary {
   }
 
   /**
+   * @github/local-action Modified
+   *
    * Adds an anchor (\<a\>) element to the buffer.
    *
    * @param text Text content to render.
