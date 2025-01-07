@@ -178,6 +178,21 @@ describe('Core', () => {
         expect(getInput('test')).toEqual('test-lower')
       })
 
+      it('Gets default inputs', () => {
+        delete process.env.INPUT_TEST
+        delete process.env.INPUT_test
+
+        EnvMeta.inputs = {
+          test: {
+            description: 'test',
+            required: true,
+            default: 'default'
+          }
+        }
+
+        expect(getInput('test')).toEqual('default')
+      })
+
       it('Returns an empty string', () => {
         expect(getInput('test-input-missing')).toEqual('')
       })
@@ -214,6 +229,21 @@ describe('Core', () => {
         ])
       })
 
+      it('Gets default inputs', () => {
+        delete process.env.INPUT_TEST
+        delete process.env.INPUT_test
+
+        EnvMeta.inputs = {
+          test: {
+            description: 'test',
+            required: true,
+            default: 'default'
+          }
+        }
+
+        expect(getMultilineInput('test')).toEqual(['default'])
+      })
+
       it('Returns an empty list if the input is not found', () => {
         expect(getMultilineInput('test-input-missing')).toMatchObject([])
       })
@@ -244,6 +274,21 @@ describe('Core', () => {
 
         process.env.INPUT_test = 'false'
         expect(getBooleanInput('test')).toBeFalsy()
+      })
+
+      it('Gets default inputs', () => {
+        delete process.env.INPUT_TEST
+        delete process.env.INPUT_test
+
+        EnvMeta.inputs = {
+          test: {
+            description: 'test',
+            required: true,
+            default: 'false'
+          }
+        }
+
+        expect(getBooleanInput('test')).toEqual(false)
       })
 
       it('Throws an error if the input is required and not found', () => {

@@ -200,6 +200,11 @@ export function getInput(name: string, options?: InputOptions): string {
     process.env[`INPUT_${name.replace(/ /g, '_')}`] ||
     ''
 
+  // If the input is not present in the environment variables, it has not been
+  // set. In that case, check the default value.
+  if (input === '' && EnvMeta.inputs[name]?.default !== undefined)
+    input = EnvMeta.inputs[name].default.toString()
+
   // Throw an error if the input is required and not supplied
   if (options && options.required === true && input === '')
     throw new Error(`Input required and not supplied: ${name}`)
@@ -224,13 +229,21 @@ export function getMultilineInput(
   options?: InputOptions
 ): string[] {
   // Get input by name, split by newline, and filter out empty strings
-  const input: string[] = (
+  let input: string[] = (
     process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] ||
     process.env[`INPUT_${name.replace(/ /g, '_')}`] ||
     ''
   )
     .split('\n')
     .filter(x => x !== '')
+
+  // If the input is not present in the environment variables, it has not been
+  // set. In that case, check the default value.
+  if (input.length === 0 && EnvMeta.inputs[name]?.default !== undefined)
+    input = EnvMeta.inputs[name].default
+      .toString()
+      .split('\n')
+      .filter(x => x !== '')
 
   // Throw an error if the input is required and not supplied
   if (options && options.required === true && input.length === 0)
@@ -257,11 +270,16 @@ export function getBooleanInput(name: string, options?: InputOptions): boolean {
   // using proxyquire's `callThru()` option.
 
   // Get input by name, or an empty string if not found
-  const input: string = (
+  let input: string = (
     process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] ||
     process.env[`INPUT_${name.replace(/ /g, '_')}`] ||
     ''
   ).trim()
+
+  // If the input is not present in the environment variables, it has not been
+  // set. In that case, check the default value.
+  if (input === '' && EnvMeta.inputs[name]?.default !== undefined)
+    input = EnvMeta.inputs[name].default.trim()
 
   // Throw an error if the input is required and not supplied
   if (options && options.required === true && input === '')
