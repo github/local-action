@@ -24,10 +24,10 @@ const writeStream = {
   on: () => writeStream
 }
 
-jest.unstable_mockModule('@actions/core', () => core)
 jest.unstable_mockModule('crypto', () => crypto)
 jest.unstable_mockModule('fs', () => fs)
 jest.unstable_mockModule('stream/promises', () => stream)
+jest.unstable_mockModule('../../../../../src/stubs/core.js', () => core)
 jest.unstable_mockModule(
   '../../../../../src/stubs/artifact/internal/upload/upload-zip-specification.js',
   () => ({

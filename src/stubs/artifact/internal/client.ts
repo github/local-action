@@ -14,7 +14,7 @@ import {
 } from './find/list-artifacts.js'
 import { isGhes } from './shared/config.js'
 import { GHESNotSupportedError } from './shared/errors.js'
-import {
+import type {
   DeleteArtifactResponse,
   DownloadArtifactOptions,
   DownloadArtifactResponse,

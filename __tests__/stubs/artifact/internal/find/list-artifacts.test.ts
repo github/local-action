@@ -1,6 +1,9 @@
 import { jest } from '@jest/globals'
+import * as core from '../../../../../__fixtures__/core.js'
 import { ResetCoreMetadata } from '../../../../../src/stubs/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../../src/stubs/env.js'
+
+jest.unstable_mockModule('@actions/core', () => core)
 
 const listArtifacts = await import(
   '../../../../../src/stubs/artifact/internal/find/list-artifacts.js'

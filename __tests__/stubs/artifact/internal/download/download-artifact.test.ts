@@ -11,10 +11,10 @@ const readStream = {
   pipe: () => readStream
 }
 
-jest.unstable_mockModule('@actions/core', () => core)
 jest.unstable_mockModule('crypto', () => crypto)
 jest.unstable_mockModule('fs', () => fs)
 jest.unstable_mockModule('stream/promises', () => stream)
+jest.unstable_mockModule('../../../../../src/stubs/core.js', () => core)
 
 const downloadArtifact = await import(
   '../../../../../src/stubs/artifact/internal/download/download-artifact.js'
