@@ -28,5 +28,6 @@ export function isGhes(): boolean {
  */
 export function getGitHubWorkspaceDir(): string {
   // Default to current working directory
+  /* istanbul ignore next */
   return process.env['GITHUB_WORKSPACE'] || process.cwd()
 }
