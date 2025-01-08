@@ -299,9 +299,9 @@ describe('Core', () => {
           test: {
             description: 'test',
             required: true,
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            default: false
+            // while the spec says that the default value should be a string
+            // the yaml parser will pass an unquoted `true` or `false` through as a boolean
+            default: false as any // eslint-disable-line @typescript-eslint/no-explicit-any
           }
         }
 
@@ -315,12 +315,14 @@ describe('Core', () => {
           })
         ).toThrow()
       })
-      it('Does NOT throws an error if the input is not required and not found', () => {
+      it('Throws an error if the input is NOT required and not found', () => {
+        // ideally this would not throw - and either coerce to false or return undefined
+        // but this will require upstream changes. See discussion at https://github.com/github/local-action/pull/140
         expect(() =>
           getBooleanInput('test-input-missing', {
             required: false
           })
-        ).not.toThrow()
+        ).toThrow()
       })
 
       it('Returns true or false for valid YAML boolean values', () => {

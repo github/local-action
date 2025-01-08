@@ -265,10 +265,7 @@ export function getMultilineInput(
  * @param options The options for the input
  * @returns The value of the input
  */
-export function getBooleanInput(
-  name: string,
-  options?: InputOptions
-): boolean | undefined {
+export function getBooleanInput(name: string, options?: InputOptions): boolean {
   // This is effectively a copy of the actual `getInput` function, instead of
   // using proxyquire's `callThru()` option.
 
@@ -291,7 +288,7 @@ export function getBooleanInput(
     if (options && options.required === true) {
       throw new Error(`Input required and not supplied: ${name}`)
     } else {
-      return undefined
+      // here is where we would ideally return either `false` or `undefined` but we'll need upstream changes
     }
 
   if (['true', 'True', 'TRUE'].includes(input)) return true
