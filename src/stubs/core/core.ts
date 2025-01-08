@@ -278,12 +278,18 @@ export function getBooleanInput(name: string, options?: InputOptions): boolean {
 
   // If the input is not present in the environment variables, it has not been
   // set. In that case, check the default value.
-  if (input === '' && EnvMeta.inputs[name]?.default !== undefined)
-    input = EnvMeta.inputs[name].default.trim()
+  if (input === '' && EnvMeta.inputs[name]?.default !== undefined) {
+    // we call .toString in case its a boolean
+    input = EnvMeta.inputs[name].default.toString().trim()
+  }
 
   // Throw an error if the input is required and not supplied
-  if (options && options.required === true && input === '')
-    throw new Error(`Input required and not supplied: ${name}`)
+  if (input === '')
+    if (options && options.required === true) {
+      throw new Error(`Input required and not supplied: ${name}`)
+    } else {
+      // here is where we would ideally return either `false` or `undefined` but we'll need upstream changes
+    }
 
   if (['true', 'True', 'TRUE'].includes(input)) return true
   if (['false', 'False', 'FALSE'].includes(input)) return false

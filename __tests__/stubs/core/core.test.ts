@@ -291,10 +291,36 @@ describe('Core', () => {
         expect(getBooleanInput('test')).toEqual(false)
       })
 
+      it('Gets default inputs - with an unquoted boolean', () => {
+        delete process.env.INPUT_TEST
+        delete process.env.INPUT_test
+
+        EnvMeta.inputs = {
+          test: {
+            description: 'test',
+            required: true,
+            // while the spec says that the default value should be a string
+            // the yaml parser will pass an unquoted `true` or `false` through as a boolean
+            default: false as any // eslint-disable-line @typescript-eslint/no-explicit-any
+          }
+        }
+
+        expect(getBooleanInput('test')).toEqual(false)
+      })
+
       it('Throws an error if the input is required and not found', () => {
         expect(() =>
           getBooleanInput('test-input-missing', {
             required: true
+          })
+        ).toThrow()
+      })
+      it('Throws an error if the input is NOT required and not found', () => {
+        // ideally this would not throw - and either coerce to false or return undefined
+        // but this will require upstream changes. See discussion at https://github.com/github/local-action/pull/140
+        expect(() =>
+          getBooleanInput('test-input-missing', {
+            required: false
           })
         ).toThrow()
       })
