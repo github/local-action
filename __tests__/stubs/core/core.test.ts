@@ -291,12 +291,36 @@ describe('Core', () => {
         expect(getBooleanInput('test')).toEqual(false)
       })
 
+      it('Gets default inputs - with an unquoted boolean', () => {
+        delete process.env.INPUT_TEST
+        delete process.env.INPUT_test
+
+        EnvMeta.inputs = {
+          test: {
+            description: 'test',
+            required: true,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            default: false
+          }
+        }
+
+        expect(getBooleanInput('test')).toEqual(false)
+      })
+
       it('Throws an error if the input is required and not found', () => {
         expect(() =>
           getBooleanInput('test-input-missing', {
             required: true
           })
         ).toThrow()
+      })
+      it('Does NOT throws an error if the input is not required and not found', () => {
+        expect(() =>
+          getBooleanInput('test-input-missing', {
+            required: false
+          })
+        ).not.toThrow()
       })
 
       it('Returns true or false for valid YAML boolean values', () => {
