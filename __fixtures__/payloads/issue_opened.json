@@ -1,0 +1,33 @@
+{
+  "action": "opened",
+  "issue": {
+    "assignee": {
+      "login": "ncalteen"
+    },
+    "assignees": [
+      {
+        "login": "ncalteen"
+      }
+    ],
+    "body": "This is an issue!",
+    "number": 1,
+    "state": "open",
+    "title": "New Issue",
+    "user": {
+      "login": "ncalteen"
+    }
+  },
+  "organization": {
+    "login": "github"
+  },
+  "repository": {
+    "full_name": "github/local-action",
+    "name": "local-action",
+    "owner": {
+      "login": "github"
+    }
+  },
+  "sender": {
+    "login": "ncalteen"
+  }
+}

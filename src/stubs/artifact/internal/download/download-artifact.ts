@@ -1,4 +1,3 @@
-import { getOctokit } from '@actions/github'
 import * as httpClient from '@actions/http-client'
 import fs from 'fs'
 import path from 'path'
@@ -6,6 +5,7 @@ import { finished } from 'stream/promises'
 import unzip from 'unzip-stream'
 import { EnvMeta } from '../../../../stubs/env.js'
 import * as core from '../../../core/core.js'
+import { getOctokit } from '../../../github/github.js'
 import { getGitHubWorkspaceDir } from '../shared/config.js'
 import { ArtifactNotFoundError } from '../shared/errors.js'
 import type {

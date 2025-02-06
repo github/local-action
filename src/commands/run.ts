@@ -4,6 +4,8 @@ import quibble from 'quibble'
 import { ARTIFACT_STUBS } from '../stubs/artifact/artifact.js'
 import { CORE_STUBS, CoreMeta } from '../stubs/core/core.js'
 import { EnvMeta } from '../stubs/env.js'
+import { Context } from '../stubs/github/context.js'
+import { getOctokit } from '../stubs/github/github.ts'
 import type { Action } from '../types.js'
 import { printTitle } from '../utils/output.js'
 import { isESM } from '../utils/package.js'
@@ -129,6 +131,23 @@ export async function action(): Promise<void> {
         dirs.join(path.sep),
         'node_modules',
         '@actions',
+        'github',
+        'lib',
+        'github.js'
+      ),
+      {
+        getOctokit,
+        // The context object needs to be created **after** the dotenv file is
+        // loaded. Otherwise, the GITHUB_* environment variables will not be
+        // available to the action.
+        context: new Context()
+      }
+    )
+    await quibble.esm(
+      path.resolve(
+        dirs.join(path.sep),
+        'node_modules',
+        '@actions',
         'core',
         'lib',
         'core.js'
@@ -158,6 +177,23 @@ export async function action(): Promise<void> {
 
     await run()
   } else {
+    quibble(
+      path.resolve(
+        dirs.join(path.sep),
+        'node_modules',
+        '@actions',
+        'github',
+        'lib',
+        'github.js'
+      ),
+      {
+        getOctokit,
+        // The context object needs to be created **after** the dotenv file is
+        // loaded. Otherwise, the GITHUB_* environment variables will not be
+        // available to the action.
+        context: new Context()
+      }
+    )
     quibble(
       path.resolve(
         dirs.join(path.sep),
