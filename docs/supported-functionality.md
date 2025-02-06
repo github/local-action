@@ -68,6 +68,15 @@ to the `local-action` command.
 | `toPlatformPath()`    | :white_check_mark: |                                 |
 | `platform.*`          | :white_check_mark: |                                 |
 
+## [`@actions/github`](https://github.com/actions/toolkit/tree/main/packages/github)
+
+The stubbed version of `@actions/github` functions the same as the real package.
+However, the functionality is stubbed in order to ensure that all needed
+environment variables are pulled from the `.env` file passed to the
+`local-action` command. Otherwise, things like `github.context.eventName` will
+be `undefined`. For more information, see
+[#149](https://github.com/github/local-action/issues/149).
+
 ## Under Investigation
 
 The following packages are under investigation for how to integrate with
@@ -85,7 +94,6 @@ this doesn't work correctly, please
 [open an issue!](https://github.com/github/local-action/issues/new)
 
 - [`@actions/exec`](https://github.com/actions/toolkit/tree/main/packages/exec)
-- [`@actions/github`](https://github.com/actions/toolkit/tree/main/packages/github)
 - [`@actions/glob`](https://github.com/actions/toolkit/tree/main/packages/glob)
 - [`@actions/http-client`](https://github.com/actions/toolkit/tree/main/packages/http-client)
 - [`@actions/io`](https://github.com/actions/toolkit/tree/main/packages/io)
