@@ -122,6 +122,15 @@ export async function action(): Promise<void> {
   if (dirs.length === 0)
     throw new Error('Could not find node_modules directory')
 
+  // The entrypoint is OS-specific. On Windows, it has to start with a leading
+  // slash, then the drive letter, followed by the rest of the path. In both
+  // cases, the path separators are converted to forward slashes.
+  /* istanbul ignore next */
+  const osEntrypoint =
+    process.platform !== 'win32'
+      ? path.resolve(EnvMeta.entrypoint)
+      : '/' + path.resolve(EnvMeta.entrypoint.replaceAll(path.sep, '/'))
+
   // Stub the `@actions/toolkit` libraries and run the action. Quibble and
   // local-action require a different approach depending on if the called action
   // is written in ESM.
@@ -167,7 +176,7 @@ export async function action(): Promise<void> {
     )
 
     // ESM actions need to be imported, not required.
-    const { run } = await import(path.resolve(EnvMeta.entrypoint))
+    const { run } = await import(osEntrypoint)
 
     // Check if the required path is a function.
     if (typeof run !== 'function')
@@ -218,7 +227,7 @@ export async function action(): Promise<void> {
     )
 
     // CJS actions need to be required, not imported.
-    const { run } = require(path.resolve(EnvMeta.entrypoint))
+    const { run } = require(osEntrypoint)
 
     // Check if the required path is a function.
     if (typeof run !== 'function')
