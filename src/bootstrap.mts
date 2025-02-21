@@ -8,35 +8,38 @@
  */
 import('fs').then(({ existsSync, readFileSync }) => {
   import('tsconfig-paths').then(({ loadConfig, register }) => {
-    if (
-      process.env.TARGET_ACTION_PATH &&
-      process.env.TARGET_ACTION_PATH !== ''
-    ) {
-      // Check if the action has a `tsconfig.json` file.
-      if (existsSync(`${process.env.TARGET_ACTION_PATH}/tsconfig.json`)) {
-        // Load the `tsconfig.json` from the action directory.
-        const actionTsConfig = JSON.parse(
-          readFileSync(
-            `${process.env.TARGET_ACTION_PATH}/tsconfig.json`,
-            'utf-8'
+    import('comment-json').then(({ parse }) => {
+      if (
+        process.env.TARGET_ACTION_PATH &&
+        process.env.TARGET_ACTION_PATH !== ''
+      ) {
+        // Check if the action has a `tsconfig.json` file.
+        if (existsSync(`${process.env.TARGET_ACTION_PATH}/tsconfig.json`)) {
+          // Load the `tsconfig.json` from the action directory.
+          const actionTsConfig = parse(
+            readFileSync(
+              `${process.env.TARGET_ACTION_PATH}/tsconfig.json`,
+              'utf-8'
+            )
           )
-        )
 
-        // Load the current `tsconfig.json` from the root of this directory.
-        loadConfig(__dirname)
+          // Load the current `tsconfig.json` from the root of this directory.
+          loadConfig(__dirname)
 
-        // Get the paths from the action's `tsconfig.json`, if any.
-        const paths = actionTsConfig.compilerOptions.paths ?? {}
+          // Get the paths from the action's `tsconfig.json`, if any.
+          // @ts-expect-error The `compilerOptions` property is not typed.
+          const paths = actionTsConfig.compilerOptions?.paths ?? {}
 
-        // Add any path mappings from the imported action. Replace the base URL with
-        // the target action path.
-        // @todo Should this take into account the previous `baseUrl` value?
-        register({
-          baseUrl: process.env.TARGET_ACTION_PATH,
-          paths,
-          addMatchAll: true
-        })
+          // Add any path mappings from the imported action. Replace the base URL with
+          // the target action path.
+          // @todo Should this take into account the previous `baseUrl` value?
+          register({
+            baseUrl: process.env.TARGET_ACTION_PATH,
+            paths,
+            addMatchAll: true
+          })
+        }
       }
-    }
+    })
   })
 })

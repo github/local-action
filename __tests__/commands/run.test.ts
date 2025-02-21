@@ -73,6 +73,18 @@ describe('Command: run', () => {
         `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
       )
     })
+
+    it('TypeScript ESM Action: tsconfig comments', async () => {
+      EnvMeta.actionFile = `./__fixtures__/typescript-esm/tsconfig-comments/action.yml`
+      EnvMeta.actionPath = `./__fixtures__/typescript-esm/tsconfig-comments`
+      EnvMeta.dotenvFile = `./__fixtures__/typescript-esm/tsconfig-comments/.env.fixture`
+      EnvMeta.entrypoint = `./__fixtures__/typescript-esm/tsconfig-comments/src/main.ts`
+
+      await expect(action()).resolves.toBeUndefined()
+
+      expect(core.setFailed).not.toHaveBeenCalled()
+      expect(quibbleEsm).toHaveBeenCalled()
+    })
   })
 
   describe('JavaScript', () => {
