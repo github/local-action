@@ -50,6 +50,7 @@ EXCLUDED_DIRECTORIES:
   - megalinter-reports
   - node_modules
   - reports
+  - __fixtures__/typescript-esm/tsconfig-comments
 
 # If set to true, MegaLinter fails if a linter is missing in the selected flavor
 FAIL_IF_MISSING_LINTER_IN_FLAVOR: false
