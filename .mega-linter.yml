@@ -21,6 +21,7 @@ DISABLE_ERRORS: false
 # https://megalinter.io/latest/config-activation/
 DISABLE_LINTERS:
   - JAVASCRIPT_STANDARD
+  - JSON_JSONLINT
   - JSON_V8R
   - MARKDOWN_MARKDOWN_LINK_CHECK
   - MARKDOWN_MARKDOWN_TABLE_FORMATTER
@@ -50,7 +51,6 @@ EXCLUDED_DIRECTORIES:
   - megalinter-reports
   - node_modules
   - reports
-  - __fixtures__/typescript-esm/tsconfig-comments
 
 # If set to true, MegaLinter fails if a linter is missing in the selected flavor
 FAIL_IF_MISSING_LINTER_IN_FLAVOR: false
