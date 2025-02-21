@@ -1,7 +1,7 @@
 {
   "name": "@github/local-action",
   "description": "Local Debugging for GitHub Actions",
-  "version": "2.6.2",
+  "version": "2.6.3",
   "type": "module",
   "author": "Nick Alteen <ncalteen@github.com>",
   "private": false,
@@ -51,6 +51,7 @@
     "archiver": "^7.0.1",
     "chalk": "^5.3.0",
     "commander": "^13.0.0",
+    "comment-json": "^4.2.5",
     "dotenv": "^16.4.5",
     "figlet": "^1.8.0",
     "quibble": "^0.9.2",
