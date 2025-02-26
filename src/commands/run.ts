@@ -59,7 +59,10 @@ export async function action(): Promise<void> {
 
   // Load the environment file
   // @todo Load this into EnvMeta directly? What about secrets...
-  config({ path: path.resolve(process.cwd(), EnvMeta.dotenvFile) })
+  config({
+    path: path.resolve(process.cwd(), EnvMeta.dotenvFile),
+    override: true
+  })
 
   // Load action settings
   CoreMeta.stepDebug = process.env.ACTIONS_STEP_DEBUG === 'true'
