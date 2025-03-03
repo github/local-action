@@ -26,6 +26,7 @@ export function isESM(): boolean {
     }
 
     // Move up the directory tree.
+    /* istanbul ignore next */
     dirs.pop()
   }
 

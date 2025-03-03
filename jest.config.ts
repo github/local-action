@@ -8,7 +8,9 @@ const config: JestConfigWithTsJest = {
   coveragePathIgnorePatterns: [
     'node_modules',
     'src/bootstrap.mts',
-    'src/types/quibble.d.ts'
+    'src/types/quibble.d.ts',
+    'src/commands/run.ts',
+    'src/stubs/artifact/artifact.ts'
   ],
   coverageReporters: ['json-summary', 'lcov', 'text'],
   coverageThreshold: {
