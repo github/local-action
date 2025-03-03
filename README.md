@@ -22,18 +22,9 @@ currently implemented by this tool.
 | `@actions/artifact` | `2.2.0`  |
 | `@actions/core`     | `1.11.1` |
 
-## v2 Changes
+## Changelog
 
-As of version `2.0.0`, the `local-action` tool has been updated to require
-**Node.js v20.6.0** or higher. This is necessary to support ESM loaders to
-override dependencies in the GitHub Actions Toolkit.
-
-## v1 Changes
-
-With the release of `v1.0.0`, there was a need to switch from
-[`ts-node`](https://www.npmjs.com/package/ts-node) to
-[`tsx`](https://www.npmjs.com/package/tsx). However, the bundled version of
-`tsx` is being used, so you should no longer need to install either :grinning:
+See the [CHANGELOG](./CHANGELOG.md) for a complete list of changes.
 
 ## Prerequisites
 
