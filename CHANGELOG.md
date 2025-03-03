@@ -2,7 +2,7 @@
 
 ## v3
 
-This version adds **experimental** support for [pnmp](https://pnpm.io/) and
+This version adds **experimental** support for [pnpm](https://pnpm.io/) and
 [yarn](https://yarnpkg.com/).
 
 Depending on the package manager and version, the invocation of the `tsx`
@@ -11,7 +11,7 @@ command that drives `@github/local-action` is invoked differently.
 | Package Manager | Version | Command     |
 | --------------- | ------- | ----------- |
 | `npm`           | Any     | `npm exec`  |
-| `pnmp`          | Any     | `pnpm dlx`  |
+| `pnpm`          | Any     | `pnpm dlx`  |
 | `yarn`          | `<= 3`  | `yarn exec` |
 | `yarn`          | `>= 4`  | `yarn dlx`  |
 
