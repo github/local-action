@@ -42,8 +42,9 @@ function entrypoint() {
     // Disable experimental warnings.
     process.env.NODE_NO_WARNINGS = 1
 
-    // Start building the command to run local-action.
-    let command = `npx tsx "${path.join(packagePath, 'src', 'index.ts')}"`
+    // Start building the command to run local-action. The package manager will
+    // be prepended to this later.
+    let command = `tsx "${path.join(packagePath, 'src', 'index.ts')}"`
 
     // If there are no input arguments, or the only argument is the help flag,
     // display the help message.
@@ -72,6 +73,56 @@ function entrypoint() {
 
       // Append the argument to the command.
       command += ` ${arg}`
+    }
+
+    // Starting in the TARGET_ACTION_PATH, locate the package.json file and
+    // determine the package manager.
+    const actionPackageDirs = path
+      .resolve(process.env.TARGET_ACTION_PATH)
+      .split(path.sep)
+
+    while (actionPackageDirs.length > 0) {
+      const actionPackage = actionPackageDirs.join(path.sep)
+
+      // Check if the package.json file exists.
+      if (fs.existsSync(path.join(actionPackage, 'package.json'))) {
+        // Read the package.json file.
+        const json = JSON.parse(
+          fs.readFileSync(path.join(actionPackage, 'package.json')),
+          'utf8'
+        )
+
+        // If the package.json file has a packageManager field, set the
+        // command to use that package manager.
+        if (json.packageManager?.startsWith('pnpm')) {
+          process.env.NODE_PACKAGE_MANAGER = 'pnpm'
+          command = 'pnpm dlx ' + command
+        } else if (json.packageManager?.startsWith('yarn')) {
+          process.env.NODE_PACKAGE_MANAGER = 'yarn'
+
+          // The older version of yarn does not support `yarn dlx`, so we fall
+          // back to `yarn exec`.
+          if (json.packageManager.startsWith('yarn@1'))
+            command = 'yarn exec ' + command
+          else command = 'yarn dlx ' + command
+        } else {
+          // Otherwise, fall back to npm.
+          process.env.NODE_PACKAGE_MANAGER = 'npm'
+          command = 'npm exec ' + command
+        }
+
+        break
+      }
+
+      // Remove the last directory from the path.
+      actionPackageDirs.pop()
+    }
+
+    if (actionPackage.length === 0) {
+      console.error(
+        'No package.json file found in the action directory or any parent directories.'
+      )
+      process.exit(1)
     }
 
     // Run the command.
