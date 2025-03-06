@@ -118,8 +118,8 @@ function entrypoint() {
       actionPackageDirs.pop()
     }
 
-    if (actionPackage.length === 0) {
-      console.error(
+    if (actionPackageDirs.length === 0) {
+      console.log(
         'No package.json file found in the action directory or any parent directories.'
       )
       process.exit(1)
