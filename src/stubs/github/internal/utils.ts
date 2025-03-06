@@ -50,7 +50,8 @@ export function getProxyAgentDispatcher(
 ): ProxyAgent | undefined {
   const hc = new httpClient.HttpClient()
 
-  return hc.getAgentDispatcher(destinationUrl)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return hc.getAgentDispatcher(destinationUrl) as any
 }
 
 /**
