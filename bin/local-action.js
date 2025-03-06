@@ -29,10 +29,8 @@ function entrypoint() {
     // need to be double-escaped so the path resolves correctly.
     const bootstrapPath =
       process.platform === 'win32'
-        ? path
-            .join(packagePath, 'src', 'bootstrap.mts')
-            .replaceAll('\\', '\\\\')
-        : path.join(packagePath, 'src', 'bootstrap.mts')
+        ? path.join(packagePath, 'src', 'bootstrap.ts').replaceAll('\\', '\\\\')
+        : path.join(packagePath, 'src', 'bootstrap.ts')
 
     // Require the bootstrap script in NODE_OPTIONS.
     process.env.NODE_OPTIONS = process.env.NODE_OPTIONS

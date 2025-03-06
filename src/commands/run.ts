@@ -32,6 +32,8 @@ export async function action(): Promise<void> {
     yellow: (msg: string) => console.log(chalk.yellow(msg))
   }
 
+  const actionType = isESM() ? 'esm' : 'cjs'
+
   // Output the configuration
   printTitle(CoreMeta.colors.cyan, 'Configuration')
   console.log()
@@ -134,11 +136,23 @@ export async function action(): Promise<void> {
       'No package.json file found in the action directory or any parent directories.'
     )
 
-  // If the package manager is `npm` or `pnpm`, then a `node_modules` directory
-  // should exist somewhere in the project. If the package manager is `yarn`,
-  // then we need to first check for `node_modules` (for non-PnP versions), or
-  // we can try unplugging the dependencies from the yarn cache.
-  if (process.env.NODE_PACKAGE_MANAGER === 'npm') {
+  // If the package manager is `npm`, we can assume there is a `node_modules`
+  // directory somewhere in the project.
+  //
+  // Actions that use `pnpm` will also have a `node_modules` directory, however
+  // in testing it seems that the `node_modules/@actions/<pkg>` dependency can
+  // only be properly stubbed for CJS actions. For ESM actions, this should
+  // instead point to the pnpm cache.
+  //
+  // If the package manager is `yarn`, then we need to first check for
+  // `node_modules` (for non-PnP versions), or we can try unplugging the
+  // dependencies from the yarn cache.
+  if (
+    process.env.NODE_PACKAGE_MANAGER === 'npm' ||
+    (process.env.NODE_PACKAGE_MANAGER === 'pnpm' && actionType === 'cjs') ||
+    (process.env.NODE_PACKAGE_MANAGER === 'yarn' &&
+      fs.existsSync(path.join(EnvMeta.actionPath, 'node_modules')))
+  ) {
     /**
      * Get the path in the npm cache for each package.
      * `npm ls <package> --json --long`
@@ -179,7 +193,10 @@ export async function action(): Promise<void> {
     Object.keys(stubs).forEach(key => {
       stubs[key as keyof typeof stubs].base = npmList.dependencies?.[key]?.path
     })
-  } else if (process.env.NODE_PACKAGE_MANAGER === 'pnpm') {
+  } else if (
+    process.env.NODE_PACKAGE_MANAGER === 'pnpm' &&
+    actionType === 'esm'
+  ) {
     /**
      * Get the path in the pnpm cache for each package.
      * `pnpm list <package> --json`
@@ -217,87 +234,38 @@ export async function action(): Promise<void> {
         pnpmList[0].dependencies?.[key]?.path
     })
   } else if (process.env.NODE_PACKAGE_MANAGER === 'yarn') {
-    // Depending on the version and configuration for yarn, a `node_modules`
-    // directory may or may not exist. Also, the CLI commands are different
-    // across versions for getting the path to a dependency.
+    // Note: The CLI commands are different across yarn versions for getting the
+    // path to a dependency.
 
-    // First check if a `node_modules` directory exists in the target action
-    // path (or a parent path).
-    if (fs.existsSync(path.join(EnvMeta.actionPath, 'node_modules'))) {
-      // Get the path in the npm cache for each package. This will work if there
-      // is a `node_modules` directory (`yarn list` does not provide the path).
-      // `npm ls <package> --json --long`
+    // At this point, it's likely yarn is running in PnP mode.
+    printTitle(CoreMeta.colors.magenta, 'Yarn: Unplugging Dependencies')
+    console.log()
 
-      /**
-       * Example Output
-       *
-       * {
-       *   "path": "<workspace>/typescript-action",
-       *   "_dependencies": {
-       *     "@actions/core": "^1.11.1",
-       *     "@actions/github": "^6.0.0"
-       *   },
-       *   "dependencies": {
-       *     "@actions/core": {
-       *       "path": "<workspace>/typescript-action/node_modules/@actions/core",
-       *     },
-       *     "@actions/github": {
-       *       "path": "<workspace>/typescript-action/node_modules/@actions/github",
-       *     }
-       *   }
-       * }
-       */
-      const npmList = JSON.parse(
-        execSync(
-          `npm ls ${Object.keys(stubs).join(' ')} --json --long`
-        ).toString()
-      ) as {
-        path: string
-        dependencies?: {
-          [key: string]: { path: string }
-        }
-      }
+    // For now, we need to `unplug` each dependency to get the path to the
+    // package.
+    needsReplug = true
 
-      if (Object.keys(npmList.dependencies ?? {}).length === 0)
-        throw new Error('Something went wrong with npm list')
+    for (const key of Object.keys(stubs)) {
+      // This may fail if the package is not a dependency for this action.
+      try {
+        const output = execSync(`yarn unplug ${key}`).toString()
+        console.log(`Unplugged: ${key}`)
 
-      Object.keys(stubs).forEach(key => {
-        stubs[key as keyof typeof stubs].base =
-          npmList.dependencies?.[key]?.path
-      })
-    } else {
-      // At this point, it's likely yarn is running in PnP mode.
-      printTitle(CoreMeta.colors.magenta, 'Yarn: Unplugging Dependencies')
-      console.log()
+        // Next, get the path to the package. Unfortunately using the `--json`
+        // flag with `yarn unplug` does not output the target path, so we need
+        // to parse it from the plaintext output.
+        const packagePath = output.match(/Will unpack .* to (?<packagePath>.*)/)
+          ?.groups?.packagePath
 
-      // For now, we need to `unplug` each dependency to get the path to the
-      // package.
-      // TODO: Is there a better way to do this without unplugging?
-      needsReplug = true
+        if (!packagePath) throw new Error(`Could not unplug ${key}`)
 
-      for (const key of Object.keys(stubs)) {
-        // This may fail if the package is not a dependency for this action.
-        try {
-          const output = execSync(`yarn unplug ${key}`).toString()
-          console.log(`Unplugged: ${key}`)
-
-          // Next, get the path to the package. Unfortunately using the `--json`
-          // flag with `yarn unplug` does not output the target path, so we need
-          // to parse it from the plaintext output.
-          const packagePath = output.match(
-            /Will unpack .* to (?<packagePath>.*)/
-          )?.groups?.packagePath
-
-          if (!packagePath) throw new Error(`Could not unplug ${key}`)
-
-          stubs[key as keyof typeof stubs].base = path.join(
-            packagePath,
-            'node_modules',
-            key
-          )
-        } catch {
-          // This is fine...
-        }
+        stubs[key as keyof typeof stubs].base = path.join(
+          packagePath,
+          'node_modules',
+          key
+        )
+      } catch {
+        // This is fine...
       }
     }
   }
@@ -317,7 +285,7 @@ export async function action(): Promise<void> {
   // Stub the `@actions/toolkit` libraries and run the action. Quibble and
   // local-action require a different approach depending on if the called action
   // is written in ESM.
-  if (isESM()) {
+  if (actionType === 'esm') {
     await quibble.esm(
       path.resolve(
         stubs['@actions/github'].base ?? '',
