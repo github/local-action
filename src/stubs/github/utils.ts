@@ -3,7 +3,7 @@
  */
 
 import { Octokit } from '@octokit/core'
-import { OctokitOptions } from '@octokit/core/types'
+import type { OctokitOptions } from '@octokit/core/types'
 import { paginateRest } from '@octokit/plugin-paginate-rest'
 import { restEndpointMethods } from '@octokit/plugin-rest-endpoint-methods'
 import * as Utils from './internal/utils.js'
