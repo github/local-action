@@ -45,7 +45,7 @@ Some caveats to this support are listed below.
 
 ## `yarn` Support
 
-This tool ships with **experimental** support for `pnpm`. If you encounter any
+This tool ships with **experimental** support for `yarn`. If you encounter any
 issues, please file an issue
 [here](https://github.com/github/local-action/issues).
 
