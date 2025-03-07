@@ -292,6 +292,13 @@ jobs:
           path: typescript-yarn-esm-action
           repository: ncalteen/typescript-yarn-esm-action
 
+      - name: Set Yarn version
+        id: set-yarn
+        run: |
+          corepack enable
+          yarn set version stable
+        working-directory: typescript-yarn-esm-action
+
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v4
