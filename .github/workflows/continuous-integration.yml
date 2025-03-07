@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Check Format
-        id: format-check
+        id: format
         run: npm run format:check
 
       - name: Lint
@@ -45,14 +45,9 @@ jobs:
         id: test
         run: npm run ci-test
 
-  test-typescript-npm:
-    name: Test TypeScript Template (npm)
+  test-typescript-esm-npm:
+    name: Test TypeScript ESM Template (npm)
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: local-action
 
     steps:
       - name: Checkout @github/local-action
@@ -79,6 +74,7 @@ jobs:
       - name: Install @github/local-action Dependencies
         id: install
         run: npm ci
+        working-directory: local-action
 
       - name: Install TypeScript Template Dependencies
         id: install-typescript
@@ -88,6 +84,7 @@ jobs:
       - name: Link @github/local-action
         id: link
         run: npm link
+        working-directory: local-action
 
       - name: Generate Dotenv File
         id: dotenv
@@ -97,18 +94,13 @@ jobs:
         working-directory: typescript-action
 
       - name: Test TypeScript Action
-        id: test-typescript
+        id: test
         run: npm run local-action
         working-directory: typescript-action
 
-  test-javascript-npm:
-    name: Test JavaScript Template (npm)
+  test-javascript-esm-npm:
+    name: Test JavaScript ESM Template (npm)
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: local-action
 
     steps:
       - name: Checkout @github/local-action
@@ -135,6 +127,7 @@ jobs:
       - name: Install @github/local-action Dependencies
         id: install
         run: npm ci
+        working-directory: local-action
 
       - name: Install JavaScript Template Dependencies
         id: install-javascript
@@ -144,6 +137,7 @@ jobs:
       - name: Link @github/local-action
         id: link
         run: npm link
+        working-directory: local-action
 
       - name: Generate Dotenv File
         id: dotenv
@@ -153,18 +147,13 @@ jobs:
         working-directory: javascript-action
 
       - name: Test JavaScript Action
-        id: test-javascript
+        id: test
         run: npm run local-action
         working-directory: javascript-action
 
-  test-typescript-pnpm:
-    name: Test TypeScript Template (pnpm)
+  test-typescript-esm-pnpm:
+    name: Test TypeScript ESM Template (pnpm)
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        shell: bash
-        working-directory: local-action
 
     steps:
       - name: Checkout @github/local-action
@@ -173,15 +162,67 @@ jobs:
         with:
           path: local-action
 
-      - name: Checkout TypeScript Template (ESM)
-        id: checkout-typescript-esm
+      - name: Checkout TypeScript Template
+        id: checkout-typescript
         uses: actions/checkout@v4
         with:
           path: typescript-pnpm-esm-action
           repository: ncalteen/typescript-pnpm-esm-action
 
-      - name: Checkout TypeScript Template (CJS)
-        id: checkout-typescript-cjs
+      - name: Install pnpm
+        id: pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: local-action/.node-version
+          cache: npm
+          cache-dependency-path: local-action/package-lock.json
+
+      - name: Install @github/local-action Dependencies
+        id: install
+        run: npm ci
+        working-directory: local-action
+
+      - name: Install TypeScript Template Dependencies
+        id: install-typescript
+        run: pnpm install
+        working-directory: typescript-pnpm-esm-action
+
+      - name: Link @github/local-action
+        id: link
+        run: pnpm link
+        working-directory: local-action
+
+      - name: Generate Dotenv File
+        id: dotenv
+        run: |
+          echo "ACTIONS_STEP_DEBUG=true" >> .env
+          echo "INPUT_MILLISECONDS=2400" >> .env
+        working-directory: typescript-pnpm-esm-action
+
+      - name: Test TypeScript Action
+        id: test
+        run: pnpm run local-action
+        working-directory: typescript-pnpm-esm-action
+
+  test-typescript-cjs-pnpm:
+    name: Test TypeScript CJS Template (pnpm)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout @github/local-action
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          path: local-action
+
+      - name: Checkout TypeScript Template
+        id: checkout-typescript
         uses: actions/checkout@v4
         with:
           path: typescript-pnpm-cjs-action
@@ -204,41 +245,84 @@ jobs:
       - name: Install @github/local-action Dependencies
         id: install
         run: npm ci
+        working-directory: local-action
 
-      - name: Install TypeScript Template Dependencies (ESM)
-        id: install-typescript-esm
-        run: pnpm install
-        working-directory: typescript-pnpm-esm-action
-
-      - name: Install TypeScript Template Dependencies (CJS)
-        id: install-typescript-cjs
+      - name: Install TypeScript Template Dependencies
+        id: install-typescript
         run: pnpm install
         working-directory: typescript-pnpm-cjs-action
 
       - name: Link @github/local-action
         id: link
         run: pnpm link
+        working-directory: local-action
 
       - name: Generate Dotenv File
-        id: dotenv-esm
-        run: |
-          echo "ACTIONS_STEP_DEBUG=true" >> .env
-          echo "INPUT_MILLISECONDS=2400" >> .env
-        working-directory: typescript-pnpm-esm-action
-
-      - name: Generate Dotenv File
-        id: dotenv-cjs
+        id: dotenv
         run: |
           echo "ACTIONS_STEP_DEBUG=true" >> .env
           echo "INPUT_MILLISECONDS=2400" >> .env
         working-directory: typescript-pnpm-cjs-action
 
-      - name: Test TypeScript Action (ESM)
-        id: test-typescript-esm
-        run: pnpm run local-action
-        working-directory: typescript-pnpm-esm-action
-
-      - name: Test TypeScript Action (CJS)
-        id: test-typescript-cjs
+      - name: Test TypeScript Action
+        id: test
         run: pnpm run local-action
         working-directory: typescript-pnpm-cjs-action
+
+  test-typescript-esm-yarn:
+    name: Test TypeScript ESM Template (yarn)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: local-action
+
+    steps:
+      - name: Checkout @github/local-action
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          path: local-action
+
+      - name: Checkout TypeScript Template
+        id: checkout-typescript
+        uses: actions/checkout@v4
+        with:
+          path: typescript-yarn-esm-action
+          repository: ncalteen/typescript-yarn-esm-action
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: local-action/.node-version
+          cache: npm
+          cache-dependency-path: local-action/package-lock.json
+
+      - name: Install @github/local-action Dependencies
+        id: install
+        run: npm ci
+        working-directory: local-action
+
+      - name: Install TypeScript Template Dependencies
+        id: install-typescript
+        run: yarn install
+        working-directory: typescript-yarn-esm-action
+
+      - name: Link @github/local-action
+        id: link
+        run: yarn link
+        working-directory: local-action
+
+      - name: Generate Dotenv File
+        id: dotenv
+        run: |
+          echo "ACTIONS_STEP_DEBUG=true" >> .env
+          echo "INPUT_MILLISECONDS=2400" >> .env
+        working-directory: typescript-yarn-esm-action
+
+      - name: Test TypeScript Action
+        id: test-typescript
+        run: yarn run local-action
+        working-directory: typescript-yarn-esm-action

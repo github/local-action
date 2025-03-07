@@ -26,6 +26,35 @@ currently implemented by this tool.
 
 See the [CHANGELOG](./CHANGELOG.md) for a complete list of changes.
 
+## Package Manager Support
+
+### `npm` Support
+
+This tool is designed primarily for use with `npm` and `npx`. It is recommended
+to use `npm` for managing actions you wish to test with this tool.
+
+### `pnpm` Support
+
+This tool ships with **experimental** support for `pnpm`. If you encounter any
+issues, please file an issue
+[here](https://github.com/github/local-action/issues).
+
+Some caveats to this support are listed below.
+
+- This tool does not support CommonJS actions using `pnpm`.
+
+## `yarn` Support
+
+This tool ships with **experimental** support for `pnpm`. If you encounter any
+issues, please file an issue
+[here](https://github.com/github/local-action/issues).
+
+Some caveats to this support are listed below.
+
+- The `@github/local-action` package should be run using
+  `yarn dlx @github/local-action` instead of `yarn local-action`.
+- This tool does not support CommonJS actions using `yarn`.
+
 ## Prerequisites
 
 ### Installed Tools
@@ -83,8 +112,9 @@ the following when preparing for release:
 
 - Commit the `node_modules` directory to your repository
 - Transpile your code and dependencies using tools like
-  [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html) or
-  [`@vercel/ncc`](https://www.npmjs.com/package/@vercel/ncc)
+  [`tsc`](https://www.typescriptlang.org/docs/handbook/compiler-options.html),
+  [`@vercel/ncc`](https://www.npmjs.com/package/@vercel/ncc), or
+  [`rollup`](https://rollupjs.org/)
 
 **This tool supports non-transpiled action code only.** This is because it uses
 [`quibble`](https://github.com/testdouble/quibble) to override GitHub Actions
