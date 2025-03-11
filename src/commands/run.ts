@@ -119,19 +119,23 @@ export async function action(): Promise<void> {
   // Starting at the target action's entrypoint, find the package.json file.
   const dirs = path.dirname(EnvMeta.entrypoint).split(path.sep)
   let packageJsonPath
+  let found = false
 
   // Move up the directory tree until we find a package.json directory.
   while (dirs.length > 0) {
-    packageJsonPath = path.join(process.env.TARGET_ACTION_PATH!, 'package.json')
+    packageJsonPath = path.resolve(dirs.join(path.sep), 'package.json')
 
     // Check if the current directory has a package.json file.
-    if (fs.existsSync(packageJsonPath)) break
+    if (fs.existsSync(packageJsonPath)) {
+      found = true
+      break
+    }
 
     // Move up the directory tree.
     dirs.pop()
   }
 
-  if (dirs.length === 0 || !packageJsonPath)
+  if (!found || !packageJsonPath)
     throw new Error(
       'No package.json file found in the action directory or any parent directories.'
     )
