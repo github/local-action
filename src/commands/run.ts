@@ -337,7 +337,7 @@ export async function action(): Promise<void> {
     if (stubs['@actions/github'].base)
       quibble(
         path.resolve(
-          stubs['@actions/github'].base ?? '',
+          stubs['@actions/github'].base,
           ...stubs['@actions/github'].lib
         ),
         stubs['@actions/github'].stubs
@@ -346,7 +346,7 @@ export async function action(): Promise<void> {
     if (stubs['@actions/core'].base)
       quibble(
         path.resolve(
-          stubs['@actions/core'].base ?? '',
+          stubs['@actions/core'].base,
           ...stubs['@actions/core'].lib
         ),
         stubs['@actions/core'].stubs
@@ -355,7 +355,7 @@ export async function action(): Promise<void> {
     if (stubs['@actions/artifact'].base)
       quibble(
         path.resolve(
-          stubs['@actions/artifact'].base ?? '',
+          stubs['@actions/artifact'].base,
           ...stubs['@actions/artifact'].lib
         ),
         stubs['@actions/artifact'].stubs
