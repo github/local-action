@@ -288,29 +288,35 @@ export async function action(): Promise<void> {
 
   // Stub the `@actions/toolkit` libraries and run the action. Quibble and
   // local-action require a different approach depending on if the called action
-  // is written in ESM.
+  // is written in ESM. The stubs should only be loaded if the corresponding
+  // package is installed.
   if (actionType === 'esm') {
-    await quibble.esm(
-      path.resolve(
-        stubs['@actions/github'].base ?? '',
-        ...stubs['@actions/github'].lib
-      ),
-      stubs['@actions/github'].stubs
-    )
-    await quibble.esm(
-      path.resolve(
-        stubs['@actions/core'].base ?? '',
-        ...stubs['@actions/core'].lib
-      ),
-      stubs['@actions/core'].stubs
-    )
-    await quibble.esm(
-      path.resolve(
-        stubs['@actions/artifact'].base ?? '',
-        ...stubs['@actions/artifact'].lib
-      ),
-      stubs['@actions/artifact'].stubs
-    )
+    if (stubs['@actions/github'].base)
+      await quibble.esm(
+        path.resolve(
+          stubs['@actions/github'].base,
+          ...stubs['@actions/github'].lib
+        ),
+        stubs['@actions/github'].stubs
+      )
+
+    if (stubs['@actions/core'].base)
+      await quibble.esm(
+        path.resolve(
+          stubs['@actions/core'].base,
+          ...stubs['@actions/core'].lib
+        ),
+        stubs['@actions/core'].stubs
+      )
+
+    if (stubs['@actions/artifact'].base)
+      await quibble.esm(
+        path.resolve(
+          stubs['@actions/artifact'].base,
+          ...stubs['@actions/artifact'].lib
+        ),
+        stubs['@actions/artifact'].stubs
+      )
 
     // ESM actions need to be imported, not required.
     const { run } = await import(osEntrypoint)
@@ -328,27 +334,32 @@ export async function action(): Promise<void> {
         replug(fs, packageJsonPath, Object.keys(stubs))
     }
   } else {
-    quibble(
-      path.resolve(
-        stubs['@actions/github'].base ?? '',
-        ...stubs['@actions/github'].lib
-      ),
-      stubs['@actions/github'].stubs
-    )
-    quibble(
-      path.resolve(
-        stubs['@actions/core'].base ?? '',
-        ...stubs['@actions/core'].lib
-      ),
-      stubs['@actions/core'].stubs
-    )
-    quibble(
-      path.resolve(
-        stubs['@actions/artifact'].base ?? '',
-        ...stubs['@actions/artifact'].lib
-      ),
-      stubs['@actions/artifact'].stubs
-    )
+    if (stubs['@actions/github'].base)
+      quibble(
+        path.resolve(
+          stubs['@actions/github'].base ?? '',
+          ...stubs['@actions/github'].lib
+        ),
+        stubs['@actions/github'].stubs
+      )
+
+    if (stubs['@actions/core'].base)
+      quibble(
+        path.resolve(
+          stubs['@actions/core'].base ?? '',
+          ...stubs['@actions/core'].lib
+        ),
+        stubs['@actions/core'].stubs
+      )
+
+    if (stubs['@actions/artifact'].base)
+      quibble(
+        path.resolve(
+          stubs['@actions/artifact'].base ?? '',
+          ...stubs['@actions/artifact'].lib
+        ),
+        stubs['@actions/artifact'].stubs
+      )
 
     // CJS actions need to be required, not imported.
     const { run } = require(osEntrypoint)
