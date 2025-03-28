@@ -284,7 +284,11 @@ export async function action(): Promise<void> {
   const osEntrypoint =
     process.platform !== 'win32'
       ? path.resolve(EnvMeta.entrypoint)
-      : '/' + path.resolve(EnvMeta.entrypoint.replaceAll(path.sep, '/'))
+      : // On Windows, the entrypoint requires a leading slash if the action is
+        // ESM. Otherwise, it can be omitted.
+        actionType === 'esm'
+        ? '/' + path.resolve(EnvMeta.entrypoint)
+        : path.resolve(EnvMeta.entrypoint.replaceAll(path.sep, '/'))
 
   // Stub the `@actions/toolkit` libraries and run the action. Quibble and
   // local-action require a different approach depending on if the called action
