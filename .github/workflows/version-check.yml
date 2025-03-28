@@ -1,0 +1,44 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - bin/**/*
+      - src/**/*
+      - .node-version
+      - package-lock.json
+      - package.json
+      - tsconfig.base.json
+      - tsconfig.eslint.json
+      - tsconfig.json
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-version:
+    name: Version Check
+    runs-on: ubuntu-latest
+
+    if: ${{ startsWith(github.head_ref, 'dependabot/') == false }}
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          fetch-depth: 0
+
+      - name: Check Version
+        id: check-version
+        uses: issue-ops/semver@v2
+        with:
+          check-only: true
+          comment: true
+          manifest-path: package.json
+          workspace: ${{ github.workspace }}
