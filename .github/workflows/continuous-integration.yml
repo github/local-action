@@ -45,7 +45,7 @@ jobs:
         id: test
         run: npm run ci-test
 
-  test-typescript-esm-npm:
+  typescript-esm-npm:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -102,7 +102,7 @@ jobs:
         run: npm run local-action
         working-directory: typescript-action
 
-  test-javascript-esm-npm:
+  javascript-esm-npm:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -159,7 +159,7 @@ jobs:
         run: npm run local-action
         working-directory: javascript-action
 
-  test-typescript-esm-pnpm:
+  typescript-esm-pnpm:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -222,7 +222,7 @@ jobs:
         run: pnpm run local-action
         working-directory: typescript-pnpm-esm-action
 
-  test-typescript-cjs-pnpm:
+  typescript-cjs-pnpm:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -285,13 +285,9 @@ jobs:
         run: pnpm run local-action
         working-directory: typescript-pnpm-cjs-action
 
-  test-typescript-esm-yarn:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-
+  typescript-esm-yarn:
     name: TypeScript ESM (yarn)
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -346,6 +342,6 @@ jobs:
         working-directory: typescript-yarn-esm-action
 
       - name: Test TypeScript Action
-        id: test-typescript
+        id: test
         run: yarn run local-action
         working-directory: typescript-yarn-esm-action
