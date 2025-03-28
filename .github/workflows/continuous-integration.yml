@@ -316,6 +316,7 @@ jobs:
         id: set-yarn
         run: |
           corepack enable
+          corepack enable yarn
           yarn set version stable
         working-directory: typescript-yarn-esm-action
 
