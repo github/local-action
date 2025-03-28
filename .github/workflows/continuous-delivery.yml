@@ -6,6 +6,15 @@ on:
       - closed
     branches:
       - main
+    paths:
+      - bin/**/*
+      - src/**/*
+      - .node-version
+      - package-lock.json
+      - package.json
+      - tsconfig.base.json
+      - tsconfig.eslint.json
+      - tsconfig.json
   workflow_dispatch:
 
 permissions:

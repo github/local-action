@@ -45,9 +45,13 @@ jobs:
         id: test
         run: npm run ci-test
 
-  test-typescript-esm-npm:
-    name: Test TypeScript ESM Template (npm)
-    runs-on: ubuntu-latest
+  typescript-esm-npm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    name: TypeScript ESM (npm)
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -98,9 +102,13 @@ jobs:
         run: npm run local-action
         working-directory: typescript-action
 
-  test-javascript-esm-npm:
-    name: Test JavaScript ESM Template (npm)
-    runs-on: ubuntu-latest
+  javascript-esm-npm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    name: JavaScript ESM (npm)
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -151,9 +159,13 @@ jobs:
         run: npm run local-action
         working-directory: javascript-action
 
-  test-typescript-esm-pnpm:
-    name: Test TypeScript ESM Template (pnpm)
-    runs-on: ubuntu-latest
+  typescript-esm-pnpm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    name: TypeScript ESM (pnpm)
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -210,9 +222,13 @@ jobs:
         run: pnpm run local-action
         working-directory: typescript-pnpm-esm-action
 
-  test-typescript-cjs-pnpm:
-    name: Test TypeScript CJS Template (pnpm)
-    runs-on: ubuntu-latest
+  typescript-cjs-pnpm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    name: TypeScript CJS (pnpm)
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -269,8 +285,8 @@ jobs:
         run: pnpm run local-action
         working-directory: typescript-pnpm-cjs-action
 
-  test-typescript-esm-yarn:
-    name: Test TypeScript ESM Template (yarn)
+  typescript-esm-yarn:
+    name: TypeScript ESM (yarn)
     runs-on: ubuntu-latest
 
     defaults:
@@ -292,13 +308,6 @@ jobs:
           path: typescript-yarn-esm-action
           repository: ncalteen/typescript-yarn-esm-action
 
-      - name: Set Yarn version
-        id: set-yarn
-        run: |
-          corepack enable
-          yarn set version stable
-        working-directory: typescript-yarn-esm-action
-
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v4
@@ -314,7 +323,10 @@ jobs:
 
       - name: Install TypeScript Template Dependencies
         id: install-typescript
-        run: yarn install
+        run: |
+          corepack enable
+          corepack prepare yarn@4.7.0 --activate
+          yarn install
         working-directory: typescript-yarn-esm-action
 
       - name: Link @github/local-action
@@ -330,6 +342,6 @@ jobs:
         working-directory: typescript-yarn-esm-action
 
       - name: Test TypeScript Action
-        id: test-typescript
+        id: test
         run: yarn run local-action
         working-directory: typescript-yarn-esm-action
