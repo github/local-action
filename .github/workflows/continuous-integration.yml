@@ -46,8 +46,12 @@ jobs:
         run: npm run ci-test
 
   test-typescript-esm-npm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
     name: Test TypeScript ESM Template (npm)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -99,8 +103,12 @@ jobs:
         working-directory: typescript-action
 
   test-javascript-esm-npm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
     name: Test JavaScript ESM Template (npm)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -152,8 +160,12 @@ jobs:
         working-directory: javascript-action
 
   test-typescript-esm-pnpm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
     name: Test TypeScript ESM Template (pnpm)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -211,8 +223,12 @@ jobs:
         working-directory: typescript-pnpm-esm-action
 
   test-typescript-cjs-pnpm:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
     name: Test TypeScript CJS Template (pnpm)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout @github/local-action
@@ -270,8 +286,12 @@ jobs:
         working-directory: typescript-pnpm-cjs-action
 
   test-typescript-esm-yarn:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
     name: Test TypeScript ESM Template (yarn)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     defaults:
       run:
