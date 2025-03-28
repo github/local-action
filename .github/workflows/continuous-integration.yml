@@ -312,22 +312,6 @@ jobs:
           path: typescript-yarn-esm-action
           repository: ncalteen/typescript-yarn-esm-action
 
-      # - name: Setup Node.js (Yarn)
-      #   id: setup-node-yarn
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version-file: typescript-yarn-esm-action/.node-version
-      #     cache: yarn
-      #     cache-dependency-path: typescript-yarn-esm-action/yarn.lock
-
-      - name: Set Yarn version
-        id: set-yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@4.7.0 --activate
-          # yarn set version stable
-        working-directory: typescript-yarn-esm-action
-
       - name: Setup Node.js
         id: setup-node
         uses: actions/setup-node@v4
@@ -343,7 +327,10 @@ jobs:
 
       - name: Install TypeScript Template Dependencies
         id: install-typescript
-        run: yarn install
+        run: |
+          corepack enable
+          corepack prepare yarn@4.7.0 --activate
+          yarn install
         working-directory: typescript-yarn-esm-action
 
       - name: Link @github/local-action
