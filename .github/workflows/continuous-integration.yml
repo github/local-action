@@ -50,7 +50,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
-    name: Test TypeScript ESM Template (npm)
+    name: TypeScript ESM (npm)
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -107,7 +107,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
-    name: Test JavaScript ESM Template (npm)
+    name: JavaScript ESM (npm)
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -164,7 +164,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
-    name: Test TypeScript ESM Template (pnpm)
+    name: TypeScript ESM (pnpm)
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -227,7 +227,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
-    name: Test TypeScript CJS Template (pnpm)
+    name: TypeScript CJS (pnpm)
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -290,7 +290,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
-    name: Test TypeScript ESM Template (yarn)
+    name: TypeScript ESM (yarn)
     runs-on: ${{ matrix.os }}
 
     defaults:
