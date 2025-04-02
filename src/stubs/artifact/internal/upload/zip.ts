@@ -1,8 +1,7 @@
 /**
- * @github/local-action Unmodified
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/upload/zip.ts
  */
 /* istanbul ignore file */
-
 import archiver from 'archiver'
 import { realpath } from 'fs/promises'
 import * as stream from 'stream'
@@ -27,6 +26,13 @@ export class ZipUploadStream extends stream.Transform {
   }
 }
 
+/**
+ * Creates a zip upload stream.
+ *
+ * @param uploadSpecification Upload Specification
+ * @param compressionLevel Compression Level
+ * @returns Zip Upload Stream
+ */
 export async function createZipUploadStream(
   uploadSpecification: UploadZipSpecification[],
   compressionLevel: number = DEFAULT_COMPRESSION_LEVEL
@@ -50,9 +56,8 @@ export async function createZipUploadStream(
     if (file.sourcePath !== null) {
       // Check if symlink and resolve the source path
       let sourcePath = file.sourcePath
-      if (file.stats.isSymbolicLink()) {
+      if (file.stats.isSymbolicLink())
         sourcePath = await realpath(file.sourcePath)
-      }
 
       // Add the file to the zip
       zip.file(sourcePath, {

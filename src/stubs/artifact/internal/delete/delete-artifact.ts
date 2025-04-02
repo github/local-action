@@ -1,3 +1,6 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/delete/delete-artifact.ts
+ */
 import type { OctokitOptions } from '@octokit/core'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
@@ -17,7 +20,14 @@ import type { Artifact, DeleteArtifactResponse } from '../shared/interfaces.js'
 import { getUserAgentString } from '../shared/user-agent.js'
 
 /**
- * @github/local-action Unmodified
+ * Deletes artifacts from GitHub.
+ *
+ * @param artifactName Artifact Name
+ * @param workflowRunId Workflow Run ID
+ * @param repositoryOwner Repository Owner
+ * @param repositoryName Repository Name
+ * @param token GitHub Token
+ * @returns Delete Artifact Response
  */
 /* istanbul ignore next */
 export async function deleteArtifactPublic(
@@ -39,6 +49,7 @@ export async function deleteArtifactPublic(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const github = getOctokit(token, opts, retry as any, requestLog as any)
+
   const getArtifactResp = await getArtifactPublic(
     artifactName,
     workflowRunId,
@@ -53,11 +64,10 @@ export async function deleteArtifactPublic(
     artifact_id: getArtifactResp.artifact.id
   })
 
-  if (deleteArtifactResp.status !== 204) {
+  if (deleteArtifactResp.status !== 204)
     throw new InvalidResponseError(
       `Invalid response from GitHub API: ${deleteArtifactResp.status} (${deleteArtifactResp?.headers?.['x-github-request-id']})`
     )
-  }
 
   return {
     id: getArtifactResp.artifact.id
@@ -65,7 +75,14 @@ export async function deleteArtifactPublic(
 }
 
 /**
- * @github/local-action Modified
+ * Deletes an artifact that is part of this workflow run.
+ *
+ * @remarks
+ *
+ * - Deletes the artifact from the filesystem based on the environment metadata.
+ *
+ * @param artifactName Artifact Name
+ * @returns Delete Artifact Response
  */
 export async function deleteArtifactInternal(
   artifactName: string

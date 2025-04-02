@@ -1,19 +1,32 @@
 /**
- * @github/local-action Unmodified
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/shared/interfaces.ts
+ */
+
+/**
+ * Options for downloading an artifact
+ *
+ * @remarks
+ *
+ * - Removed expectedHash as it is not required when managing artifacts locally
  */
 export interface DownloadArtifactOptions {
   path?: string
 }
 
 /**
- * @github/local-action Unmodified
+ * Response from the server when downloading an artifact
+ *
+ * @remarks
+ *
+ * - Removed digestMismatch as it is not required when managing artifacts
+ *   locally
  */
 export interface DownloadArtifactResponse {
   downloadPath?: string
 }
 
 /**
- * @github/local-action Unmodified
+ * Response from the server when an artifact is uploaded
  */
 export interface UploadArtifactResponse {
   size?: number
@@ -22,7 +35,7 @@ export interface UploadArtifactResponse {
 }
 
 /**
- * @github/local-action Unmodified
+ * Options for uploading an artifact
  */
 export interface UploadArtifactOptions {
   retentionDays?: number
@@ -30,42 +43,55 @@ export interface UploadArtifactOptions {
 }
 
 /**
- * @github/local-action Unmodified
+ * Response from the server when getting an artifact
  */
 export interface GetArtifactResponse {
   artifact: Artifact
 }
 
 /**
- * @github/local-action Unmodified
+ * Options for listing artifacts
  */
 export interface ListArtifactsOptions {
   latest?: boolean
 }
 
 /**
- * @github/local-action Unmodified
+ * Response from the server when listing artifacts
  */
 export interface ListArtifactsResponse {
   artifacts: Artifact[]
 }
 
 /**
- * @github/local-action Unmodified
+ * Response from the server when downloading an artifact
+ *
+ * @remarks
+ *
+ * - Removed digestMismatch as it is not required when managing artifacts
+ *   locally
  */
 export interface DownloadArtifactResponse {
   downloadPath?: string
 }
 
 /**
- * @github/local-action Unmodified
+ * Options for downloading an artifact
+ *
+ * @remarks
+ *
+ * - Removed expectedHash as it is not required when managing artifacts locally
  */
 export interface DownloadArtifactOptions {
   path?: string
 }
 
 /**
- * @github/local-action Unmodified
+ * An Actions Artifact
+ *
+ * @remarks
+ *
+ * - Removed digest as it is not required when managing artifacts locally
  */
 export interface Artifact {
   name: string
@@ -75,7 +101,7 @@ export interface Artifact {
 }
 
 /**
- * @github/local-action Unmodified
+ * FindOptions are for fetching Artifact(s) out of the scope of the current run.
  */
 export interface FindOptions {
   findBy?: {
@@ -87,7 +113,7 @@ export interface FindOptions {
 }
 
 /**
- * @github/local-action Unmodified
+ * Response from the server when deleting an artifact
  */
 export interface DeleteArtifactResponse {
   id: number
