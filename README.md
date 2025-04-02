@@ -20,7 +20,7 @@ currently implemented by this tool.
 | Package                                                                | Version  |
 | ---------------------------------------------------------------------- | -------- |
 | [`@actions/artifact`](https://www.npmjs.com/package/@actions/artifact) | `2.3.2`  |
-| `@actions/core`                                                        | `1.11.1` |
+| [`@actions/core`](https://www.npmjs.com/package/@actions/core)         | `1.11.1` |
 
 ## Changelog
 

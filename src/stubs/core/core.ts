@@ -1,3 +1,11 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/core/src/core.ts
+ *
+ * @remarks
+ *
+ * - Across the board, the `issueCommand` and `issueFileCommand` calls were
+ *   removed for easier implementation and testing.
+ */
 import path from 'path'
 import type { CoreMetadata } from '../../types.js'
 import { EnvMeta } from '../env.js'
@@ -76,8 +84,6 @@ export function ResetCoreMetadata(): void {
 }
 
 /**
- * @github/local-action Unmodified
- *
  * Optional properties that can be sent with annotation commands (notice, error,
  * and warning).
  */
@@ -112,8 +118,6 @@ export type AnnotationProperties = {
 }
 
 /**
- * @github/local-action Unmodified
- *
  * Options for getInput.
  */
 export type InputOptions = {
@@ -131,9 +135,11 @@ export type InputOptions = {
 }
 
 /**
- * @github/local-action Modified
- *
  * Prepends to the PATH
+ *
+ * @remarks
+ *
+ * - Use environment metadata to track updated PATH
  *
  * @param inputPath The path to prepend to the PATH
  * @returns void
@@ -148,9 +154,11 @@ export function addPath(inputPath: string): void {
 //-----------------------------------------------------------------------
 
 /**
- * @github/local-action Modified
- *
  * Saves an environment variable
+ *
+ * @remarks
+ *
+ * - Saves variables to the environment metadata.
  *
  * @param name The name of the environment variable
  * @param value The value of the environment variable
@@ -173,9 +181,11 @@ export function exportVariable(
 }
 
 /**
- * @github/local-action Modified
- *
  * Register a secret to mask it in logs
+ *
+ * @remarks
+ *
+ * - Adds secrets to core metadata.
  *
  * @param secret The value to register
  * @returns void
@@ -185,9 +195,12 @@ export function setSecret(secret: string): void {
 }
 
 /**
- * @github/local-action Modified
- *
  * Gets the action input from the environment variables
+ *
+ * @remarks
+ *
+ * - Adds support for lowercase environment variables.
+ * - Checks default values from the action.yml file.
  *
  * @param name The name of the input
  * @param options The options for the input
@@ -216,9 +229,12 @@ export function getInput(name: string, options?: InputOptions): string {
 }
 
 /**
- * @github/local-action Modified
- *
  * Gets multiline inputs from environment variables
+ *
+ * @remarks
+ *
+ * - Adds support for lowercase environment variables.
+ * - Checks default values from the action.yml file.
  *
  * @param name The name of the input
  * @param options The options for the input
@@ -257,9 +273,12 @@ export function getMultilineInput(
 }
 
 /**
- * @github/local-action Modified
- *
  * Gets boolean inputs from environment variables
+ *
+ * @remarks
+ *
+ * - Adds support for lowercase environment variables.
+ * - Checks default values from the action.yml file.
  *
  * @param name The name of the input
  * @param options The options for the input
@@ -302,9 +321,12 @@ export function getBooleanInput(name: string, options?: InputOptions): boolean {
 }
 
 /**
- * @github/local-action Modified
- *
  * Saves outputs and logs to the console
+ *
+ * @remarks
+ *
+ * - Saves outputs to the core metadata.
+ * - Adds extra debugging output.
  *
  * @param name The name of the output
  * @param value The value of the output
@@ -319,11 +341,11 @@ export function setOutput(name: string, value: string): void {
 }
 
 /**
- * @github/local-action Modified
- *
  * Enables or disables the echoing of commands into stdout.
  *
- * @todo Currently this does nothing.
+ * @remarks
+ *
+ * - Currently this does nothing.
  *
  * @param enabled Whether to enable command echoing
  * @returns void
@@ -337,9 +359,12 @@ export function setCommandEcho(enabled: boolean): void {
 //-----------------------------------------------------------------------
 
 /**
- * @github/local-action Modified
- *
  * Set the action status to failed
+ *
+ * @remarks
+ *
+ * - Sets exit code and message in core metadata.
+ * - Does not set a failure exit code for the process.
  *
  * @param message The message to log
  * @returns void
@@ -356,12 +381,15 @@ export function setFailed(message: string | Error): void {
 //-----------------------------------------------------------------------
 
 /**
- * @github/local-action New
- *
  * Logs a message with optional annotations
  *
  * This is used internally by the other logging functions. It doesn't need to be
  * called directly.
+ *
+ * @remarks
+ *
+ * - This is specific to the local-action tool and is used to centralize log
+ *   formatting and styling.
  *
  * @param type The type of log message
  * @param message The message to log
@@ -432,9 +460,11 @@ export function log(
 }
 
 /**
- * @github/local-action Modified
- *
  * Returns true if debugging is enabled
+ *
+ * @remarks
+ *
+ * - Gets status from the core metadata.
  *
  * @returns Whether debugging is enabled
  */
@@ -443,11 +473,13 @@ export function isDebug(): boolean {
 }
 
 /**
- * @github/local-action Modified
- *
  * Logs a debug message to the console
  *
  * E.g. `::debug::{message}`
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param message The message to log
  * @returns void
@@ -460,11 +492,13 @@ export function debug(message: string): void {
 }
 
 /**
- * @github/local-action Modified
- *
  * Logs an error message to the console
  *
  * E.g. `::error file={name},line={line},endLine={endLine},title={title}::{message}`
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param message The message to log
  * @param properties The annotation properties
@@ -490,11 +524,13 @@ export function error(
 }
 
 /**
- * @github/local-action Modified
- *
  * Logs a warning message to the console
  *
  * E.g. `::warning file={name},line={line},endLine={endLine},title={title}::{message}`
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param message The message to log
  * @param properties The annotation properties
@@ -520,11 +556,13 @@ export function warning(
 }
 
 /**
- * @github/local-action Modified
- *
  * Logs a notice message to the console
  *
  * E.g. `::notice file={name},line={line},endLine={endLine},title={title}::{message}`
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param message The message to log
  * @param properties The annotation properties
@@ -550,11 +588,13 @@ export function notice(
 }
 
 /**
- * @github/local-action Modified
- *
  * Logs an info message to the console
  *
  * E.g. `::info::{message}`
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param message The message to log
  * @returns void
@@ -564,9 +604,11 @@ export function info(message: string): void {
 }
 
 /**
- * @github/local-action Modified
- *
  * Starts a group of log lines
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param title The title of the group
  * @returns void
@@ -583,9 +625,11 @@ export function startGroup(title: string): void {
 }
 
 /**
- * @github/local-action Modified
- *
  * Ends a group of log lines
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param title The title of the group
  * @returns void
@@ -602,9 +646,11 @@ export function endGroup(): void {
 }
 
 /**
- * @github/local-action Unmodified
- *
  * Wraps an asynchronous function call in a group
+ *
+ * @remarks
+ *
+ * - Uses custom logging utility function.
  *
  * @param name The name of the group
  * @param fn The function to call
@@ -631,12 +677,11 @@ export async function group<T>(name: string, fn: () => Promise<T>): Promise<T> {
 //-----------------------------------------------------------------------
 
 /**
- * @github/local-action Modified
- *
  * Save the state of the action.
  *
- * For testing purposes, this does nothing other than save it to the `state`
- * property.
+ * @remarks
+ *
+ * - Saves the value to core metadata.
  *
  * @param name The name of the state
  * @param value The value of the state
@@ -650,12 +695,11 @@ export function saveState(name: string, value: unknown): void {
 }
 
 /**
- * @github/local-action Modified
- *
  * Get the state for the action.
  *
- * For testing purposes, this does nothing other than return the value from the
- * `state` property.
+ * @remarks
+ *
+ * - Gets the value from core metadata.
  *
  * @param name The name of the state
  * @returns The value of the state
@@ -665,11 +709,11 @@ export function getState(name: string): string {
 }
 
 /**
- * @github/local-action Modified
- *
  * Gets an OIDC token
  *
- * @todo Implement
+ * @remarks
+ *
+ * - Not yet implemented.
  *
  * @param aud The audience for the token
  * @returns A promise that resolves the OIDC token

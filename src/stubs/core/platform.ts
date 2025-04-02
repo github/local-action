@@ -1,11 +1,16 @@
 /**
- * @github/local-action Unmodified
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/core/src/platform.ts
  */
 /* istanbul ignore file */
 
 import * as exec from '@actions/exec'
 import os from 'os'
 
+/**
+ * Gets the Windows version and name.
+ *
+ * @returns Promise with the Windows version and name
+ */
 const getWindowsInfo = async (): Promise<{ name: string; version: string }> => {
   const { stdout: version } = await exec.getExecOutput(
     'powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"',
@@ -29,6 +34,11 @@ const getWindowsInfo = async (): Promise<{ name: string; version: string }> => {
   }
 }
 
+/**
+ * Gets the macOS version and name.
+ *
+ * @returns Promise with the macOS version and name
+ */
 const getMacOsInfo = async (): Promise<{
   name: string
   version: string
@@ -46,6 +56,11 @@ const getMacOsInfo = async (): Promise<{
   }
 }
 
+/**
+ * Gets the Linux version and name.
+ *
+ * @returns Promise with the Linux version and name
+ */
 const getLinuxInfo = async (): Promise<{
   name: string
   version: string
@@ -72,6 +87,11 @@ export const isWindows = platform === 'win32'
 export const isMacOS = platform === 'darwin'
 export const isLinux = platform === 'linux'
 
+/**
+ * Gets the platform details.
+ *
+ * @returns Promise with the platform details
+ */
 export async function getDetails(): Promise<{
   name: string
   platform: string
