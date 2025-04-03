@@ -1,6 +1,9 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/github/src/context.ts
+ */
 import { existsSync, readFileSync } from 'fs'
 import { EOL } from 'os'
-import { WebhookPayload } from './interfaces.js'
+import type { WebhookPayload } from './interfaces.js'
 
 export class Context {
   /**
@@ -29,7 +32,6 @@ export class Context {
     this.payload = {}
 
     if (process.env.GITHUB_EVENT_PATH) {
-      console.log(process.env.GITHUB_EVENT_PATH)
       if (existsSync(process.env.GITHUB_EVENT_PATH)) {
         this.payload = JSON.parse(
           readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: 'utf8' })
@@ -76,12 +78,11 @@ export class Context {
     }
 
     /* istanbul ignore next */
-    if (this.payload.repository) {
+    if (this.payload.repository)
       return {
         owner: this.payload.repository.owner.login,
         repo: this.payload.repository.name
       }
-    }
 
     /* istanbul ignore next */
     throw new Error(

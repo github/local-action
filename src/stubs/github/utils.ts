@@ -1,5 +1,10 @@
 /**
- * @github/local-action Modified
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/github/src/utils.ts
+ *
+ * @remarks
+ *
+ * - The `context` export is removed and defined in `commands/run.ts`. This is
+ *   so that the context can be defined after the environment file is loaded.
  */
 
 import { Octokit } from '@octokit/core'
@@ -39,7 +44,6 @@ export function getOctokitOptions(
   const opts = Object.assign({}, options || {})
 
   const auth = Utils.getAuthString(token, opts)
-
   if (auth) opts.auth = auth
 
   return opts
