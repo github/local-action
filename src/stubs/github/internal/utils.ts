@@ -1,7 +1,6 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/github/src/internal/utils.ts
  */
-/* istanbul ignore file */
 
 import * as httpClient from '@actions/http-client'
 import { type OctokitOptions } from '@octokit/core/types'
@@ -59,6 +58,7 @@ export function getProxyAgentDispatcher(
  * @param destinationUrl Destination URL
  * @returns Fetch function
  */
+/* istanbul ignore next */
 export function getProxyFetch(destinationUrl: string): typeof fetch {
   const httpDispatcher = getProxyAgentDispatcher(destinationUrl)
 

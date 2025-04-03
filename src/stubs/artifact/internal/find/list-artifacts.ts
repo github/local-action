@@ -1,6 +1,7 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/find/list-artifacts.ts
  */
+
 import type { OctokitOptions } from '@octokit/core'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
@@ -31,7 +32,6 @@ const maxNumberOfPages = maximumArtifactCount / paginationCount
  * @param latest Latest
  * @returns List Artifacts Response
  */
-/* istanbul ignore next */
 export async function listArtifactsPublic(
   workflowRunId: number,
   repositoryOwner: string,
@@ -54,7 +54,6 @@ export async function listArtifactsPublic(
     request: requestOpts
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const github = getOctokit(token, opts, retry as any, requestLog as any)
 
   let currentPageNumber = 1
@@ -90,6 +89,7 @@ export async function listArtifactsPublic(
   }
 
   // Iterate over any remaining pages
+  /* istanbul ignore next */
   for (
     currentPageNumber;
     currentPageNumber < numberOfPages;
@@ -156,7 +156,6 @@ export async function listArtifactsInternal(
  * @param artifacts The artifacts to filter
  * @returns The filtered list of artifacts
  */
-/* istanbul ignore next */
 function filterLatest(artifacts: Artifact[]): Artifact[] {
   artifacts.sort((a, b) => b.id - a.id)
   const latestArtifacts: Artifact[] = []

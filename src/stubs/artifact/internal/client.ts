@@ -1,6 +1,7 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/client.ts
  */
+
 import { warning } from '../../core/core.js'
 import {
   deleteArtifactInternal,
@@ -33,7 +34,6 @@ import { uploadArtifact } from './upload/upload-artifact.js'
 /**
  * Generic interface for the artifact client.
  */
-/* istanbul ignore next */
 export interface ArtifactClient {
   /**
    * Uploads an artifact.

@@ -6,6 +6,7 @@
  * - Across the board, the `issueCommand` and `issueFileCommand` calls were
  *   removed for easier implementation and testing.
  */
+
 import path from 'path'
 import type { CoreMetadata } from '../../types.js'
 import { EnvMeta } from '../env.js'
@@ -53,17 +54,16 @@ export const CoreMeta: CoreMetadata = {
   secrets: [],
   state: {},
   stepDebug: process.env.ACTIONS_STEP_DEBUG === 'true',
-  stepSummaryPath:
-    /* istanbul ignore next */ process.env.GITHUB_STEP_SUMMARY ?? '',
+  stepSummaryPath: process.env.GITHUB_STEP_SUMMARY ?? '',
   colors: {
-    cyan: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    blue: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    gray: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    green: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    magenta: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    red: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    white: /* istanbul ignore next */ (msg: string) => console.log(msg),
-    yellow: /* istanbul ignore next */ (msg: string) => console.log(msg)
+    cyan: (msg: string) => console.log(msg),
+    blue: (msg: string) => console.log(msg),
+    gray: (msg: string) => console.log(msg),
+    green: (msg: string) => console.log(msg),
+    magenta: (msg: string) => console.log(msg),
+    red: (msg: string) => console.log(msg),
+    white: (msg: string) => console.log(msg),
+    yellow: (msg: string) => console.log(msg)
   }
 }
 
@@ -410,7 +410,6 @@ export function log(
 ): void {
   const params: string[] = []
 
-  /* istanbul ignore next */
   const color =
     {
       debug: CoreMeta.colors.gray,
@@ -517,7 +516,6 @@ export function error(
 ): void {
   log(
     'error',
-    /* istanbul ignore next */
     message instanceof Error ? message.toString() : message,
     properties
   )
@@ -549,7 +547,6 @@ export function warning(
 ): void {
   log(
     'warning',
-    /* istanbul ignore next */
     message instanceof Error ? message.toString() : message,
     properties
   )
@@ -581,7 +578,6 @@ export function notice(
 ): void {
   log(
     'notice',
-    /* istanbul ignore next */
     message instanceof Error ? message.toString() : message,
     properties
   )

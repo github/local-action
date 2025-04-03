@@ -1,7 +1,6 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/upload/path-and-artifact-name-validation.ts
  */
-/* istanbul ignore file */
 
 import { info } from '../../../core/core.js'
 
@@ -16,6 +15,7 @@ import { info } from '../../../core/core.js'
  * FilePaths can include characters such as \ and / which are not permitted in
  * the artifact name alone
  */
+/* istanbul ignore next */
 const invalidArtifactFilePathCharacters = new Map<string, string>([
   ['"', ' Double quote "'],
   [':', ' Colon :'],
@@ -28,6 +28,7 @@ const invalidArtifactFilePathCharacters = new Map<string, string>([
   ['\n', ' Line feed \\n']
 ])
 
+/* istanbul ignore next */
 const invalidArtifactNameCharacters = new Map<string, string>([
   ...invalidArtifactFilePathCharacters,
   ['\\', ' Backslash \\'],

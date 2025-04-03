@@ -1,6 +1,7 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/find/get-artifact.ts
  */
+
 import type { OctokitOptions } from '@octokit/core'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
@@ -30,7 +31,6 @@ import { getRetryOptions } from './retry-options.js'
  * @param token Token
  * @returns Get Artifact Response
  */
-/* istanbul ignore next */
 export async function getArtifactPublic(
   artifactName: string,
   workflowRunId: number,
@@ -48,7 +48,6 @@ export async function getArtifactPublic(
     request: requestOpts
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const github = getOctokit(token, opts, retry as any, requestLog as any)
 
   const getArtifactResp = await github.request(

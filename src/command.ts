@@ -27,7 +27,6 @@ export async function makeProgram(): Promise<Command> {
       // Confirm the value is a directory
       if (!fs.statSync(actionPath).isDirectory())
         throw new InvalidArgumentError('Action path must be a directory')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if ('code' in err && err.code === 'ENOENT')
         throw new InvalidArgumentError('Action path does not exist')
@@ -39,7 +38,6 @@ export async function makeProgram(): Promise<Command> {
 
     // Confirm there is an `action.yml` or `action.yaml` in the directory and
     // save the path to environment metadata
-    /* istanbul ignore else */
     if (fs.existsSync(path.resolve(actionPath, 'action.yml')))
       EnvMeta.actionFile = path.resolve(EnvMeta.actionPath, 'action.yml')
     else if (fs.existsSync(path.resolve(actionPath, 'action.yaml')))

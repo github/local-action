@@ -1,7 +1,7 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/upload/zip.ts
  */
-/* istanbul ignore file */
+
 import archiver from 'archiver'
 import { realpath } from 'fs/promises'
 import * as stream from 'stream'
@@ -9,10 +9,12 @@ import * as core from '../../../core/core.js'
 import { getUploadChunkSize } from '../shared/config.js'
 import type { UploadZipSpecification } from './upload-zip-specification.js'
 
+/* istanbul ignore next */
 export const DEFAULT_COMPRESSION_LEVEL = 6
 
 // Custom stream transformer so we can set the highWaterMark property
 // See https://github.com/nodejs/node/issues/8855
+/* istanbul ignore next */
 export class ZipUploadStream extends stream.Transform {
   constructor(bufferSize: number) {
     super({
@@ -20,7 +22,6 @@ export class ZipUploadStream extends stream.Transform {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _transform(chunk: any, enc: any, cb: any): void {
     cb(null, chunk)
   }
@@ -33,6 +34,7 @@ export class ZipUploadStream extends stream.Transform {
  * @param compressionLevel Compression Level
  * @returns Zip Upload Stream
  */
+/* istanbul ignore next */
 export async function createZipUploadStream(
   uploadSpecification: UploadZipSpecification[],
   compressionLevel: number = DEFAULT_COMPRESSION_LEVEL
@@ -85,7 +87,7 @@ export async function createZipUploadStream(
   return zipUploadStream
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* istanbul ignore next */
 const zipErrorCallback = (error: any): void => {
   core.error('An error has occurred while creating the zip file for upload')
   core.info(error)
@@ -93,7 +95,7 @@ const zipErrorCallback = (error: any): void => {
   throw new Error('An error has occurred during zip creation for the artifact')
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* istanbul ignore next */
 const zipWarningCallback = (error: any): void => {
   if (error.code === 'ENOENT') {
     core.warning(
@@ -108,10 +110,12 @@ const zipWarningCallback = (error: any): void => {
   }
 }
 
+/* istanbul ignore next */
 const zipFinishCallback = (): void => {
   core.debug('Zip stream for upload has finished.')
 }
 
+/* istanbul ignore next */
 const zipEndCallback = (): void => {
   core.debug('Zip stream for upload has ended.')
 }

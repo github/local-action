@@ -7,6 +7,7 @@ export const existsSync = jest.fn()
 export const mkdirSync = jest.fn()
 export const readFileSync = jest.fn()
 export const rmSync = jest.fn()
+export const statSync = jest.fn()
 
 export default {
   accessSync,
@@ -15,5 +16,6 @@ export default {
   existsSync,
   mkdirSync,
   readFileSync,
-  rmSync
+  rmSync,
+  statSync
 }

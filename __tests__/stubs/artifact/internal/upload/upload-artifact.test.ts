@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import { type Stats } from 'fs'
-import * as core from '../../../../../__fixtures__/core.js'
+import * as core from '../../../../../__fixtures__/@actions/core.js'
 import * as crypto from '../../../../../__fixtures__/crypto.js'
 import * as fs from '../../../../../__fixtures__/fs.js'
 import * as stream from '../../../../../__fixtures__/stream/promises.js'
@@ -75,7 +75,6 @@ describe('upload-artifacts', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
 
     // Unset environment variables

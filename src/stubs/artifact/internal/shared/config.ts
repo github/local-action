@@ -7,7 +7,6 @@
  * streamed. The same value is used as the chunk size that is use during upload
  * to blob storage
  */
-/* istanbul ignore next */
 export function getUploadChunkSize(): number {
   return 8 * 1024 * 1024 // 8 MB Chunks
 }
@@ -17,7 +16,6 @@ export function getUploadChunkSize(): number {
  *
  * @returns True if running on GHES
  */
-/* istanbul ignore next */
 export function isGhes(): boolean {
   const ghUrl = new URL(process.env.GITHUB_SERVER_URL || 'https://github.com')
 
@@ -39,7 +37,5 @@ export function isGhes(): boolean {
  * @returns GitHub workspace directory
  */
 export function getGitHubWorkspaceDir(): string {
-  // Default to current working directory
-  /* istanbul ignore next */
   return process.env.GITHUB_WORKSPACE || process.cwd()
 }

@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals'
-import * as core from '../../../../__fixtures__/core.js'
+import * as core from '../../../../__fixtures__/@actions/core.js'
 import { ResetCoreMetadata } from '../../../../src/stubs/core/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../src/stubs/env.js'
 
@@ -77,7 +77,6 @@ describe('DefaultArtifactClient', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
 
     // Unset environment variables

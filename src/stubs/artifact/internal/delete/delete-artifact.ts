@@ -1,6 +1,7 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/delete/delete-artifact.ts
  */
+
 import type { OctokitOptions } from '@octokit/core'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
@@ -29,7 +30,6 @@ import { getUserAgentString } from '../shared/user-agent.js'
  * @param token GitHub Token
  * @returns Delete Artifact Response
  */
-/* istanbul ignore next */
 export async function deleteArtifactPublic(
   artifactName: string,
   workflowRunId: number,
@@ -47,7 +47,6 @@ export async function deleteArtifactPublic(
     request: requestOpts
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const github = getOctokit(token, opts, retry as any, requestLog as any)
 
   const getArtifactResp = await getArtifactPublic(

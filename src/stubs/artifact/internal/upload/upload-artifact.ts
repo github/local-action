@@ -1,6 +1,7 @@
 /**
  * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/upload/upload-artifact.ts
  */
+
 import crypto from 'crypto'
 import fs from 'fs'
 import path from 'path'
@@ -100,8 +101,6 @@ export async function uploadArtifact(
         )
 
         response.size = artifact.size
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         core.debug(`Artifact creation failed: ${error}`)
         throw new InvalidResponseError(

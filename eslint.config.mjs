@@ -74,6 +74,7 @@ export default [
     },
 
     rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
       camelcase: 'off',
       'eslint-comments/no-use': 'off',
       'eslint-comments/no-unused-disable': 'off',
