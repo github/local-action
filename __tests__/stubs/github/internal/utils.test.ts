@@ -80,6 +80,8 @@ describe('github/internal/utils', () => {
 
   describe('getApiBaseUrl', () => {
     it('Returns the base URL', () => {
+      delete process.env.GITHUB_API_URL
+
       const result = utils.getApiBaseUrl()
 
       expect(result).toBe('https://api.github.com')

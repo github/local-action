@@ -53,8 +53,11 @@ export class Context {
     this.runAttempt = parseInt(process.env.GITHUB_RUN_ATTEMPT as string, 10)
     this.runNumber = parseInt(process.env.GITHUB_RUN_NUMBER as string, 10)
     this.runId = parseInt(process.env.GITHUB_RUN_ID as string, 10)
+    /* istanbul ignore next */
     this.apiUrl = process.env.GITHUB_API_URL ?? 'https://api.github.com'
+    /* istanbul ignore next */
     this.serverUrl = process.env.GITHUB_SERVER_URL ?? 'https://github.com'
+    /* istanbul ignore next */
     this.graphqlUrl =
       process.env.GITHUB_GRAPHQL_URL ?? 'https://api.github.com/graphql'
   }
