@@ -17,10 +17,11 @@ actions can be run directly on your workstation.
 The following table tracks the versions of the GitHub Actions Toolkit that are
 currently implemented by this tool.
 
-| Package             | Version  |
-| ------------------- | -------- |
-| `@actions/artifact` | `2.2.0`  |
-| `@actions/core`     | `1.11.1` |
+| Package                                                                | Version  |
+| ---------------------------------------------------------------------- | -------- |
+| [`@actions/artifact`](https://www.npmjs.com/package/@actions/artifact) | `2.3.2`  |
+| [`@actions/core`](https://www.npmjs.com/package/@actions/core)         | `1.11.1` |
+| [`@actions/github`](https://www.npmjs.com/package/@actions/github)     | `6.0.0`  |
 
 ## Changelog
 

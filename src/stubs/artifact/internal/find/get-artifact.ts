@@ -1,3 +1,7 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/find/get-artifact.ts
+ */
+
 import type { OctokitOptions } from '@octokit/core'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
@@ -14,9 +18,19 @@ import { getUserAgentString } from '../shared/user-agent.js'
 import { getRetryOptions } from './retry-options.js'
 
 /**
- * @github/local-action Unmodified
+ * Gets the artifact from the GitHub API.
+ *
+ * @remarks
+ *
+ * - Removed digest from the artifact interface.
+ *
+ * @param artifactName Artifact Name
+ * @param workflowRunId Workflow Run ID
+ * @param repositoryOwner Repository Owner
+ * @param repositoryName Repository Name
+ * @param token Token
+ * @returns Get Artifact Response
  */
-/* istanbul ignore next */
 export async function getArtifactPublic(
   artifactName: string,
   workflowRunId: number,
@@ -34,7 +48,6 @@ export async function getArtifactPublic(
     request: requestOpts
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const github = getOctokit(token, opts, retry as any, requestLog as any)
 
   const getArtifactResp = await github.request(
@@ -47,19 +60,17 @@ export async function getArtifactPublic(
     }
   )
 
-  if (getArtifactResp.status !== 200) {
+  if (getArtifactResp.status !== 200)
     throw new InvalidResponseError(
       `Invalid response from GitHub API: ${getArtifactResp.status} (${getArtifactResp?.headers?.['x-github-request-id']})`
     )
-  }
 
-  if (getArtifactResp.data.artifacts.length === 0) {
+  if (getArtifactResp.data.artifacts.length === 0)
     throw new ArtifactNotFoundError(
       `Artifact not found for name: ${artifactName}
         Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.
         For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md`
     )
-  }
 
   let artifact = getArtifactResp.data.artifacts[0]
   if (getArtifactResp.data.artifacts.length > 1) {
@@ -82,7 +93,15 @@ export async function getArtifactPublic(
 }
 
 /**
- * @github/local-action Modified
+ * Gets the artifact from this workflow run.
+ *
+ * @remarks
+ *
+ * - Removed digest from the artifact interface.
+ * - Gets artifacts from environment metadata.
+ *
+ * @param artifactName Artifact Name
+ * @returns Get Artifact Response
  */
 export async function getArtifactInternal(
   artifactName: string

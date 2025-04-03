@@ -1,12 +1,23 @@
 /**
- * @github/local-action Unmodified
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/core/src/platform.ts
  */
-/* istanbul ignore file */
 
 import * as exec from '@actions/exec'
 import os from 'os'
 
-const getWindowsInfo = async (): Promise<{ name: string; version: string }> => {
+/**
+ * Gets the Windows version and name.
+ *
+ * @remarks
+ *
+ * - Exported for testing purposes.
+ *
+ * @returns Promise with the Windows version and name
+ */
+export const getWindowsInfo = async (): Promise<{
+  name: string
+  version: string
+}> => {
   const { stdout: version } = await exec.getExecOutput(
     'powershell -command "(Get-CimInstance -ClassName Win32_OperatingSystem).Version"',
     undefined,
@@ -29,7 +40,16 @@ const getWindowsInfo = async (): Promise<{ name: string; version: string }> => {
   }
 }
 
-const getMacOsInfo = async (): Promise<{
+/**
+ * Gets the macOS version and name.
+ *
+ * @remarks
+ *
+ * - Exported for testing purposes.
+ *
+ * @returns Promise with the macOS version and name
+ */
+export const getMacOsInfo = async (): Promise<{
   name: string
   version: string
 }> => {
@@ -46,7 +66,16 @@ const getMacOsInfo = async (): Promise<{
   }
 }
 
-const getLinuxInfo = async (): Promise<{
+/**
+ * Gets the Linux version and name.
+ *
+ * @remarks
+ *
+ * - Exported for testing purposes.
+ *
+ * @returns Promise with the Linux version and name
+ */
+export const getLinuxInfo = async (): Promise<{
   name: string
   version: string
 }> => {
@@ -72,6 +101,12 @@ export const isWindows = platform === 'win32'
 export const isMacOS = platform === 'darwin'
 export const isLinux = platform === 'linux'
 
+/**
+ * Gets the platform details.
+ *
+ * @returns Promise with the platform details
+ */
+/* istanbul ignore next */
 export async function getDetails(): Promise<{
   name: string
   platform: string

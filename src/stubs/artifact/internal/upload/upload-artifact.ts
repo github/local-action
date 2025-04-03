@@ -1,3 +1,7 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/upload/upload-artifact.ts
+ */
+
 import crypto from 'crypto'
 import fs from 'fs'
 import path from 'path'
@@ -19,7 +23,18 @@ import {
 import { createZipUploadStream } from './zip.js'
 
 /**
- * @github/local-action Modified
+ * Uploads an artifact.
+ *
+ * @remarks
+ *
+ * - Does not upload any artifacts. All artifacts are compressed and saved to
+ *   the local filesystem.
+ *
+ * @param name Name
+ * @param files Files
+ * @param rootDirectory Root Directory
+ * @param options Upload Artifact Options
+ * @returns Upload Artifact Response
  */
 export async function uploadArtifact(
   name: string,
@@ -86,9 +101,6 @@ export async function uploadArtifact(
         )
 
         response.size = artifact.size
-        core.info(`Artifact ${artifact.name}.zip successfully written to disk`)
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         core.debug(`Artifact creation failed: ${error}`)
         throw new InvalidResponseError(

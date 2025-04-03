@@ -20,7 +20,6 @@ describe('path-utils', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 

@@ -1,3 +1,7 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/find/list-artifacts.ts
+ */
+
 import type { OctokitOptions } from '@octokit/core'
 import { requestLog } from '@octokit/plugin-request-log'
 import { retry } from '@octokit/plugin-retry'
@@ -15,9 +19,19 @@ const paginationCount = 100
 const maxNumberOfPages = maximumArtifactCount / paginationCount
 
 /**
- * @github/local-action Unmodified
+ * Lists artifacts for a given workflow run.
+ *
+ * @remarks
+ *
+ * - Removed digest from the artifact interface.
+ *
+ * @param workflowRunId Workflow Run ID
+ * @param repositoryOwner Repository Owner
+ * @param repositoryName Repository Name
+ * @param token Token
+ * @param latest Latest
+ * @returns List Artifacts Response
  */
-/* istanbul ignore next */
 export async function listArtifactsPublic(
   workflowRunId: number,
   repositoryOwner: string,
@@ -40,10 +54,10 @@ export async function listArtifactsPublic(
     request: requestOpts
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const github = getOctokit(token, opts, retry as any, requestLog as any)
 
   let currentPageNumber = 1
+
   const { data: listArtifactResponse } =
     await github.rest.actions.listWorkflowRunArtifacts({
       owner: repositoryOwner,
@@ -75,6 +89,7 @@ export async function listArtifactsPublic(
   }
 
   // Iterate over any remaining pages
+  /* istanbul ignore next */
   for (
     currentPageNumber;
     currentPageNumber < numberOfPages;
@@ -104,9 +119,7 @@ export async function listArtifactsPublic(
     }
   }
 
-  if (latest) {
-    artifacts = filterLatest(artifacts)
-  }
+  if (latest) artifacts = filterLatest(artifacts)
 
   core.info(`Found ${artifacts.length} artifact(s)`)
 
@@ -116,7 +129,14 @@ export async function listArtifactsPublic(
 }
 
 /**
- * @github/local-action Modified
+ * List artifacts for this workflow run.
+ *
+ * @remarks
+ *
+ * - Uses environment metadata for tracking artifacts.
+ *
+ * @param latest Latest
+ * @returns List Artifacts Response
  */
 export async function listArtifactsInternal(
   latest = false
@@ -131,9 +151,11 @@ export async function listArtifactsInternal(
 }
 
 /**
- * @github/local-action Unmodified
+ * Filters a list of artifacts to only include the latest artifact for each name
+ *
+ * @param artifacts The artifacts to filter
+ * @returns The filtered list of artifacts
  */
-/* istanbul ignore next */
 function filterLatest(artifacts: Artifact[]): Artifact[] {
   artifacts.sort((a, b) => b.id - a.id)
   const latestArtifacts: Artifact[] = []

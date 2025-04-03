@@ -1,3 +1,7 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/client.ts
+ */
+
 import { warning } from '../../core/core.js'
 import {
   deleteArtifactInternal,
@@ -28,18 +32,17 @@ import type {
 import { uploadArtifact } from './upload/upload-artifact.js'
 
 /**
- * @github/local-action Unmodified
+ * Generic interface for the artifact client.
  */
-/* istanbul ignore next */
 export interface ArtifactClient {
   /**
    * Uploads an artifact.
    *
-   * @param name The name of the artifact, required
-   * @param files A list of absolute or relative paths that denote what files should be uploaded
-   * @param rootDirectory An absolute or relative file path that denotes the root parent directory of the files being uploaded
-   * @param options Extra options for customizing the upload behavior
-   * @returns single UploadArtifactResponse object
+   * @param name Artifact Name
+   * @param files File(s) to Upload
+   * @param rootDirectory Root Directory
+   * @param options Upload Options
+   * @returns Upload Artifact Response
    */
   uploadArtifact(
     name: string,
@@ -49,14 +52,13 @@ export interface ArtifactClient {
   ): Promise<UploadArtifactResponse>
 
   /**
-   * Lists all artifacts that are part of the current workflow run.
-   * This function will return at most 1000 artifacts per workflow run.
+   * List all artifacts for a workflow run.
    *
-   * If `options.findBy` is specified, this will call the public List-Artifacts API which can list from other runs.
-   * https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#list-workflow-run-artifacts
+   * If `options.findBy` is specified, this will call the public List-Artifacts
+   * API which can list from other runs.
    *
-   * @param options Extra options that allow for the customization of the list behavior
-   * @returns ListArtifactResponse object
+   * @param options List Artifact Options
+   * @returns List Artifact Response
    */
   listArtifacts(
     options?: ListArtifactsOptions & FindOptions
@@ -64,17 +66,17 @@ export interface ArtifactClient {
 
   /**
    * Finds an artifact by name.
-   * If there are multiple artifacts with the same name in the same workflow run, this will return the latest.
-   * If the artifact is not found, it will throw.
    *
-   * If `options.findBy` is specified, this will use the public List Artifacts API with a name filter which can get artifacts from other runs.
-   * https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#list-workflow-run-artifacts
-   * `@actions/artifact` v2+ does not allow for creating multiple artifacts with the same name in the same workflow run.
-   * It is possible to have multiple artifacts with the same name in the same workflow run by using old versions of upload-artifact (v1,v2 and v3), @actions/artifact < v2 or it is a rerun.
-   * If there are multiple artifacts with the same name in the same workflow run this function will return the first artifact that matches the name.
+   * If there are multiple artifacts with the same name in the same workflow
+   * run, this will return the latest. If the artifact is not found, it will
+   * throw.
    *
-   * @param artifactName The name of the artifact to find
-   * @param options Extra options that allow for the customization of the get behavior
+   * If `options.findBy` is specified, this will use the public List Artifacts
+   * API with a name filter which can get artifacts from other runs.
+   *
+   * @param artifactName Artifact Name
+   * @param options Get Artifact Options
+   * @returns Get Artifact Response
    */
   getArtifact(
     artifactName: string,
@@ -84,11 +86,12 @@ export interface ArtifactClient {
   /**
    * Downloads an artifact and unzips the content.
    *
-   * If `options.findBy` is specified, this will use the public Download Artifact API https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#download-an-artifact
+   * If `options.findBy` is specified, this will use the public Download
+   * Artifact API.
    *
-   * @param artifactId The id of the artifact to download
-   * @param options Extra options that allow for the customization of the download behavior
-   * @returns single DownloadArtifactResponse object
+   * @param artifactId Artifact ID
+   * @param options Download Artifact Options
+   * @returns Download Artifact Response
    */
   downloadArtifact(
     artifactId: number,
@@ -96,13 +99,14 @@ export interface ArtifactClient {
   ): Promise<DownloadArtifactResponse>
 
   /**
-   * Delete an Artifact
+   * Deletes an artifact.
    *
-   * If `options.findBy` is specified, this will use the public Delete Artifact API https://docs.github.com/en/rest/actions/artifacts?apiVersion=2022-11-28#delete-an-artifact
+   * If `options.findBy` is specified, this will use the public Delete Artifact
+   * API
    *
-   * @param artifactName The name of the artifact to delete
-   * @param options Extra options that allow for the customization of the delete behavior
-   * @returns single DeleteArtifactResponse object
+   * @param artifactName Artifact Name
+   * @param options Delete Artifact Options
+   * @returns Delete Artifact Response
    */
   deleteArtifact(
     artifactName: string,
@@ -111,9 +115,22 @@ export interface ArtifactClient {
 }
 
 /**
- * @github/local-action Modified
+ * Default artifact client that is used by the artifact action(s).
  */
 export class DefaultArtifactClient implements ArtifactClient {
+  /**
+   * Uploads an artifact.
+   *
+   * @remarks
+   *
+   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   *
+   * @param name Artifact Name
+   * @param files File(s) to Upload
+   * @param rootDirectory Root Directory
+   * @param options Upload Options
+   * @returns Upload Artifact Response
+   */
   async uploadArtifact(
     name: string,
     files: string[],
@@ -126,9 +143,7 @@ export class DefaultArtifactClient implements ArtifactClient {
       )
 
     try {
-      if (isGhes()) {
-        throw new GHESNotSupportedError()
-      }
+      if (isGhes()) throw new GHESNotSupportedError()
 
       return uploadArtifact(name, files, rootDirectory, options)
     } catch (error) {
@@ -144,6 +159,20 @@ If the error persists, please check whether Actions is operating normally at [ht
     }
   }
 
+  /**
+   * Downloads an artifact and unzips the content.
+   *
+   * If `options.findBy` is specified, this will use the public Download
+   * Artifact API.
+   *
+   * @remarks
+   *
+   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   *
+   * @param artifactId Artifact ID
+   * @param options Download Artifact Options
+   * @returns Download Artifact Response
+   */
   async downloadArtifact(
     artifactId: number,
     options?: DownloadArtifactOptions & FindOptions
@@ -154,9 +183,7 @@ If the error persists, please check whether Actions is operating normally at [ht
       )
 
     try {
-      if (isGhes()) {
-        throw new GHESNotSupportedError()
-      }
+      if (isGhes()) throw new GHESNotSupportedError()
 
       if (options?.findBy) {
         const {
@@ -187,6 +214,19 @@ If the error persists, please check whether Actions and API requests are operati
     }
   }
 
+  /**
+   * List all artifacts for a workflow run.
+   *
+   * If `options.findBy` is specified, this will call the public List-Artifacts
+   * API which can list from other runs.
+   *
+   * @remarks
+   *
+   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   *
+   * @param options Extra options that allow for the customization of the list behavior
+   * @returns ListArtifactResponse object
+   */
   async listArtifacts(
     options?: ListArtifactsOptions & FindOptions
   ): Promise<ListArtifactsResponse> {
@@ -196,9 +236,7 @@ If the error persists, please check whether Actions and API requests are operati
       )
 
     try {
-      if (isGhes()) {
-        throw new GHESNotSupportedError()
-      }
+      if (isGhes()) throw new GHESNotSupportedError()
 
       if (options?.findBy) {
         const {
@@ -228,6 +266,24 @@ If the error persists, please check whether Actions and API requests are operati
     }
   }
 
+  /**
+   * Finds an artifact by name.
+   *
+   * If there are multiple artifacts with the same name in the same workflow
+   * run, this will return the latest. If the artifact is not found, it will
+   * throw.
+   *
+   * If `options.findBy` is specified, this will use the public List Artifacts
+   * API with a name filter which can get artifacts from other runs.
+   *
+   * @remarks
+   *
+   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   *
+   * @param artifactName Artifact Name
+   * @param options Get Artifact Options
+   * @returns Get Artifact Response
+   */
   async getArtifact(
     artifactName: string,
     options?: FindOptions
@@ -238,9 +294,7 @@ If the error persists, please check whether Actions and API requests are operati
       )
 
     try {
-      if (isGhes()) {
-        throw new GHESNotSupportedError()
-      }
+      if (isGhes()) throw new GHESNotSupportedError()
 
       if (options?.findBy) {
         const {
@@ -269,6 +323,20 @@ If the error persists, please check whether Actions and API requests are operati
     }
   }
 
+  /**
+   * Deletes an artifact.
+   *
+   * If `options.findBy` is specified, this will use the public Delete Artifact
+   * API
+   *
+   * @remarks
+   *
+   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   *
+   * @param artifactName Artifact Name
+   * @param options Delete Artifact Options
+   * @returns Delete Artifact Response
+   */
   async deleteArtifact(
     artifactName: string,
     options?: FindOptions
@@ -279,9 +347,7 @@ If the error persists, please check whether Actions and API requests are operati
       )
 
     try {
-      if (isGhes()) {
-        throw new GHESNotSupportedError()
-      }
+      if (isGhes()) throw new GHESNotSupportedError()
 
       if (options?.findBy) {
         const {

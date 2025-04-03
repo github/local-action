@@ -62,11 +62,30 @@ describe('Core', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 
   describe('CoreMeta', () => {
+    it('Logs using colors', () => {
+      CoreMeta.colors.cyan('cyan')
+      CoreMeta.colors.blue('blue')
+      CoreMeta.colors.gray('gray')
+      CoreMeta.colors.green('green')
+      CoreMeta.colors.magenta('magenta')
+      CoreMeta.colors.red('red')
+      CoreMeta.colors.white('white')
+      CoreMeta.colors.yellow('yellow')
+
+      expect(console.log).toHaveBeenCalledWith('cyan')
+      expect(console.log).toHaveBeenCalledWith('blue')
+      expect(console.log).toHaveBeenCalledWith('gray')
+      expect(console.log).toHaveBeenCalledWith('green')
+      expect(console.log).toHaveBeenCalledWith('magenta')
+      expect(console.log).toHaveBeenCalledWith('red')
+      expect(console.log).toHaveBeenCalledWith('white')
+      expect(console.log).toHaveBeenCalledWith('yellow')
+    })
+
     it('Tracks updates to the core metadata', () => {
       // Initial state should be empty
       expect(CoreMeta.exitCode).toEqual(empty.exitCode)
@@ -300,8 +319,9 @@ describe('Core', () => {
             description: 'test',
             required: true,
             // while the spec says that the default value should be a string
-            // the yaml parser will pass an unquoted `true` or `false` through as a boolean
-            default: false as any // eslint-disable-line @typescript-eslint/no-explicit-any
+            // the yaml parser will pass an unquoted `true` or `false` through
+            // as a boolean
+            default: false as any
           }
         }
 
@@ -316,8 +336,9 @@ describe('Core', () => {
         ).toThrow()
       })
       it('Throws an error if the input is NOT required and not found', () => {
-        // ideally this would not throw - and either coerce to false or return undefined
-        // but this will require upstream changes. See discussion at https://github.com/github/local-action/pull/140
+        // ideally this would not throw - and either coerce to false or return
+        // undefined but this will require upstream changes. See discussion at
+        // https://github.com/github/local-action/pull/140
         expect(() =>
           getBooleanInput('test-input-missing', {
             required: false
@@ -395,6 +416,12 @@ describe('Core', () => {
     })
 
     describe('log()', () => {
+      it('Defaults to gray if no color is provided', () => {
+        log('invalid-type', 'test')
+
+        expect(console.log).toHaveBeenCalledWith('::invalid-type::test')
+      })
+
       it('Throws an error if startLine and endLine are different when columns are set', () => {
         expect((): void =>
           log('group', 'my message', {
@@ -530,6 +557,16 @@ describe('Core', () => {
 
         expect(core_outputSpy).toHaveBeenCalledWith('::error::test')
       })
+
+      it('Logs to the console (Error)', () => {
+        const core_outputSpy = jest
+          .spyOn(CoreMeta.colors, 'red')
+          .mockImplementation(() => {})
+
+        error(new Error('test'))
+
+        expect(core_outputSpy).toHaveBeenCalledWith('::error::Error: test')
+      })
     })
 
     describe('warning()', () => {
@@ -542,6 +579,16 @@ describe('Core', () => {
 
         expect(core_outputSpy).toHaveBeenCalledWith('::warning::test')
       })
+
+      it('Logs to the console (Error)', () => {
+        const core_outputSpy = jest
+          .spyOn(CoreMeta.colors, 'yellow')
+          .mockImplementation(() => {})
+
+        warning(new Error('test'))
+
+        expect(core_outputSpy).toHaveBeenCalledWith('::warning::Error: test')
+      })
     })
 
     describe('notice()', () => {
@@ -553,6 +600,16 @@ describe('Core', () => {
         notice('test')
 
         expect(core_outputSpy).toHaveBeenCalledWith('::notice::test')
+      })
+
+      it('Logs to the console (Error)', () => {
+        const core_outputSpy = jest
+          .spyOn(CoreMeta.colors, 'magenta')
+          .mockImplementation(() => {})
+
+        notice(new Error('test'))
+
+        expect(core_outputSpy).toHaveBeenCalledWith('::notice::Error: test')
       })
     })
 

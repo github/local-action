@@ -1,8 +1,10 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/core/src/path-utils.ts
+ */
+
 import * as path from 'path'
 
 /**
- * @github/local-action Unmodified
- *
  * Converts the given path to the posix form. On Windows, `\\` will be replaced
  * with `/`.
  *
@@ -14,8 +16,6 @@ export function toPosixPath(pth: string): string {
 }
 
 /**
- * @github/local-action Unmodified
- *
  * Converts the given path to the win32 form. On Linux, `/` will be replaced
  * with `\\`.
  *
@@ -27,8 +27,6 @@ export function toWin32Path(pth: string): string {
 }
 
 /**
- * @github/local-action Unmodified
- *
  * Converts the given path to a platform-specific path. It does this by
  * replacing instances of `/` and `\` with the platform-specific path separator.
  *

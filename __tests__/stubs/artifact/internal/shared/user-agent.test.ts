@@ -11,7 +11,6 @@ describe('user-agent', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 

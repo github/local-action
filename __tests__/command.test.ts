@@ -37,7 +37,6 @@ describe('Commmand', () => {
   })
 
   afterEach(() => {
-    // Reset all spies
     jest.resetAllMocks()
   })
 
@@ -61,6 +60,24 @@ describe('Commmand', () => {
           './__fixtures__/typescript/success',
           'src/main.ts',
           './__fixtures__/typescript/success/.env.fixture'
+        ],
+        {
+          from: 'user'
+        }
+      )
+
+      expect(process_exitSpy).not.toHaveBeenCalled()
+      expect(action).toHaveBeenCalled()
+    })
+
+    it('Runs if all arguments are provided (action.yaml)', async () => {
+      await (
+        await makeProgram()
+      ).parseAsync(
+        [
+          './__fixtures__/typescript/success-yaml',
+          'src/main.ts',
+          './__fixtures__/typescript/success-yaml/.env.fixture'
         ],
         {
           from: 'user'

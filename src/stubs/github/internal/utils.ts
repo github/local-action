@@ -1,12 +1,11 @@
 /**
- * @github/local-action Modified
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/github/src/internal/utils.ts
  */
-/* istanbul ignore file */
 
 import * as httpClient from '@actions/http-client'
-import { OctokitOptions } from '@octokit/core/types'
+import { type OctokitOptions } from '@octokit/core/types'
 import * as http from 'http'
-import { ProxyAgent, fetch } from 'undici'
+import { type ProxyAgent, fetch } from 'undici'
 
 /**
  * Returns the auth string to use for the request.
@@ -50,8 +49,7 @@ export function getProxyAgentDispatcher(
 ): ProxyAgent | undefined {
   const hc = new httpClient.HttpClient()
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return hc.getAgentDispatcher(destinationUrl) as any
+  return hc.getAgentDispatcher(destinationUrl) as ProxyAgent | undefined
 }
 
 /**
@@ -60,6 +58,7 @@ export function getProxyAgentDispatcher(
  * @param destinationUrl Destination URL
  * @returns Fetch function
  */
+/* istanbul ignore next */
 export function getProxyFetch(destinationUrl: string): typeof fetch {
   const httpDispatcher = getProxyAgentDispatcher(destinationUrl)
 
@@ -79,5 +78,5 @@ export function getProxyFetch(destinationUrl: string): typeof fetch {
  * @returns Base URL
  */
 export function getApiBaseUrl(): string {
-  return process.env['GITHUB_API_URL'] || 'https://api.github.com'
+  return process.env.GITHUB_API_URL || 'https://api.github.com'
 }

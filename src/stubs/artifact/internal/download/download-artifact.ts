@@ -1,3 +1,7 @@
+/**
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/download/download-artifact.ts
+ */
+
 import * as httpClient from '@actions/http-client'
 import fs from 'fs'
 import path from 'path'
@@ -16,24 +20,36 @@ import type {
 import { getUserAgentString } from '../shared/user-agent.js'
 
 /**
- * @github/local-action Unmodified
+ * Removes query parameters from a URL.
+ *
+ * @remarks
+ *
+ * - Exporting the function to make it available for testing.
+ *
+ * @param url URL
+ * @returns URL without query parameters
  */
-/* istanbul ignore next */
-const scrubQueryParameters = (url: string): string => {
+export const scrubQueryParameters = (url: string): string => {
   const parsed = new URL(url)
   parsed.search = ''
   return parsed.toString()
 }
 
 /**
- * @github/local-action Unmodified
+ * Checks if a path exists
+ *
+ * @remarks
+ *
+ * - Exporting the function to make it available for testing.
+ * - Use `accessSync` instead of `access`.
+ *
+ * @param path Path
+ * @returns `true` if the path exists, `false` otherwise
  */
-/* istanbul ignore next */
-async function exists(path: string): Promise<boolean> {
+export function exists(path: string): boolean {
   try {
     fs.accessSync(path)
     return true
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error.code === 'ENOENT') return false
     else throw error
@@ -41,16 +57,17 @@ async function exists(path: string): Promise<boolean> {
 }
 
 /**
- * @github/local-action Unmodified
+ * Extract the artifact from the given URL to the specified directory.
+ *
+ * @param url URL
+ * @param directory Directory
  */
 /* istanbul ignore next */
 async function streamExtract(url: string, directory: string): Promise<void> {
   let retryCount = 0
   while (retryCount < 5) {
     try {
-      await streamExtractExternal(url, directory)
-      return
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return await streamExtractExternal(url, directory)
     } catch (error: any) {
       retryCount++
       core.debug(
@@ -65,7 +82,14 @@ async function streamExtract(url: string, directory: string): Promise<void> {
 }
 
 /**
- * @github/local-action Unmodified
+ * Extract the artifact from the given URL to the specified directory.
+ *
+ * @remarks
+ *
+ * - Removed digest verification from the original implementation.
+ *
+ * @param url URL
+ * @param directory Directory
  */
 /* istanbul ignore next */
 export async function streamExtractExternal(
@@ -74,11 +98,10 @@ export async function streamExtractExternal(
 ): Promise<void> {
   const client = new httpClient.HttpClient(getUserAgentString())
   const response = await client.get(url)
-  if (response.message.statusCode !== 200) {
+  if (response.message.statusCode !== 200)
     throw new Error(
       `Unexpected HTTP response from blob storage: ${response.message.statusCode} ${response.message.statusMessage}`
     )
-  }
 
   const timeout = 30 * 1000 // 30 seconds
 
@@ -113,7 +136,18 @@ export async function streamExtractExternal(
 }
 
 /**
- * @github/local-action Unmodified
+ * Download an artifact from the given repository to the specified directory.
+ *
+ * @remarks
+ *
+ * - Removed digest verification from the original implementation.
+ *
+ * @param artifactId Artifact ID
+ * @param repositoryOwner Repository Owner
+ * @param repositoryName Repository Name
+ * @param token Token
+ * @param options Options
+ * @returns Download Artifact Response
  */
 /* istanbul ignore next */
 export async function downloadArtifactPublic(
@@ -155,7 +189,6 @@ export async function downloadArtifactPublic(
     core.info(`Starting download of artifact to: ${downloadPath}`)
     await streamExtract(location, downloadPath)
     core.info(`Artifact download completed successfully.`)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(`Unable to download and extract artifact: ${error.message}`)
   }
@@ -164,7 +197,16 @@ export async function downloadArtifactPublic(
 }
 
 /**
- * @github/local-action Modified
+ * Downloads an artifact from the current repository to the specified directory.
+ *
+ * @remarks
+ *
+ * - Removed digest verification from the original implementation.
+ * - Downloads from local filesystem instead of GitHub.
+ *
+ * @param artifactId Artifact ID
+ * @param options Options
+ * @returns Download Artifact Response
  */
 export async function downloadArtifactInternal(
   artifactId: number,
@@ -181,6 +223,9 @@ export async function downloadArtifactInternal(
     throw new ArtifactNotFoundError(
       `No artifacts found for ID: ${artifactId}\nAre you trying to download from a different run? Try specifying a github-token with \`actions:read\` scope.`
     )
+
+  if (artifacts.length > 1)
+    core.warning('Multiple artifacts found, defaulting to first.')
 
   try {
     core.info(`Starting download of artifact to: ${downloadPath}`)
@@ -199,9 +244,7 @@ export async function downloadArtifactInternal(
     await finished(readStream)
 
     core.info(`Artifact download completed successfully.`)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    /* istanbul ignore next */
     throw new Error(`Unable to download and extract artifact: ${error.message}`)
   }
 
@@ -209,13 +252,16 @@ export async function downloadArtifactInternal(
 }
 
 /**
- * @github/local-action Unmodified
+ * Resolves or creates a directory.
+ *
+ * @param downloadPath Download Path
+ * @returns Download Path
  */
 /* istanbul ignore next */
 async function resolveOrCreateDirectory(
   downloadPath = getGitHubWorkspaceDir()
 ): Promise<string> {
-  if (!(await exists(downloadPath))) {
+  if (!exists(downloadPath)) {
     core.debug(
       `Artifact destination folder does not exist, creating: ${downloadPath}`
     )
