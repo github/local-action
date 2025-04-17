@@ -389,9 +389,9 @@ export async function action(): Promise<void> {
 
   if (Object.keys(CoreMeta.outputs).length > 0)
     console.table(
-      Object.keys(CoreMeta.outputs).map(i => ({
-        Output: i,
-        Value: CoreMeta.outputs[i]
+      Object.keys(CoreMeta.outputs).map(key => ({
+        Output: key,
+        Value: CoreMeta.outputs[key]
       }))
     )
   else console.log('No outputs were set!')
