@@ -381,6 +381,21 @@ export async function action(): Promise<void> {
         replug(fs, packageJsonPath, Object.keys(stubs))
     }
   }
+
+  // Print the action outputs, if any.
+  console.log('')
+  printTitle(CoreMeta.colors.yellow, 'Action Outputs')
+  console.log('')
+
+  if (Object.keys(CoreMeta.outputs).length > 0)
+    console.table(
+      Object.keys(CoreMeta.outputs).map(i => ({
+        Output: i,
+        Value: CoreMeta.outputs[i]
+      }))
+    )
+  else console.log('No outputs were set!')
+  console.log('')
 }
 
 /**

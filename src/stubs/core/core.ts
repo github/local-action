@@ -333,12 +333,33 @@ export function getBooleanInput(name: string, options?: InputOptions): boolean {
  * @param value The value of the output
  * @returns void
  */
-export function setOutput(name: string, value: string): void {
-  CoreMeta.outputs[name] = value
+export function setOutput(name: string, value: any): void {
+  // Ideally the value is a string, but if not, we must convert it.
+  const convertedValue =
+    typeof value === 'string'
+      ? value
+      : value === undefined || value === null
+        ? ''
+        : typeof value === 'object' || value instanceof Object
+          ? JSON.stringify(value)
+          : value.toString()
+
+  // If an output contains a secret, log the following and skip adding to the
+  // core metadata.
+  //
+  // "Skip output {output.Key} since it may contain secret."
+  //
+  // This is done by GitHub Actions itself, not by @actions/core...
+  // https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/passing-information-between-jobs#overview
+  if (CoreMeta.secrets.some(secret => convertedValue.includes(secret)))
+    return warning(`Skip output ${name} since it may contain secret.`)
+
+  // Save the output to the core metadata
+  CoreMeta.outputs[name] = convertedValue
 
   // This command is deprecated...it is being used here so there's meaningful
   // log output for debugging purposes.
-  CoreMeta.colors.cyan(`::set-output name=${name}::${value}`)
+  CoreMeta.colors.cyan(`::set-output name=${name}::${convertedValue}`)
 }
 
 /**

@@ -376,9 +376,44 @@ describe('Core', () => {
       it('Sets the action outputs', () => {
         jest.spyOn(CoreMeta.colors, 'cyan').mockImplementation(() => {})
 
+        setOutput('string-output', 'output-value')
+        setOutput('json-output', {
+          'my-output': 'output-value'
+        })
+        setOutput('array-output', ['output-value'])
+        setOutput('undefined-output', undefined)
+        setOutput('null-output', null)
+        setOutput('empty-output', '')
+        setOutput('number-output', 123)
+        setOutput('boolean-output', true)
+
+        expect(CoreMeta.outputs['string-output']).toEqual('output-value')
+        expect(CoreMeta.outputs['json-output']).toEqual(
+          JSON.stringify({ 'my-output': 'output-value' })
+        )
+        expect(CoreMeta.outputs['array-output']).toEqual(
+          JSON.stringify(['output-value'])
+        )
+        expect(CoreMeta.outputs['undefined-output']).toEqual('')
+        expect(CoreMeta.outputs['null-output']).toEqual('')
+        expect(CoreMeta.outputs['empty-output']).toEqual('')
+        expect(CoreMeta.outputs['number-output']).toEqual('123')
+        expect(CoreMeta.outputs['boolean-output']).toEqual('true')
+      })
+
+      it('Does not set an output that contains a secret', () => {
+        const core_warningSpy = jest
+          .spyOn(CoreMeta.colors, 'yellow')
+          .mockImplementation(() => {})
+
+        CoreMeta.secrets = ['output-value']
+
         setOutput('my-output', 'output-value')
 
-        expect(CoreMeta.outputs['my-output']).toEqual('output-value')
+        expect(core_warningSpy).toHaveBeenCalledWith(
+          '::warning::Skip output my-output since it may contain secret.'
+        )
+        expect(CoreMeta.outputs['my-output']).toEqual(undefined)
       })
 
       it('Logs the output to the console', () => {
