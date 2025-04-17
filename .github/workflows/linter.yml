@@ -17,6 +17,10 @@ jobs:
     name: Lint Codebase
     runs-on: ubuntu-latest
 
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
       - name: Checkout
         id: checkout
