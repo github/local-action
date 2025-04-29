@@ -1,7 +1,7 @@
 {
   "name": "@github/local-action",
   "description": "Local Debugging for GitHub Actions",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "type": "module",
   "author": "Nick Alteen <ncalteen@github.com>",
   "private": false,
@@ -19,7 +19,7 @@
     "typescript"
   ],
   "engines": {
-    "node": ">=20"
+    "node": "^20 || ^22"
   },
   "exports": {
     ".": "./src/index.ts"

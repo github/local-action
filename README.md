@@ -27,6 +27,11 @@ currently implemented by this tool.
 
 See the [CHANGELOG](./CHANGELOG.md) for a complete list of changes.
 
+## Node.js Version Support
+
+This tool is currently tested against **Node.js versions 20 and 22**. It is not
+guaranteed to work with other versions at this time.
+
 ## Package Manager Support
 
 ### `npm` Support
