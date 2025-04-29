@@ -19,7 +19,7 @@
     "typescript"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=20 <23"
   },
   "exports": {
     ".": "./src/index.ts"
