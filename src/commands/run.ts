@@ -1,12 +1,12 @@
 import { config } from 'dotenv'
 import { createRequire } from 'module'
 import { execSync } from 'node:child_process'
-import quibble from 'quibble'
+import * as quibble from 'quibble'
 import { ARTIFACT_STUBS } from '../stubs/artifact/artifact.js'
 import { CORE_STUBS, CoreMeta } from '../stubs/core/core.js'
 import { EnvMeta } from '../stubs/env.js'
 import { Context } from '../stubs/github/context.js'
-import { getOctokit } from '../stubs/github/github.ts'
+import { getOctokit } from '../stubs/github/github.js'
 import type { Action } from '../types.js'
 import { printTitle } from '../utils/output.js'
 import { isESM } from '../utils/package.js'
@@ -339,7 +339,7 @@ export async function action(): Promise<void> {
     }
   } else {
     if (stubs['@actions/github'].base)
-      quibble(
+      quibble.default(
         path.resolve(
           stubs['@actions/github'].base,
           ...stubs['@actions/github'].lib
@@ -348,7 +348,7 @@ export async function action(): Promise<void> {
       )
 
     if (stubs['@actions/core'].base)
-      quibble(
+      quibble.default(
         path.resolve(
           stubs['@actions/core'].base,
           ...stubs['@actions/core'].lib
@@ -357,7 +357,7 @@ export async function action(): Promise<void> {
       )
 
     if (stubs['@actions/artifact'].base)
-      quibble(
+      quibble.default(
         path.resolve(
           stubs['@actions/artifact'].base,
           ...stubs['@actions/artifact'].lib
