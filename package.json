@@ -56,7 +56,7 @@
     "@octokit/rest": "^21.1.1",
     "archiver": "^7.0.1",
     "chalk": "^5.4.1",
-    "commander": "^13.1.0",
+    "commander": "^14.0.0",
     "comment-json": "^4.2.5",
     "dotenv": "^16.5.0",
     "figlet": "^1.8.1",
