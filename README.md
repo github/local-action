@@ -42,8 +42,7 @@ to use `npm` for managing actions you wish to test with this tool.
 ### `pnpm` Support
 
 This tool ships with **experimental** support for `pnpm`. If you encounter any
-issues, please file an issue
-[here](https://github.com/github/local-action/issues).
+issues, please [file an issue](https://github.com/github/local-action/issues).
 
 Some caveats to this support are listed below.
 
@@ -52,8 +51,7 @@ Some caveats to this support are listed below.
 ## `yarn` Support
 
 This tool ships with **experimental** support for `yarn`. If you encounter any
-issues, please file an issue
-[here](https://github.com/github/local-action/issues).
+issues, please [file an issue](https://github.com/github/local-action/issues).
 
 Some caveats to this support are listed below.
 
