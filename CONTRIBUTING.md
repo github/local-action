@@ -20,7 +20,6 @@ keep them limited in scope so that they can be more easily reviewed.
 1. Commit your changes
 
    Make sure to do the following when you commit your changes:
-
    - Increase the version number in [`package.json`](./package.json)
    - Run `npm install` to ensure dependencies are up to date
    - Run `npm run all` to run formatting, linting, etc.
