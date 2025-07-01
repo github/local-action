@@ -58,7 +58,7 @@
     "chalk": "^5.4.1",
     "commander": "^14.0.0",
     "comment-json": "^4.2.5",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.0.0",
     "figlet": "^1.8.1",
     "quibble": "^0.9.2",
     "tsconfig-paths": "^4.2.0",
