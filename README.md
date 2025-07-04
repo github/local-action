@@ -48,7 +48,7 @@ Some caveats to this support are listed below.
 
 - This tool does not support CommonJS actions using `pnpm`.
 
-## `yarn` Support
+### `yarn` Support
 
 This tool ships with **experimental** support for `yarn`. If you encounter any
 issues, please [file an issue](https://github.com/github/local-action/issues).
