@@ -2,62 +2,51 @@ import type { Artifact } from './stubs/artifact/internal/shared/interfaces.js'
 
 /** Environment Metadata */
 export type EnvMetadata = {
-  /** Path to the `action.yml` file */
+  /** Path to `action.yml` */
   actionFile: string
-
-  /** Path to the action directory */
+  /** Path to Action Directory */
   actionPath: string
-
   /** Map of Action Artifacts */
   artifacts: Artifact[]
-
-  /** Path to the `.env` file */
+  /** Path to `.env` */
   dotenvFile: string
-
-  /** Environment variables */
+  /** Environment Variables */
   env: {
     [key: string]: string | undefined
     TZ?: string | undefined
   }
-
-  /** System path */
+  /** System Path */
   path: string
-
-  /** Inputs defined in `action.yml` */
+  /** Inputs in `action.yml` */
   inputs: { [key: string]: Input }
-
-  /** Outputs defined in `action.yml` */
+  /** Outputs in `action.yml` */
   outputs: { [key: string]: Output }
-
-  /** Pre-transpilation entrypoint for the action (e.g. `src/main.ts`) */
+  /** Pre-Transpilation Action `main` Entrypoint (e.g. `src/main.ts`) */
   entrypoint: string
+  /** Pre-Transpilation Action `pre` Entrypoint (e.g. `pre/main.ts`) */
+  preEntrypoint: string | undefined
+  /** Pre-Transpilation Action `post` Entrypoint (e.g. `post/main.ts`) */
+  postEntrypoint: string | undefined
 }
 
 /** Metadata for `@actions/core` */
 export type CoreMetadata = {
-  /** Command echo setting */
+  /** Command Echo Setting */
   echo: boolean
-
-  /** Exit code (0 = success, 1 = failure) */
+  /** Exit Code (0 = success, 1 = failure) */
   exitCode: 0 | 1
-
-  /** Exit message (empty if success) */
+  /** Exit Message (success = empty) */
   exitMessage: string
-
-  /** Outputs set during action invocation */
+  /** Action Outputs */
   outputs: { [key: string]: string }
-
-  /** Secrets registered during action invocation */
+  /** Registered Secrets */
   secrets: string[]
-
-  /** Actions step debug setting */
+  /** Actions Step Debug Enabled */
   stepDebug: boolean
-
-  /** Current action state */
+  /** Action State */
   state: { [key: string]: string }
-
   /**
-   * Colors used to send output to the console
+   * Output Colors
    *
    * This is not part of `@actions/core` but is included here for convenience
    * when calling related functions.
@@ -65,9 +54,8 @@ export type CoreMetadata = {
   colors: {
     [key: string]: (message: string) => void
   }
-
   /**
-   * The path to the step summary output file.
+   * Step Summary Output File Path
    *
    * This is not part of `@actions/core` but is included here for convenience
    * when calling related functions.
@@ -75,65 +63,52 @@ export type CoreMetadata = {
   stepSummaryPath: string
 }
 
-/** Properties of an `action.yml` */
+/** Action Properties */
 export type Action = {
-  /** Name of the action */
+  /** Name */
   name: string
-
-  /** Author of the action */
+  /** Author */
   author?: string
-
-  /** Description of the action */
+  /** Description */
   description: string
-
-  /** Inputs defined in the action */
+  /** Inputs */
   inputs: Record<string, Input>
-
-  /** Outputs defined in the action */
+  /** Outputs */
   outputs: Record<string, Output>
-
-  /** How the action is invoked */
+  /** Entrypoint Configuration */
   runs: Runs
 }
 
-/** Input properties of an `action.yml` */
+/** Input Properties */
 export type Input = {
-  /** Description of the input */
+  /** Description */
   description: string
-
-  /** Whether the input is required */
+  /** Required */
   required?: boolean
-
-  /** Default value of the input */
+  /** Default ValuE */
   default?: string
-
-  /** Deprecation message for the input */
+  /** Deprecation Message */
   deprecationMessage?: string
 }
 
-/** Output properties of an `action.yml` */
+/** Output Properties */
 export type Output = {
   /** Description of the output */
   description: string
 }
 
-/** How the action is invoked */
+/** Entrypoint Properties */
 export type Runs = {
-  /** Type of event */
+  /** Type of Entrypoint */
   using: string
-
-  /** The entrypoint */
+  /** Entrypoint Script */
   main: string
-
-  /** Script to run at the start of a job (before `main`) */
+  /** Pre Script */
   pre?: string
-
-  /** Conditions for the `pre` script to run */
+  /** Pre Script Conditions */
   'pre-if'?: () => boolean
-
-  /** Script to run at the end of a job (after `main`) */
+  /** Post Script */
   post?: string
-
-  /** Conditions for the `post` script to run */
+  /** Post Script Conditions */
   'post-if'?: () => boolean
 }

@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import { createRequire } from 'module'
 import { execSync } from 'node:child_process'
+import path from 'path'
 import * as quibble from 'quibble'
 import { ARTIFACT_STUBS } from '../stubs/artifact/artifact.js'
 import { CORE_STUBS, CoreMeta } from '../stubs/core/core.js'
@@ -8,17 +9,25 @@ import { EnvMeta } from '../stubs/env.js'
 import { Context } from '../stubs/github/context.js'
 import { getOctokit } from '../stubs/github/github.js'
 import type { Action } from '../types.js'
+import { getOSEntrypoints } from '../utils/config.ts'
 import { printTitle } from '../utils/output.js'
 import { isESM } from '../utils/package.js'
 
 const require = createRequire(import.meta.url)
 let needsReplug: boolean = false
 
-export async function action(): Promise<void> {
+export async function action(
+  actionPath: string,
+  entrypoint: string,
+  dotenvFile: string,
+  options: {
+    pre: string | undefined
+    post: string | undefined
+  }
+): Promise<void> {
   const { Chalk } = await import('chalk')
   const chalk = new Chalk()
   const fs = await import('fs')
-  const path = await import('path')
   const YAML = await import('yaml')
 
   CoreMeta.colors = {
@@ -35,28 +44,43 @@ export async function action(): Promise<void> {
   const actionType = isESM() ? 'esm' : 'cjs'
 
   // Output the configuration
-  printTitle(CoreMeta.colors.cyan, 'Configuration')
-  console.log()
-  console.table([
+  const startConfig = [
     {
       Field: 'Action Path',
-      Value: EnvMeta.actionPath
+      Value: actionPath
     },
     {
       Field: 'Entrypoint',
-      Value: EnvMeta.entrypoint
-    },
-    {
-      Field: 'Environment File',
-      Value: EnvMeta.dotenvFile
+      Value: entrypoint
     }
-  ])
+  ]
+
+  if (options.pre)
+    startConfig.push({
+      Field: 'Pre Entrypoint',
+      Value: options.pre
+    })
+
+  if (options.post)
+    startConfig.push({
+      Field: 'Post Entrypoint',
+      Value: options.post
+    })
+
+  startConfig.push({
+    Field: 'Environment File',
+    Value: dotenvFile
+  })
+
+  printTitle(CoreMeta.colors.cyan, 'Configuration')
+  console.log()
+  console.table(startConfig)
   console.log()
 
   // Load the environment file
   // @todo Load this into EnvMeta directly? What about secrets...
   config({
-    path: path.resolve(process.cwd(), EnvMeta.dotenvFile),
+    path: path.resolve(process.cwd(), dotenvFile),
     override: true
   })
 
@@ -117,7 +141,7 @@ export async function action(): Promise<void> {
   }
 
   // Starting at the target action's entrypoint, find the package.json file.
-  const dirs = path.dirname(EnvMeta.entrypoint).split(path.sep)
+  const dirs = path.dirname(entrypoint).split(path.sep)
   let packageJsonPath
   let found = false
 
@@ -155,7 +179,7 @@ export async function action(): Promise<void> {
     process.env.NODE_PACKAGE_MANAGER === 'npm' ||
     (process.env.NODE_PACKAGE_MANAGER === 'pnpm' && actionType === 'cjs') ||
     (process.env.NODE_PACKAGE_MANAGER === 'yarn' &&
-      fs.existsSync(path.join(EnvMeta.actionPath, 'node_modules')))
+      fs.existsSync(path.join(actionPath, 'node_modules')))
   ) {
     /**
      * Get the path in the npm cache for each package.
@@ -274,21 +298,7 @@ export async function action(): Promise<void> {
     }
   }
 
-  console.log('')
-  printTitle(CoreMeta.colors.green, 'Running Action')
-  console.log('')
-
-  // The entrypoint is OS-specific. On Windows, it has to start with a leading
-  // slash, then the drive letter, followed by the rest of the path. In both
-  // cases, the path separators are converted to forward slashes.
-  const osEntrypoint =
-    process.platform !== 'win32'
-      ? path.resolve(EnvMeta.entrypoint)
-      : // On Windows, the entrypoint requires a leading slash if the action is
-        // ESM. Otherwise, it can be omitted.
-        actionType === 'esm'
-        ? '/' + path.resolve(EnvMeta.entrypoint)
-        : path.resolve(EnvMeta.entrypoint.replaceAll(path.sep, '/'))
+  const osEntrypoints = getOSEntrypoints(actionType)
 
   // Stub the `@actions/toolkit` libraries and run the action. Quibble and
   // local-action require a different approach depending on if the called action
@@ -296,7 +306,7 @@ export async function action(): Promise<void> {
   // package is installed.
   if (actionType === 'esm') {
     if (stubs['@actions/github'].base)
-      await quibble.esm(
+      await quibble.default.esm(
         path.resolve(
           stubs['@actions/github'].base,
           ...stubs['@actions/github'].lib
@@ -305,7 +315,7 @@ export async function action(): Promise<void> {
       )
 
     if (stubs['@actions/core'].base)
-      await quibble.esm(
+      await quibble.default.esm(
         path.resolve(
           stubs['@actions/core'].base,
           ...stubs['@actions/core'].lib
@@ -314,7 +324,7 @@ export async function action(): Promise<void> {
       )
 
     if (stubs['@actions/artifact'].base)
-      await quibble.esm(
+      await quibble.default.esm(
         path.resolve(
           stubs['@actions/artifact'].base,
           ...stubs['@actions/artifact'].lib
@@ -322,17 +332,53 @@ export async function action(): Promise<void> {
         stubs['@actions/artifact'].stubs
       )
 
-    // ESM actions need to be imported, not required.
-    const { run } = await import(osEntrypoint)
-
-    // Check if the required path is a function.
-    if (typeof run !== 'function')
-      throw new Error(
-        `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
-      )
-
     try {
+      if (osEntrypoints.pre) {
+        console.log('')
+        printTitle(CoreMeta.colors.red, 'Running Pre Step')
+        console.log('')
+
+        const { run: pre } = await import(osEntrypoints.pre)
+
+        // Check if the required path is a function.
+        if (typeof pre !== 'function')
+          throw new Error(
+            `Entrypoint ${options.pre} does not export a run() function`
+          )
+
+        await pre()
+      }
+
+      console.log('')
+      printTitle(CoreMeta.colors.green, 'Running Action')
+      console.log('')
+
+      // ESM actions need to be imported, not required.
+      const { run } = await import(osEntrypoints.main)
+
+      // Check if the required path is a function.
+      if (typeof run !== 'function')
+        throw new Error(
+          `Entrypoint ${entrypoint} does not export a run() function`
+        )
+
       await run()
+
+      if (osEntrypoints.post) {
+        console.log('')
+        printTitle(CoreMeta.colors.red, 'Running Post Step')
+        console.log('')
+
+        const { run: post } = await import(osEntrypoints.post)
+
+        // Check if the required path is a function.
+        if (typeof post !== 'function')
+          throw new Error(
+            `Entrypoint ${options.post} does not export a run() function`
+          )
+
+        await post()
+      }
     } finally {
       if (process.env.NODE_PACKAGE_MANAGER === 'yarn' && needsReplug)
         replug(fs, packageJsonPath, Object.keys(stubs))
@@ -365,17 +411,55 @@ export async function action(): Promise<void> {
         stubs['@actions/artifact'].stubs
       )
 
-    // CJS actions need to be required, not imported.
-    const { run } = require(osEntrypoint)
-
-    // Check if the required path is a function.
-    if (typeof run !== 'function')
-      throw new Error(
-        `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
-      )
-
     try {
+      if (osEntrypoints.pre) {
+        console.log('')
+        printTitle(CoreMeta.colors.red, 'Running Pre Step')
+        console.log('')
+
+        // CJS actions need to be required, not imported.
+        const { run: pre } = require(osEntrypoints.pre)
+
+        // Check if the required path is a function.
+        if (typeof pre !== 'function')
+          throw new Error(
+            `Entrypoint ${options.pre} does not export a run() function`
+          )
+
+        await pre()
+      }
+
+      console.log('')
+      printTitle(CoreMeta.colors.green, 'Running Action')
+      console.log('')
+
+      // CJS actions need to be required, not imported.
+      const { run } = require(osEntrypoints.main)
+
+      // Check if the required path is a function.
+      if (typeof run !== 'function')
+        throw new Error(
+          `Entrypoint ${EnvMeta.entrypoint} does not export a run() function`
+        )
+
       await run()
+
+      if (osEntrypoints.post) {
+        console.log('')
+        printTitle(CoreMeta.colors.red, 'Running Post Step')
+        console.log('')
+
+        // CJS actions need to be required, not imported.
+        const { run: post } = require(osEntrypoints.post)
+
+        // Check if the required path is a function.
+        if (typeof post !== 'function')
+          throw new Error(
+            `Entrypoint ${options.post} does not export a run() function`
+          )
+
+        await post()
+      }
     } finally {
       if (process.env.NODE_PACKAGE_MANAGER === 'yarn' && needsReplug)
         replug(fs, packageJsonPath, Object.keys(stubs))

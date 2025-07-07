@@ -3,9 +3,7 @@ import type { Command } from 'commander'
 import { makeProgram } from './command.js'
 
 /**
- * Runs the CLI program
- *
- * @returns A promise that resolves when the program is finished
+ * Runs the Program
  */
 export async function run(): Promise<void> {
   const chalk = (await import('chalk')).default
