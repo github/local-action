@@ -1,5 +1,16 @@
 # Changelog
 
+## v4
+
+This version adds support for
+[`pre`](https://docs.github.com/en/actions/reference/metadata-syntax-for-github-actions#runspre)
+and
+[`post`](https://docs.github.com/en/actions/reference/metadata-syntax-for-github-actions#runspost)
+scripts for actions. These should follow the same structure as the `run` action
+code (see the
+[`README.md`](https://github.com/github/local-action#action-structure) for more
+details).
+
 ## v3
 
 This version adds **experimental** support for [pnpm](https://pnpm.io/) and
