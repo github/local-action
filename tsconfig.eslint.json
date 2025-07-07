@@ -10,6 +10,7 @@
     "__fixtures__/@octokit/",
     "__fixtures__/crypto.ts",
     "__fixtures__/fs.ts",
+    "__fixtures__/path.ts",
     "__fixtures__/tsconfig-paths.ts",
     "__tests__",
     "src",

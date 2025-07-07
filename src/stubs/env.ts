@@ -12,11 +12,16 @@ export const EnvMeta: EnvMetadata = {
   env: {},
   inputs: {},
   outputs: {},
-  path: ''
+  path: '',
+  postEntrypoint: undefined,
+  preEntrypoint: undefined
 }
 
 /**
- * Resets the environment metadata
+ * Reset the Environment Metadata
+ *
+ * Simple convenience function to reset the environment metadata back to initial
+ * state.
  */
 export function ResetEnvMetadata(): void {
   EnvMeta.actionFile = ''
@@ -28,4 +33,6 @@ export function ResetEnvMetadata(): void {
   EnvMeta.inputs = {}
   EnvMeta.outputs = {}
   EnvMeta.path = ''
+  EnvMeta.postEntrypoint = undefined
+  EnvMeta.preEntrypoint = undefined
 }
