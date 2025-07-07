@@ -44,24 +44,12 @@ function entrypoint() {
     // be prepended to this later.
     let command = `tsx "${path.join(packagePath, 'src', 'index.ts')}"`
 
-    // If there are no input arguments, or the only argument is the help flag,
-    // display the help message.
-    if (
-      process.argv.length === 2 ||
-      ['--help', '-h'].includes(process.argv[2])
-    ) {
-      command += ` --help`
+    const args = process.argv.slice(2)
 
-      // Run the command.
-      execSync(command, { stdio: 'inherit' })
-      return
-    }
-
-    // Iterate over the arguments and build the command.
-    for (const arg of process.argv.slice(2)) {
-      // If the argument is a directory and TARGET_ACTION_PATH is not set, set
-      // it to the absolute path of the directory. The first directory is the
-      // target action path.
+    // Iterate over the arguments and build the command. If the argument is a
+    // directory and TARGET_ACTION_PATH is not set, set it to the absolute path
+    // of the directory. The first directory should be the target action path.
+    for (const arg of args)
       if (
         !process.env.TARGET_ACTION_PATH &&
         fs.existsSync(path.resolve(arg)) &&
@@ -69,8 +57,12 @@ function entrypoint() {
       )
         process.env.TARGET_ACTION_PATH = path.resolve(arg)
 
-      // Append the argument to the command.
-      command += ` ${arg}`
+    // If the TARGET_ACTION_PATH environment variable is not set, display the
+    // help message.
+    if (!process.env.TARGET_ACTION_PATH) {
+      command += `-- --help`
+      execSync(command, { stdio: 'inherit' })
+      return
     }
 
     // Starting in the TARGET_ACTION_PATH, locate the package.json file and
@@ -90,8 +82,8 @@ function entrypoint() {
           'utf8'
         )
 
-        // If the package.json file has a packageManager field, set the
-        // command to use that package manager.
+        // If the package.json file has a packageManager field, set the command
+        // to use that package manager.
         if (json.packageManager?.startsWith('pnpm')) {
           process.env.NODE_PACKAGE_MANAGER = 'pnpm'
           command = 'pnpm dlx ' + command
@@ -123,14 +115,18 @@ function entrypoint() {
       process.exit(1)
     }
 
-    // Run the command.
-    execSync(command, { stdio: 'inherit' })
+    // Run the command. The original arguments are passed after the `--` to
+    // prevent them from being eaten by the package manager.
+    execSync(`${command} -- ${args.join(' ')}`, { stdio: 'inherit' })
   } catch (error) {
-    process.exit(error.status)
-  } finally {
+    console.log()
+    console.log(error)
+
     // Restore the environment.
     process.env = { ...envBackup }
     process.env.PATH = pathBackup
+
+    process.exit(error.status)
   }
 }
 
