@@ -1,5 +1,11 @@
 # Changelog
 
+## v5
+
+Removes support for custom `paths` in the target action's `tsconfig.json`. This
+appears to have been causing issues with type-stripping and later versions of
+Node.js.
+
 ## v4
 
 This version adds support for
