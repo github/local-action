@@ -55,7 +55,7 @@ function entrypoint() {
     // If the TARGET_ACTION_PATH environment variable is not set, display the
     // help message.
     if (!process.env.TARGET_ACTION_PATH) {
-      command += `-- --help`
+      command += ` -- --help`
       execSync(command, { stdio: 'inherit' })
       return
     }
