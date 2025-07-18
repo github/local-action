@@ -1,0 +1,7 @@
+name: JavaScript CodeQL Configuration
+
+paths-ignore:
+  - coverage
+  - megalinter-reports
+  - node_modules
+  - reports
