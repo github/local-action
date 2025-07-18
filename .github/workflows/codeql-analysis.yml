@@ -42,6 +42,7 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           source-root: src
+          config-file: .github/codeql/codeql-config.yml
 
       - name: Autobuild
         id: autobuild

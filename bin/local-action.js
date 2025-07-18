@@ -32,6 +32,11 @@ function entrypoint() {
         ? path.join(packagePath, 'src', 'bootstrap.ts').replaceAll('\\', '\\\\')
         : path.join(packagePath, 'src', 'bootstrap.ts')
 
+    // Require the bootstrap script in NODE_OPTIONS.
+    process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
+      ? `${process.env.NODE_OPTIONS} --require "${bootstrapPath}"`
+      : `--require "${bootstrapPath}"`
+
     // Disable experimental warnings.
     process.env.NODE_NO_WARNINGS = 1
 
