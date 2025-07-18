@@ -81,7 +81,8 @@ export async function action(
   // @todo Load this into EnvMeta directly? What about secrets...
   config({
     path: path.resolve(process.cwd(), dotenvFile),
-    override: true
+    override: true,
+    quiet: true
   })
 
   // Load action settings
