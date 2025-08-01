@@ -50,7 +50,7 @@
     "@eslint/compat": "^1.2.8",
     "@octokit/core": "^6.1.5",
     "@octokit/plugin-paginate-rest": "^13.0.1",
-    "@octokit/plugin-request-log": "^5.3.1",
+    "@octokit/plugin-request-log": "^6.0.0",
     "@octokit/plugin-rest-endpoint-methods": "^16.0.0",
     "@octokit/plugin-retry": "^7.2.1",
     "@octokit/rest": "^21.1.1",
