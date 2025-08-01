@@ -56,7 +56,7 @@ jobs:
 
       - name: Create Release
         id: release
-        uses: issue-ops/releaser@v2.1.0
+        uses: issue-ops/releaser@v2.2.0
         with:
           tag: v${{ steps.tag.outputs.version }}
 
