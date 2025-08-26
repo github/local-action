@@ -25,18 +25,6 @@ function entrypoint() {
     // Get the absolute path to the `@github/local-action` package.
     const packagePath = path.resolve(__dirname, '..')
 
-    // Get the absolute path to the bootstrap script. On Windows systems, this
-    // need to be double-escaped so the path resolves correctly.
-    const bootstrapPath =
-      process.platform === 'win32'
-        ? path.join(packagePath, 'src', 'bootstrap.ts').replaceAll('\\', '\\\\')
-        : path.join(packagePath, 'src', 'bootstrap.ts')
-
-    // Require the bootstrap script in NODE_OPTIONS.
-    process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
-      ? `${process.env.NODE_OPTIONS} --require "${bootstrapPath}"`
-      : `--require "${bootstrapPath}"`
-
     // Disable experimental warnings.
     process.env.NODE_NO_WARNINGS = 1
 

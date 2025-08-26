@@ -1,8 +1,11 @@
+import { parse } from 'comment-json'
 import { config } from 'dotenv'
 import { createRequire } from 'module'
 import { execSync } from 'node:child_process'
 import path from 'path'
 import * as quibble from 'quibble'
+import { loadConfig, register } from 'tsconfig-paths'
+import { fileURLToPath } from 'url'
 import { ARTIFACT_STUBS } from '../stubs/artifact/artifact.js'
 import { CORE_STUBS, CoreMeta } from '../stubs/core/core.js'
 import { EnvMeta } from '../stubs/env.js'
@@ -29,6 +32,37 @@ export async function action(
   const chalk = new Chalk()
   const fs = await import('fs')
   const YAML = await import('yaml')
+
+  if (process.env.TARGET_ACTION_PATH && process.env.TARGET_ACTION_PATH !== '') {
+    // Check if the action has a `tsconfig.json` file.
+    if (fs.existsSync(`${process.env.TARGET_ACTION_PATH}/tsconfig.json`)) {
+      const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+      // Load the `tsconfig.json` from the action directory.
+      const actionTsConfig = parse(
+        fs.readFileSync(
+          `${process.env.TARGET_ACTION_PATH}/tsconfig.json`,
+          'utf-8'
+        )
+      )
+
+      // Load the current `tsconfig.json` from the root of this directory.
+      loadConfig(__dirname)
+
+      // Get the paths from the action's `tsconfig.json`, if any.
+      // @ts-expect-error comment-json type mismatch
+      const paths = actionTsConfig?.compilerOptions?.paths ?? {}
+
+      // Add any path mappings from the imported action. Replace the base URL with
+      // the target action path.
+      // @todo Should this take into account the previous `baseUrl` value?
+      register({
+        baseUrl: process.env.TARGET_ACTION_PATH,
+        paths,
+        addMatchAll: true
+      })
+    }
+  }
 
   CoreMeta.colors = {
     cyan: (msg: string) => console.log(chalk.cyan(msg)),
