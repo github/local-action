@@ -7,7 +7,6 @@ const config: JestConfigWithTsJest = {
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: [
     'node_modules',
-    'src/bootstrap.ts',
     'src/types/quibble.d.ts',
     'src/commands/run.ts',
     'src/stubs/artifact/artifact.ts'
