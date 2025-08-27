@@ -146,6 +146,6 @@ exclude:
 #   using-cpes: true
 
 ignore:
-  vulnerabilities:
-    - package: stdlib
+  - package:
+      name: stdlib
       type: go-module
