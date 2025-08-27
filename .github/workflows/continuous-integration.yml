@@ -52,7 +52,9 @@ jobs:
   typescript-esm-npm:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
 
     name: TypeScript ESM (npm)
     runs-on: ${{ matrix.os }}
@@ -86,7 +88,9 @@ jobs:
 
       - name: Install TypeScript Template Dependencies
         id: install-typescript
-        run: npm ci
+        run: |
+          npm ci
+          npm uninstall @github/local-action
         working-directory: typescript-action
 
       - name: Link @github/local-action
@@ -109,7 +113,9 @@ jobs:
   javascript-esm-npm:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
 
     name: JavaScript ESM (npm)
     runs-on: ${{ matrix.os }}
@@ -143,7 +149,9 @@ jobs:
 
       - name: Install JavaScript Template Dependencies
         id: install-javascript
-        run: npm ci
+        run: |
+          npm ci
+          npm uninstall @github/local-action
         working-directory: javascript-action
 
       - name: Link @github/local-action
@@ -166,7 +174,9 @@ jobs:
   typescript-esm-pnpm:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
 
     name: TypeScript ESM (pnpm)
     runs-on: ${{ matrix.os }}
@@ -206,7 +216,9 @@ jobs:
 
       - name: Install TypeScript Template Dependencies
         id: install-typescript
-        run: pnpm install
+        run: |
+          pnpm install
+          pnpm uninstall @github/local-action
         working-directory: typescript-pnpm-esm-action
 
       - name: Link @github/local-action
@@ -229,7 +241,9 @@ jobs:
   typescript-cjs-pnpm:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - windows-latest
 
     name: TypeScript CJS (pnpm)
     runs-on: ${{ matrix.os }}
@@ -269,7 +283,9 @@ jobs:
 
       - name: Install TypeScript Template Dependencies
         id: install-typescript
-        run: pnpm install
+        run: |
+          pnpm install
+          pnpm uninstall @github/local-action
         working-directory: typescript-pnpm-cjs-action
 
       - name: Link @github/local-action
