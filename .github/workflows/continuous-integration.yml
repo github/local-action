@@ -229,7 +229,7 @@ jobs:
       - name: Use Global Link
         id: use-link
         run: pnpm link "${{ github.workspace }}/local-action"
-        working-directory: typescript-yarn-esm-action
+        working-directory: typescript-pnpm-esm-action
 
       - name: Generate Dotenv File
         id: dotenv
@@ -301,7 +301,7 @@ jobs:
       - name: Use Global Link
         id: use-link
         run: pnpm link "${{ github.workspace }}/local-action"
-        working-directory: typescript-yarn-esm-action
+        working-directory: typescript-pnpm-cjs-action
 
       - name: Generate Dotenv File
         id: dotenv
