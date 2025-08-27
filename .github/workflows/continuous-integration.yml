@@ -221,10 +221,15 @@ jobs:
           pnpm uninstall @github/local-action
         working-directory: typescript-pnpm-esm-action
 
-      - name: Link @github/local-action
-        id: link
-        run: pnpm link
+      - name: Create Global Link
+        id: create-link
+        run: npm link
         working-directory: local-action
+
+      - name: Use Global Link
+        id: use-link
+        run: pnpm link "${{ github.workspace }}/local-action"
+        working-directory: typescript-yarn-esm-action
 
       - name: Generate Dotenv File
         id: dotenv
@@ -288,10 +293,15 @@ jobs:
           pnpm uninstall @github/local-action
         working-directory: typescript-pnpm-cjs-action
 
-      - name: Link @github/local-action
-        id: link
-        run: pnpm link
+      - name: Create Global Link
+        id: create-link
+        run: npm link
         working-directory: local-action
+
+      - name: Use Global Link
+        id: use-link
+        run: pnpm link "${{ github.workspace }}/local-action"
+        working-directory: typescript-yarn-esm-action
 
       - name: Generate Dotenv File
         id: dotenv
