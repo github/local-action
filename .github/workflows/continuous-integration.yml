@@ -333,10 +333,15 @@ jobs:
           yarn install
         working-directory: typescript-yarn-esm-action
 
-      - name: Link @github/local-action
-        id: link
-        run: yarn link
+      - name: Create Global Link
+        id: create-link
+        run: npm link
         working-directory: local-action
+
+      - name: Use Global Link
+        id: use-link
+        run: yarn link "${{ github.workspace }}/local-action"
+        working-directory: typescript-yarn-esm-action
 
       - name: Generate Dotenv File
         id: dotenv
