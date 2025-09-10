@@ -104,3 +104,37 @@ npm run test
 > [!NOTE]
 >
 > This requires that you have already run `npm install`
+
+### Toolkit Stub Updates
+
+When updating any of the supported stubs for the GitHub Actions Toolkit, please
+make sure to also update the following. This helps ensure that we are using the
+latest supported versions of the toolkit packages, and makes comparing changes
+across commits easier.
+
+1. The supported version in the [`README.md`](./README.md)
+
+   ```markdown
+   | Package                                                                | Version  |
+   | ---------------------------------------------------------------------- | -------- |
+   | [`@actions/artifact`](https://www.npmjs.com/package/@actions/artifact) | `2.3.2`  |
+   | [`@actions/core`](https://www.npmjs.com/package/@actions/core)         | `1.11.1` |
+   | [`@actions/github`](https://www.npmjs.com/package/@actions/github)     | `6.0.1`  |
+   ```
+
+1. The latest reviewed commit URL in the corresponding `src/stubs/*.ts` file
+
+   ```typescript
+   /**
+    * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/artifact.ts
+    * Last Reviewed Date: 2025-09-10
+    */
+   ```
+
+When comparing commits to see what has been updated in the toolkit packages, be
+sure to compare against the last reviewed commit in the corresponding stub file.
+This can be done more easily using the following URL format:
+
+```plain
+https://github.com/actions/toolkit/compare/<old commit>..main
+```
