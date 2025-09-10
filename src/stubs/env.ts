@@ -7,6 +7,7 @@ export const EnvMeta: EnvMetadata = {
   actionFile: '',
   actionPath: '',
   artifacts: [],
+  caches: {},
   dotenvFile: '',
   entrypoint: '',
   env: {},
@@ -27,6 +28,7 @@ export function ResetEnvMetadata(): void {
   EnvMeta.actionFile = ''
   EnvMeta.actionPath = ''
   EnvMeta.artifacts = []
+  EnvMeta.caches = {}
   EnvMeta.dotenvFile = ''
   EnvMeta.entrypoint = ''
   EnvMeta.env = {}

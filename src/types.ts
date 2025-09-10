@@ -6,8 +6,10 @@ export type EnvMetadata = {
   actionFile: string
   /** Path to Action Directory */
   actionPath: string
-  /** Map of Action Artifacts */
+  /** List of Action Artifacts */
   artifacts: Artifact[]
+  /** Map of Cache IDs and Cache Names */
+  caches: { [key: number]: string }
   /** Path to `.env` */
   dotenvFile: string
   /** Environment Variables */

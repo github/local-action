@@ -7,6 +7,7 @@ import * as quibble from 'quibble'
 import { loadConfig, register } from 'tsconfig-paths'
 import { fileURLToPath } from 'url'
 import { ARTIFACT_STUBS } from '../stubs/artifact/artifact.js'
+import { CACHE_STUBS } from '../stubs/cache/cache.js'
 import { CORE_STUBS, CoreMeta } from '../stubs/core/core.js'
 import { EnvMeta } from '../stubs/env.js'
 import { Context } from '../stubs/github/context.js'
@@ -131,6 +132,25 @@ export async function action(
   EnvMeta.inputs = actionYaml.inputs || {}
   EnvMeta.outputs = actionYaml.outputs || {}
 
+  // If the LOCAL_ACTION_CACHE_PATH env var is set, read it to populate the
+  // existing caches.
+  if (
+    process.env.LOCAL_ACTION_CACHE_PATH &&
+    process.env.LOCAL_ACTION_CACHE_PATH !== ''
+  ) {
+    const cacheFiles = fs
+      .readdirSync(process.env.LOCAL_ACTION_CACHE_PATH)
+      .filter(file => file.endsWith('.cache'))
+
+    // The cache ID will be the next available ID based on existing caches.
+    let nextCacheId = 1
+
+    for (const file of cacheFiles) {
+      EnvMeta.caches[nextCacheId] = file
+      nextCacheId++
+    }
+  }
+
   // Output the action metadata
   printTitle(CoreMeta.colors.blue, 'Action Metadata')
   console.log()
@@ -149,6 +169,16 @@ export async function action(
   )
   console.log()
 
+  if (Object.keys(EnvMeta.caches).length > 0) {
+    console.table(
+      Object.keys(EnvMeta.caches).map(i => ({
+        'Cache ID': i,
+        Filename: EnvMeta.caches[parseInt(i)]
+      }))
+    )
+    console.log()
+  }
+
   // Defining the stubs. Next, we will load their paths based on the package
   // manager in use.
   const stubs = {
@@ -156,6 +186,11 @@ export async function action(
       base: undefined as string | undefined,
       lib: ['lib', 'artifact.js'],
       stubs: ARTIFACT_STUBS
+    },
+    '@actions/cache': {
+      base: undefined as string | undefined,
+      lib: ['lib', 'cache.js'],
+      stubs: CACHE_STUBS
     },
     '@actions/core': {
       base: undefined as string | undefined,
@@ -340,13 +375,22 @@ export async function action(
   // is written in ESM. The stubs should only be loaded if the corresponding
   // package is installed.
   if (actionType === 'esm') {
-    if (stubs['@actions/github'].base)
+    if (stubs['@actions/artifact'].base)
       await quibble.default.esm(
         path.resolve(
-          stubs['@actions/github'].base,
-          ...stubs['@actions/github'].lib
+          stubs['@actions/artifact'].base,
+          ...stubs['@actions/artifact'].lib
         ),
-        stubs['@actions/github'].stubs
+        stubs['@actions/artifact'].stubs
+      )
+
+    if (stubs['@actions/cache'].base)
+      await quibble.default.esm(
+        path.resolve(
+          stubs['@actions/cache'].base,
+          ...stubs['@actions/cache'].lib
+        ),
+        stubs['@actions/cache'].stubs
       )
 
     if (stubs['@actions/core'].base)
@@ -358,13 +402,13 @@ export async function action(
         stubs['@actions/core'].stubs
       )
 
-    if (stubs['@actions/artifact'].base)
+    if (stubs['@actions/github'].base)
       await quibble.default.esm(
         path.resolve(
-          stubs['@actions/artifact'].base,
-          ...stubs['@actions/artifact'].lib
+          stubs['@actions/github'].base,
+          ...stubs['@actions/github'].lib
         ),
-        stubs['@actions/artifact'].stubs
+        stubs['@actions/github'].stubs
       )
 
     try {
@@ -419,13 +463,22 @@ export async function action(
         replug(fs, packageJsonPath, Object.keys(stubs))
     }
   } else {
-    if (stubs['@actions/github'].base)
+    if (stubs['@actions/artifact'].base)
       quibble.default(
         path.resolve(
-          stubs['@actions/github'].base,
-          ...stubs['@actions/github'].lib
+          stubs['@actions/artifact'].base,
+          ...stubs['@actions/artifact'].lib
         ),
-        stubs['@actions/github'].stubs
+        stubs['@actions/artifact'].stubs
+      )
+
+    if (stubs['@actions/cache'].base)
+      quibble.default(
+        path.resolve(
+          stubs['@actions/cache'].base,
+          ...stubs['@actions/cache'].lib
+        ),
+        stubs['@actions/cache'].stubs
       )
 
     if (stubs['@actions/core'].base)
@@ -437,13 +490,13 @@ export async function action(
         stubs['@actions/core'].stubs
       )
 
-    if (stubs['@actions/artifact'].base)
+    if (stubs['@actions/github'].base)
       quibble.default(
         path.resolve(
-          stubs['@actions/artifact'].base,
-          ...stubs['@actions/artifact'].lib
+          stubs['@actions/github'].base,
+          ...stubs['@actions/github'].lib
         ),
-        stubs['@actions/artifact'].stubs
+        stubs['@actions/github'].stubs
       )
 
     try {
