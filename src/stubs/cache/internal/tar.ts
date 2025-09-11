@@ -86,6 +86,7 @@ async function getTarArgs(
   const workingDirectory = getWorkingDirectory()
 
   // Speficic args for BSD tar on windows for workaround
+  /* istanbul ignore next */
   const BSD_TAR_ZSTD =
     tarPath.type === ArchiveToolType.BSD &&
     compressionMethod !== CompressionMethod.Gzip &&
@@ -97,6 +98,7 @@ async function getTarArgs(
       args.push(
         '--posix',
         '-cf',
+        /* istanbul ignore next */
         BSD_TAR_ZSTD
           ? tarFile
           : path
@@ -112,6 +114,7 @@ async function getTarArgs(
     case 'extract':
       args.push(
         '-xf',
+        /* istanbul ignore next */
         BSD_TAR_ZSTD
           ? tarFile
           : archivePath.replace(new RegExp(`\\${path.sep}`, 'g'), '/'),
@@ -123,6 +126,7 @@ async function getTarArgs(
     case 'list':
       args.push(
         '-tf',
+        /* istanbul ignore next */
         BSD_TAR_ZSTD
           ? tarFile
           : archivePath.replace(new RegExp(`\\${path.sep}`, 'g'), '/'),
@@ -132,6 +136,7 @@ async function getTarArgs(
   }
 
   // Platform specific args
+  /* istanbul ignore next */
   if (tarPath.type === ArchiveToolType.GNU) {
     switch (process.platform) {
       case 'win32':

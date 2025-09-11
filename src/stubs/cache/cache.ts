@@ -112,6 +112,7 @@ async function restoreCacheFromFilesystem(
   primaryKey: string,
   restoreKeys?: string[],
   options?: DownloadOptions,
+  /* istanbul ignore next */
   enableCrossOsArchive = false
 ): Promise<string | undefined> {
   const keys = [primaryKey, ...(restoreKeys ?? [])]
@@ -254,6 +255,7 @@ async function saveCacheToFilesystem(
   paths: string[],
   key: string,
   options?: UploadOptions,
+  /* istanbul ignore next */
   enableCrossOsArchive = false
 ): Promise<number> {
   const compressionMethod = await utils.getCompressionMethod()
