@@ -1,5 +1,5 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/upload/zip.ts
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/cache/src/internal/cache.ts
  * Last Reviewed Date: 2025-09-10
  */
 
