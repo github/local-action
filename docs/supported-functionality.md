@@ -37,6 +37,34 @@ to the `local-action` command.
 > workflow runs (e.g. if you try to download an artifact from a different
 > repository), these requests **will be passed to the GitHub API**.
 
+## [`@actions/cache`](https://github.com/actions/toolkit/tree/main/packages/cache)
+
+The stubbed version of `@actions/cache` functions similarly to the real package.
+However, any caches that are created as part of a `local-action` run will be
+stored on your local workstation. The specific path must be set using the
+`LOCAL_ACTION_CACHE_PATH` environment variable in the `.env` file passed to the
+`local-action` command.
+
+- Since this is a local cache, the GitHub Actions cache limits (e.g. size,
+  retention) do not apply. However, the stubbed version does enforce that the
+  `key` and `restoreKeys` parameters are unique per call to `saveCache()`.
+- The current implementation of the `@actions/cache` package checks whether to
+  use `v1` or `v2` of the caching service. This is ignored in the local
+  implementation.
+- Additionally, since no actual caches are downloaded/uploaded, concepts like
+  chunking, concurrency, and timeouts no longer apply. Because of this, most
+  properties in the `options` parameter of `restoreCache()` and `saveCache()`
+  are ignored.
+- Any upload/download progress tracking is ignored. E.g. the `DownloadProgress`
+  and `UploadProgress` classes are not implemented.
+
+| Feature            | Supported          | Notes                                      |
+| ------------------ | ------------------ | ------------------------------------------ |
+| `restoreCache()`   | :white_check_mark: | Only the `lookupOnly` option is respected. |
+| `saveCache()`      | :white_check_mark: | All options are ignored                    |
+| `DownloadProgress` | :x:                |                                            |
+| `UploadProgress`   | :x:                |                                            |
+
 ## [`@actions/core`](https://github.com/actions/toolkit/blob/main/packages/core/README.md)
 
 | Feature               | Supported          | Notes                           |
@@ -82,9 +110,6 @@ be `undefined`. For more information, see
 The following packages are under investigation for how to integrate with
 `local-action`. Make sure to check back later!
 
-- [`@actions/attest`](https://github.com/actions/toolkit/tree/main/packages/attest)
-- [`@actions/cache`](https://github.com/actions/toolkit/tree/main/packages/cache)
-
 ## No Action Needed
 
 Currently, there shouldn't be any need to stub the functionality of the
@@ -93,6 +118,7 @@ expected when run using `local-action`. If you do encounter a scenario where
 this doesn't work correctly, please
 [open an issue!](https://github.com/github/local-action/issues/new)
 
+- [`@actions/attest`](https://github.com/actions/toolkit/tree/main/packages/attest)
 - [`@actions/exec`](https://github.com/actions/toolkit/tree/main/packages/exec)
 - [`@actions/glob`](https://github.com/actions/toolkit/tree/main/packages/glob)
 - [`@actions/http-client`](https://github.com/actions/toolkit/tree/main/packages/http-client)

@@ -1,5 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/930c89072712a3aac52d74b23338f00bb0cfcb24/packages/artifact/src/internal/client.ts
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/client.ts
+ * Last Reviewed Date: 2025-09-10
  */
 
 import { warning } from '../../core/core.js'
@@ -123,7 +124,7 @@ export class DefaultArtifactClient implements ArtifactClient {
    *
    * @remarks
    *
-   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   * - Adds a check for required environment variables.
    *
    * @param name Artifact Name
    * @param files File(s) to Upload
@@ -137,6 +138,10 @@ export class DefaultArtifactClient implements ArtifactClient {
     rootDirectory: string,
     options?: UploadArtifactOptions
   ): Promise<UploadArtifactResponse> {
+    if (!process.env.LOCAL_ACTION_WORKSPACE)
+      throw new Error(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
     if (!process.env.LOCAL_ACTION_ARTIFACT_PATH)
       throw new Error(
         'LOCAL_ACTION_ARTIFACT_PATH must be set when interacting with @actions/artifact!'
@@ -167,7 +172,7 @@ If the error persists, please check whether Actions is operating normally at [ht
    *
    * @remarks
    *
-   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   * - Adds a check for required environment variables.
    *
    * @param artifactId Artifact ID
    * @param options Download Artifact Options
@@ -177,6 +182,10 @@ If the error persists, please check whether Actions is operating normally at [ht
     artifactId: number,
     options?: DownloadArtifactOptions & FindOptions
   ): Promise<DownloadArtifactResponse> {
+    if (!process.env.LOCAL_ACTION_WORKSPACE)
+      throw new Error(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
     if (!process.env.LOCAL_ACTION_ARTIFACT_PATH)
       throw new Error(
         'LOCAL_ACTION_ARTIFACT_PATH must be set when interacting with @actions/artifact!'
@@ -222,7 +231,7 @@ If the error persists, please check whether Actions and API requests are operati
    *
    * @remarks
    *
-   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   * - Adds a check for required environment variables.
    *
    * @param options Extra options that allow for the customization of the list behavior
    * @returns ListArtifactResponse object
@@ -230,6 +239,10 @@ If the error persists, please check whether Actions and API requests are operati
   async listArtifacts(
     options?: ListArtifactsOptions & FindOptions
   ): Promise<ListArtifactsResponse> {
+    if (!process.env.LOCAL_ACTION_WORKSPACE)
+      throw new Error(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
     if (!process.env.LOCAL_ACTION_ARTIFACT_PATH)
       throw new Error(
         'LOCAL_ACTION_ARTIFACT_PATH must be set when interacting with @actions/artifact!'
@@ -278,7 +291,7 @@ If the error persists, please check whether Actions and API requests are operati
    *
    * @remarks
    *
-   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   * - Adds a check for required environment variables.
    *
    * @param artifactName Artifact Name
    * @param options Get Artifact Options
@@ -288,6 +301,10 @@ If the error persists, please check whether Actions and API requests are operati
     artifactName: string,
     options?: FindOptions
   ): Promise<GetArtifactResponse> {
+    if (!process.env.LOCAL_ACTION_WORKSPACE)
+      throw new Error(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
     if (!process.env.LOCAL_ACTION_ARTIFACT_PATH)
       throw new Error(
         'LOCAL_ACTION_ARTIFACT_PATH must be set when interacting with @actions/artifact!'
@@ -331,7 +348,7 @@ If the error persists, please check whether Actions and API requests are operati
    *
    * @remarks
    *
-   * - Adds a check for the LOCAL_ACTION_ARTIFACT_PATH variable.
+   * - Adds a check for required environment variables.
    *
    * @param artifactName Artifact Name
    * @param options Delete Artifact Options
@@ -341,6 +358,10 @@ If the error persists, please check whether Actions and API requests are operati
     artifactName: string,
     options?: FindOptions
   ): Promise<DeleteArtifactResponse> {
+    if (!process.env.LOCAL_ACTION_WORKSPACE)
+      throw new Error(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
     if (!process.env.LOCAL_ACTION_ARTIFACT_PATH)
       throw new Error(
         'LOCAL_ACTION_ARTIFACT_PATH must be set when interacting with @actions/artifact!'

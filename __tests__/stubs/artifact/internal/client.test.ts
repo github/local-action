@@ -67,6 +67,7 @@ const { DefaultArtifactClient } = await import(
 describe('DefaultArtifactClient', () => {
   beforeEach(() => {
     // Set environment variables
+    process.env.LOCAL_ACTION_WORKSPACE = '/tmp/artifacts'
     process.env.LOCAL_ACTION_ARTIFACT_PATH = '/tmp/artifacts'
 
     // Reset metadata
@@ -80,10 +81,23 @@ describe('DefaultArtifactClient', () => {
     jest.resetAllMocks()
 
     // Unset environment variables
+    delete process.env.LOCAL_ACTION_WORKSPACE
     delete process.env.LOCAL_ACTION_ARTIFACT_PATH
   })
 
   describe('uploadArtifact', () => {
+    it('Throws if LOCAL_ACTION_WORKSPACE is not set', async () => {
+      delete process.env.LOCAL_ACTION_WORKSPACE
+
+      const client = new DefaultArtifactClient()
+
+      await expect(
+        client.uploadArtifact('artifact-name', ['file1', 'file2'], 'root')
+      ).rejects.toThrow(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
+    })
+
     it('Throws if LOCAL_ACTION_ARTIFACT_PATH is not set', async () => {
       delete process.env.LOCAL_ACTION_ARTIFACT_PATH
 
@@ -114,6 +128,16 @@ describe('DefaultArtifactClient', () => {
   })
 
   describe('downloadArtifact', () => {
+    it('Throws if LOCAL_ACTION_WORKSPACE is not set', async () => {
+      delete process.env.LOCAL_ACTION_WORKSPACE
+
+      const client = new DefaultArtifactClient()
+
+      await expect(client.downloadArtifact(1)).rejects.toThrow(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
+    })
+
     it('Throws if LOCAL_ACTION_ARTIFACT_PATH is not set', async () => {
       delete process.env.LOCAL_ACTION_ARTIFACT_PATH
 
@@ -157,6 +181,16 @@ describe('DefaultArtifactClient', () => {
   })
 
   describe('listArtifacts', () => {
+    it('Throws if LOCAL_ACTION_WORKSPACE is not set', async () => {
+      delete process.env.LOCAL_ACTION_WORKSPACE
+
+      const client = new DefaultArtifactClient()
+
+      await expect(client.listArtifacts()).rejects.toThrow(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
+    })
+
     it('Throws if LOCAL_ACTION_ARTIFACT_PATH is not set', async () => {
       delete process.env.LOCAL_ACTION_ARTIFACT_PATH
 
@@ -200,6 +234,16 @@ describe('DefaultArtifactClient', () => {
   })
 
   describe('getArtifact', () => {
+    it('Throws if LOCAL_ACTION_WORKSPACE is not set', async () => {
+      delete process.env.LOCAL_ACTION_WORKSPACE
+
+      const client = new DefaultArtifactClient()
+
+      await expect(client.getArtifact('artifact-name')).rejects.toThrow(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
+    })
+
     it('Throws if LOCAL_ACTION_ARTIFACT_PATH is not set', async () => {
       delete process.env.LOCAL_ACTION_ARTIFACT_PATH
 
@@ -243,6 +287,16 @@ describe('DefaultArtifactClient', () => {
   })
 
   describe('deleteArtifact', () => {
+    it('Throws if LOCAL_ACTION_WORKSPACE is not set', async () => {
+      delete process.env.LOCAL_ACTION_WORKSPACE
+
+      const client = new DefaultArtifactClient()
+
+      await expect(client.deleteArtifact('artifact-name')).rejects.toThrow(
+        'LOCAL_ACTION_WORKSPACE must be set when interacting with @actions/artifact!'
+      )
+    })
+
     it('Throws if LOCAL_ACTION_ARTIFACT_PATH is not set', async () => {
       delete process.env.LOCAL_ACTION_ARTIFACT_PATH
 

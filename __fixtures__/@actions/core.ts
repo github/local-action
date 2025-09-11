@@ -3,6 +3,7 @@ import { jest } from '@jest/globals'
 export const debug = jest.fn().mockImplementation(() => {})
 export const error = jest.fn().mockImplementation(() => {})
 export const info = jest.fn().mockImplementation(() => {})
+export const isDebug = jest.fn().mockImplementation(() => false)
 export const getInput = jest.fn().mockImplementation(() => {})
 export const setOutput = jest.fn().mockImplementation(() => {})
 export const setFailed = jest.fn().mockImplementation(() => {})

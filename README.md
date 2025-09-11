@@ -21,7 +21,7 @@ currently implemented by this tool.
 | ---------------------------------------------------------------------- | -------- |
 | [`@actions/artifact`](https://www.npmjs.com/package/@actions/artifact) | `2.3.2`  |
 | [`@actions/core`](https://www.npmjs.com/package/@actions/core)         | `1.11.1` |
-| [`@actions/github`](https://www.npmjs.com/package/@actions/github)     | `6.0.0`  |
+| [`@actions/github`](https://www.npmjs.com/package/@actions/github)     | `6.0.1`  |
 
 ## Changelog
 

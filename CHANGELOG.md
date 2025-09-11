@@ -1,5 +1,18 @@
 # Changelog
 
+## v6
+
+Adds support for the `@actions/cache` package, allowing for local caching of
+dependencies and other files between runs of a GitHub Action. This is achieved
+by setting the `LOCAL_ACTION_CACHE_PATH` environment variable to a directory
+where cache files will be stored.
+
+For both `@actions/artifact` and `@actions/cache`, the `LOCAL_ACTION_WORKSPACE`
+environment variable must be set. Otherwise, calling functions will throw an
+error. Similarly, `@actions/artifact` requires the `LOCAL_ACTION_ARTIFACT_PATH`
+environment variable to be set, and `@actions/cache` requires the
+`LOCAL_ACTION_CACHE_PATH` environment variable to be set.
+
 ## v5
 
 Removes support for custom `paths` in the target action's `tsconfig.json`. This
