@@ -67,6 +67,7 @@ const { DefaultArtifactClient } = await import(
 describe('DefaultArtifactClient', () => {
   beforeEach(() => {
     // Set environment variables
+    process.env.LOCAL_ACTION_WORKSPACE = '/tmp/artifacts'
     process.env.LOCAL_ACTION_ARTIFACT_PATH = '/tmp/artifacts'
 
     // Reset metadata
