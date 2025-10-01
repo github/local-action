@@ -44,4 +44,4 @@ jobs:
         env:
           DEFAULT_WORKSPACE: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ github.token }}
-        uses: oxsecurity/megalinter/flavors/cupcake@v8
+        uses: oxsecurity/megalinter/flavors/cupcake@v9
