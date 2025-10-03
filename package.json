@@ -53,7 +53,7 @@
     "@octokit/plugin-paginate-rest": "^13.0.1",
     "@octokit/plugin-request-log": "^6.0.0",
     "@octokit/plugin-rest-endpoint-methods": "^16.0.0",
-    "@octokit/plugin-retry": "^7.2.1",
+    "@octokit/plugin-retry": "^8.0.2",
     "@octokit/rest": "^22.0.0",
     "archiver": "^7.0.1",
     "chalk": "^5.4.1",
