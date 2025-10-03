@@ -30,7 +30,7 @@ jobs:
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
           cache: npm
@@ -44,4 +44,4 @@ jobs:
         env:
           DEFAULT_WORKSPACE: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ github.token }}
-        uses: oxsecurity/megalinter/flavors/cupcake@v8
+        uses: oxsecurity/megalinter/flavors/cupcake@v9
