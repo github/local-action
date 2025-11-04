@@ -72,7 +72,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
-    "@types/archiver": "^6.0.3",
+    "@types/archiver": "^7.0.0",
     "@types/figlet": "^1.7.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.1",
