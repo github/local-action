@@ -47,7 +47,7 @@
     "@actions/core": "^1.11.1",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^6.0.1",
-    "@actions/http-client": "^2.2.3",
+    "@actions/http-client": "^3.0.0",
     "@eslint/compat": "^1.2.8",
     "@octokit/core": "^7.0.5",
     "@octokit/plugin-paginate-rest": "^13.2.1",
