@@ -36,7 +36,7 @@ jobs:
 
       - name: Check Version
         id: check-version
-        uses: issue-ops/semver@v2
+        uses: issue-ops/semver@v3
         with:
           check-only: true
           comment: true
