@@ -72,7 +72,7 @@ FILEIO_REPORTER: false
 
 # Provides suggestions about different MegaLinter flavors to use to improve
 # runtime performance
-FLAVOR_SUGGESTIONS: true
+FLAVOR_SUGGESTIONS: false
 
 # Formatter errors will be reported as errors (and not warnings) if this
 # variable is set to false

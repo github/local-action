@@ -29,11 +29,11 @@
   },
   "scripts": {
     "ci-test": "NODE_OPTIONS=\"$NODE_OPTIONS --no-warnings --experimental-vm-modules\" jest --ci --reporters=default --reporters=jest-junit --no-cache",
-    "coverage": "npx make-coverage-badge --output-path ./badges/coverage.svg",
-    "format:write": "npx prettier --write .",
-    "format:check": "npx prettier --check .",
-    "lint": "npx eslint .",
-    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --no-warnings --experimental-vm-modules\" npx jest --no-cache",
+    "coverage": "make-coverage-badge --output-path ./badges/coverage.svg",
+    "format:write": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --no-warnings --experimental-vm-modules\" jest --no-cache",
     "all": "npm run format:write && npm run lint && npm run test && npm run coverage"
   },
   "license": "MIT",
