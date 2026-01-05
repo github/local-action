@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         id: setup-node
@@ -62,13 +62,13 @@ jobs:
     steps:
       - name: Checkout @github/local-action
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: typescript-action
           repository: actions/typescript-action
@@ -123,13 +123,13 @@ jobs:
     steps:
       - name: Checkout @github/local-action
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: local-action
 
       - name: Checkout JavaScript Template
         id: checkout-javascript
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: javascript-action
           repository: actions/javascript-action
@@ -184,13 +184,13 @@ jobs:
     steps:
       - name: Checkout @github/local-action
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: typescript-pnpm-esm-action
           repository: ncalteen/typescript-pnpm-esm-action
@@ -256,13 +256,13 @@ jobs:
     steps:
       - name: Checkout @github/local-action
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: typescript-pnpm-cjs-action
           repository: ncalteen/typescript-pnpm-cjs-action
@@ -327,13 +327,13 @@ jobs:
     steps:
       - name: Checkout @github/local-action
         id: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: typescript-yarn-esm-action
           repository: ncalteen/typescript-yarn-esm-action
