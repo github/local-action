@@ -50,9 +50,8 @@ jest.unstable_mockModule('../../../src/stubs/env.js', () => ({
 }))
 
 // Import after mocking
-const { CACHE_STUBS, restoreCache, saveCache } = await import(
-  '../../../src/stubs/cache/cache.js'
-)
+const { CACHE_STUBS, restoreCache, saveCache } =
+  await import('../../../src/stubs/cache/cache.js')
 
 describe('cache/cache', () => {
   const originalWorkspace = process.env.LOCAL_ACTION_WORKSPACE

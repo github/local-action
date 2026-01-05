@@ -48,9 +48,8 @@ jest.unstable_mockModule(
   })
 )
 
-const uploadArtifact = await import(
-  '../../../../../src/stubs/artifact/internal/upload/upload-artifact.js'
-)
+const uploadArtifact =
+  await import('../../../../../src/stubs/artifact/internal/upload/upload-artifact.js')
 
 describe('upload-artifacts', () => {
   beforeEach(() => {

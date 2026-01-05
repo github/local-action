@@ -19,12 +19,10 @@ jest.unstable_mockModule(
 )
 
 // Import after mocking
-const { CompressionMethod } = await import(
-  '../../../../src/stubs/cache/internal/constants.js'
-)
-const { createTar, extractTar, listTar } = await import(
-  '../../../../src/stubs/cache/internal/tar.js'
-)
+const { CompressionMethod } =
+  await import('../../../../src/stubs/cache/internal/constants.js')
+const { createTar, extractTar, listTar } =
+  await import('../../../../src/stubs/cache/internal/tar.js')
 
 describe('cache/internal/tar', () => {
   beforeEach(() => {
