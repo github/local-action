@@ -3,9 +3,8 @@ import * as core from '../../../../../__fixtures__/@actions/core.js'
 
 jest.unstable_mockModule('../../../../../src/stubs/core/core.js', () => core)
 
-const pathAndArtifactNameValidation = await import(
-  '../../../../../src/stubs/artifact/internal/upload/path-and-artifact-name-validation.js'
-)
+const pathAndArtifactNameValidation =
+  await import('../../../../../src/stubs/artifact/internal/upload/path-and-artifact-name-validation.js')
 
 describe('path-and-artifact-name-validation', () => {
   afterEach(() => {

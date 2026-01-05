@@ -12,9 +12,8 @@ const {
   createTempDirectory,
   getArchiveFileSizeInBytes
 } = await import('../../../../src/stubs/cache/internal/cacheUtils.js')
-const { CacheFilename, CompressionMethod } = await import(
-  '../../../../src/stubs/cache/internal/constants.js'
-)
+const { CacheFilename, CompressionMethod } =
+  await import('../../../../src/stubs/cache/internal/constants.js')
 
 describe('cache/internal/cacheUtils', () => {
   beforeEach(() => {

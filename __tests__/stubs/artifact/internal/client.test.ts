@@ -60,9 +60,8 @@ jest.unstable_mockModule(
 )
 jest.unstable_mockModule('../../../../src/stubs/core/core.js', () => core)
 
-const { DefaultArtifactClient } = await import(
-  '../../../../src/stubs/artifact/internal/client.js'
-)
+const { DefaultArtifactClient } =
+  await import('../../../../src/stubs/artifact/internal/client.js')
 
 describe('DefaultArtifactClient', () => {
   beforeEach(() => {

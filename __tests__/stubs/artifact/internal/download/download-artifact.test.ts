@@ -17,9 +17,8 @@ jest.unstable_mockModule('stream/promises', () => stream)
 
 jest.unstable_mockModule('../../../../../src/stubs/core/core.js', () => core)
 
-const downloadArtifact = await import(
-  '../../../../../src/stubs/artifact/internal/download/download-artifact.js'
-)
+const downloadArtifact =
+  await import('../../../../../src/stubs/artifact/internal/download/download-artifact.js')
 
 describe('download-artifact', () => {
   beforeEach(() => {

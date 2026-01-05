@@ -36,9 +36,8 @@ jest.unstable_mockModule(
   () => github
 )
 
-const deleteArtifact = await import(
-  '../../../../../src/stubs/artifact/internal/delete/delete-artifact.js'
-)
+const deleteArtifact =
+  await import('../../../../../src/stubs/artifact/internal/delete/delete-artifact.js')
 
 const { Octokit } = await import('@octokit/rest')
 const mocktokit = jest.mocked(new Octokit())

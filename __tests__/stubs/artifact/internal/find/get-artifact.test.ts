@@ -23,9 +23,8 @@ jest.unstable_mockModule(
   () => github
 )
 
-const getArtifact = await import(
-  '../../../../../src/stubs/artifact/internal/find/get-artifact.js'
-)
+const getArtifact =
+  await import('../../../../../src/stubs/artifact/internal/find/get-artifact.js')
 
 const { Octokit } = await import('@octokit/rest')
 const mocktokit = jest.mocked(new Octokit())

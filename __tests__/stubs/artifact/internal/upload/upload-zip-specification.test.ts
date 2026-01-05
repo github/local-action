@@ -5,9 +5,8 @@ import * as fs from '../../../../../__fixtures__/fs.js'
 jest.unstable_mockModule('fs', () => fs)
 jest.unstable_mockModule('../../../../../src/stubs/core/core.js', () => core)
 
-const uploadZipSpecification = await import(
-  '../../../../../src/stubs/artifact/internal/upload/upload-zip-specification.js'
-)
+const uploadZipSpecification =
+  await import('../../../../../src/stubs/artifact/internal/upload/upload-zip-specification.js')
 
 describe('upload-zip-specification', () => {
   afterEach(() => {
