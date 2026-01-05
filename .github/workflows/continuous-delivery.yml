@@ -48,7 +48,7 @@ jobs:
 
       - name: Tag
         id: tag
-        uses: issue-ops/semver@v2.4.0
+        uses: issue-ops/semver@v3
         with:
           manifest-path: package.json
           workspace: ${{ github.workspace }}
