@@ -1,5 +1,15 @@
 # Changelog
 
+## v7
+
+Update support for each of the following packages to the latest versions:
+
+- [`@actions/artifact`](https://www.npmjs.com/package/@actions/artifact):
+  `5.0.2`
+- [`@actions/cache`](https://www.npmjs.com/package/@actions/cache): `5.0.3`
+- [`@actions/core`](https://www.npmjs.com/package/@actions/core): `2.0.2`
+- [`@actions/github`](https://www.npmjs.com/package/@actions/github): `7.0.0`
+
 ## v6
 
 Adds support for the `@actions/cache` package, allowing for local caching of

@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/core/src/platform.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: d402248c459082c3727b5d592f9c44b81d7d9709
+ * Last Reviewed Date: 2026-01-16
  */
 
 import * as exec from '@actions/exec'

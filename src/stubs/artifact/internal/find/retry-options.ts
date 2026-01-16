@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/find/retry-options.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 06e751600e2c016997ae8b1393bff0c4c79fc52f
+ * Last Reviewed Date: 2026-01-16
  */
 
 import type { OctokitOptions } from '@octokit/core'

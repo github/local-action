@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/main/packages/cache/src/internal/tar.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: ea21da69936b05b9a4e65cd3be2b054bf3a6db23
+ * Last Reviewed Date: 2025-01-16
  */
 
 import { exec } from '@actions/exec'

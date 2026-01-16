@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/upload/upload-artifact.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 1e0c16f0dc67246ccb8005965c289aba4114bd56
+ * Last Reviewed Date: 2026-01-16
  */
 
 import crypto from 'crypto'

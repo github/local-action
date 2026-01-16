@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/main/packages/cache/src/internal/constants.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: b2557ac90ca11aad2f3dfb23565c54e91cef5dfe
+ * Last Reviewed Date: 2026-01-16
  */
 
 export enum CacheFilename {

@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/cache/src/internal/cache.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 06f7fd9df15088233d2593af69ea710eb2fc516b
+ * Last Reviewed Date: 2026-01-16
  */
 
 import * as core from '@actions/core'

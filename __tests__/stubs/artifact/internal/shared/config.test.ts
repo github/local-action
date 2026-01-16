@@ -63,4 +63,29 @@ describe('config', () => {
       expect(config.getGitHubWorkspaceDir()).toEqual('/tmp/workspace')
     })
   })
+
+  describe('getMaxArtifactListCount', () => {
+    it('Gets the default max artifact list count', () => {
+      expect(config.getMaxArtifactListCount()).toEqual(1000)
+    })
+
+    it('Gets the max artifact list count (env var)', () => {
+      process.env.ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT = '500'
+      expect(config.getMaxArtifactListCount()).toEqual(500)
+    })
+
+    it('Throws if the env var is not a number', () => {
+      process.env.ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT = 'hello'
+      expect(() => config.getMaxArtifactListCount()).toThrow(
+        'Invalid value set for ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT env variable'
+      )
+    })
+
+    it('Throws if the env var is less than 1', () => {
+      process.env.ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT = '0'
+      expect(() => config.getMaxArtifactListCount()).toThrow(
+        'Invalid value set for ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT env variable'
+      )
+    })
+  })
 })

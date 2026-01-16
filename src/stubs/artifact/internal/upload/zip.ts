@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/upload/zip.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: https://github.com/actions/toolkit/blob/ee91adfbc4f4d1470e176a8d568c0cbdabaf98e0/packages/artifact/src/internal/upload/zip.ts
+ * Last Reviewed Date: 2026-01-16
  */
 
 import archiver from 'archiver'
