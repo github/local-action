@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/github/src/interfaces.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: d4340966b7e9262da886a97ce8e959522e55c576
+ * Last Reviewed Date: 2026-01-16
  */
 
 /**

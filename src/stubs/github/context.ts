@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/github/src/context.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: faa425440f86f9c16587a19dfb59491253a2c92a
+ * Last Reviewed Date: 2026-01-16
  */
 
 import { existsSync, readFileSync } from 'fs'
