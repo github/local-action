@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/shared/errors.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 16b786a545a0b3a90e4dc4330af7225cf06f7e93
+ * Last Reviewed Date: 2026-01-16
  */
 
 /**

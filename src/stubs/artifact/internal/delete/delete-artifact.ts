@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/delete/delete-artifact.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 2f5fb3f92b71b303a20d6b74fbc64dc64f3e32d8
+ * Last Reviewed Date: 2026-01-16
  */
 
 import type { OctokitOptions } from '@octokit/core'

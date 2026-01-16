@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/find/get-artifact.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: fea4f6b5c527a8f231cfb9e2530a2f367e971faa
+ * Last Reviewed Date: 2026-01-16
  */
 
 import type { OctokitOptions } from '@octokit/core'
@@ -10,14 +10,14 @@ import { EnvMeta } from '../../../../stubs/env.js'
 import * as core from '../../../core/core.js'
 import { getOctokit } from '../../../github/github.js'
 import { defaults as defaultGitHubOptions } from '../../../github/utils.js'
+import { getMaxArtifactListCount } from '../shared/config.js'
 import type { Artifact, ListArtifactsResponse } from '../shared/interfaces.js'
 import { getUserAgentString } from '../shared/user-agent.js'
 import { getRetryOptions } from './retry-options.js'
 
-// Limiting to 1000 for perf reasons
-const maximumArtifactCount = 1000
+const maximumArtifactCount = getMaxArtifactListCount()
 const paginationCount = 100
-const maxNumberOfPages = maximumArtifactCount / paginationCount
+const maxNumberOfPages = Math.ceil(maximumArtifactCount / paginationCount)
 
 /**
  * Lists artifacts for a given workflow run.
@@ -85,18 +85,23 @@ export async function listArtifactsPublic(
       name: artifact.name,
       id: artifact.id,
       size: artifact.size_in_bytes,
-      createdAt: artifact.created_at ? new Date(artifact.created_at) : undefined
+      createdAt: artifact.created_at
+        ? new Date(artifact.created_at)
+        : undefined,
+      digest: (artifact as ArtifactResponse).digest
     })
   }
+
+  // Move to the next page
+  currentPageNumber++
 
   // Iterate over any remaining pages
   /* istanbul ignore next */
   for (
     currentPageNumber;
-    currentPageNumber < numberOfPages;
+    currentPageNumber <= numberOfPages;
     currentPageNumber++
   ) {
-    currentPageNumber++
     core.debug(`Fetching page ${currentPageNumber} of artifact list`)
 
     const { data: listArtifactResponse } =
@@ -115,7 +120,8 @@ export async function listArtifactsPublic(
         size: artifact.size_in_bytes,
         createdAt: artifact.created_at
           ? new Date(artifact.created_at)
-          : undefined
+          : undefined,
+        digest: (artifact as ArtifactResponse).digest
       })
     }
   }
@@ -149,6 +155,19 @@ export async function listArtifactsInternal(
   return {
     artifacts
   }
+}
+
+/**
+ * This exists so that we don't have to use 'any' when receiving the artifact
+ * list from the GitHub API. The digest field is not present in OpenAPI/types at
+ * time of writing, which necessitates this change.
+ */
+interface ArtifactResponse {
+  name: string
+  id: number
+  size_in_bytes: number
+  created_at?: string
+  digest?: string
 }
 
 /**

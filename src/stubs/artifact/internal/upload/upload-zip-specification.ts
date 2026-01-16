@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/upload/upload-zip-specification.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 7f19a7886a8b3b16c971a89cb787b850cb6a7980
+ * Last Reviewed Date: 2026-01-16
  */
 
 import * as fs from 'fs'

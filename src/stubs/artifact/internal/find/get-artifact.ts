@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/find/get-artifact.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: d5c8a0fa274d832846b6c3a409b017a6b76b787e
+ * Last Reviewed Date: 2026-01-16
  */
 
 import type { OctokitOptions } from '@octokit/core'
@@ -112,13 +112,12 @@ export async function getArtifactInternal(
     .filter(artifact => artifact.name === artifactName)
     .sort((a, b) => Number(b.id) - Number(a.id))
 
-  if (artifacts.length === 0) {
+  if (artifacts.length === 0)
     throw new ArtifactNotFoundError(
       `Artifact not found for name: ${artifactName}
         Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.
         For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md`
     )
-  }
 
   if (artifacts.length > 1)
     core.debug(

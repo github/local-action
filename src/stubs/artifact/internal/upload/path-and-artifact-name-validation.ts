@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/upload/path-and-artifact-name-validation.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 7da3ac6edad34a891be2c261a6eb4d74a9843fbc
+ * Last Reviewed Date: 2026-01-16
  */
 
 import { info } from '../../../core/core.js'

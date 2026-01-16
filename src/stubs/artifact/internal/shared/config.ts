@@ -1,6 +1,11 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/artifact/src/internal/shared/config.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 02afeb157764304bb3bfe1a6cfd37258ec3fcf7c
+ * Last Reviewed Date: 2026-01-16
+ *
+ * @remarks
+ *
+ * - Removed getConcurrency
+ * - Removed getUploadChunkTimeout
  */
 
 /**
@@ -39,4 +44,21 @@ export function isGhes(): boolean {
  */
 export function getGitHubWorkspaceDir(): string {
   return process.env.GITHUB_WORKSPACE || process.cwd()
+}
+
+/**
+ * This value can be changed with ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT variable.
+ * Defaults to 1000 as a safeguard for rate limiting.
+ */
+export function getMaxArtifactListCount(): number {
+  const maxCountVar = process.env.ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT || '1000'
+
+  const maxCount = parseInt(maxCountVar)
+  if (isNaN(maxCount) || maxCount < 1) {
+    throw new Error(
+      'Invalid value set for ACTIONS_ARTIFACT_MAX_ARTIFACT_COUNT env variable'
+    )
+  }
+
+  return maxCount
 }
