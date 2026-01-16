@@ -19,10 +19,11 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
-  release:
-    name: Create Release
+  publish:
+    name: Publish to npm
     runs-on: ubuntu-latest
 
     # Only run this job if one of the following is true:
@@ -35,36 +36,6 @@ jobs:
         startsWith(github.head_ref, 'dependabot/') == false &&
         github.event.pull_request.head.repo.fork == false
       )
-
-    outputs:
-      tag: v${{ steps.tag.outputs.version }}
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-tags: true
-
-      - name: Tag
-        id: tag
-        uses: issue-ops/semver@v3
-        with:
-          manifest-path: package.json
-          workspace: ${{ github.workspace }}
-          ref: main
-
-      - name: Create Release
-        id: release
-        uses: issue-ops/releaser@v3.0.0
-        with:
-          tag: v${{ steps.tag.outputs.version }}
-
-  publish-npm:
-    name: Publish to npm
-    runs-on: ubuntu-latest
-
-    needs: release
 
     steps:
       - name: Checkout
@@ -95,3 +66,30 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm publish --ignore-scripts --access public
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    needs: publish
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-tags: true
+
+      - name: Tag
+        id: tag
+        uses: issue-ops/semver@v3
+        with:
+          manifest-path: package.json
+          workspace: ${{ github.workspace }}
+          ref: main
+
+      - name: Create Release
+        id: release
+        uses: issue-ops/releaser@v3.0.0
+        with:
+          tag: v${{ steps.tag.outputs.version }}
