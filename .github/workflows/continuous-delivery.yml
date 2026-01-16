@@ -62,8 +62,6 @@ jobs:
 
       - name: Publish
         id: publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm publish --ignore-scripts --access public
 
