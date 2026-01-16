@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/core/src/summary.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 07242b37a49ef3c3704f429570b3c9e377b72ecb
+ * Last Reviewed Date: 2026-01-16
  */
 
 import fs from 'fs'

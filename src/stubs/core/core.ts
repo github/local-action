@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/f58042f9cc16bcaa87afaa86c2974a8c771ce1ea/packages/core/src/core.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 6876e2a664ec02908178087905b9155e9892a437
+ * Last Reviewed Date: 2026-01-16
  *
  * @remarks
  *
