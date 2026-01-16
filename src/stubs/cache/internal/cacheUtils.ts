@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/main/packages/cache/src/internal/cacheUtils.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 267841d7bd659368f7382ca22d5ca0b2af68f0b3
+ * Last Reviewed Date: 2026-01-16
  *
  * @remarks
  *

@@ -1,6 +1,6 @@
 /**
- * Last Reviewed Commit: https://github.com/actions/toolkit/blob/main/packages/cache/src/options.ts
- * Last Reviewed Date: 2025-09-10
+ * Last Reviewed Commit: 792ec716de29f031413f3e4f810142cd223f1773
+ * Last Reviewed Date: 2026-01-16
  *
  * @remarks
  *
