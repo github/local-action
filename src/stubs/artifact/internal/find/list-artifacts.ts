@@ -15,9 +15,7 @@ import type { Artifact, ListArtifactsResponse } from '../shared/interfaces.js'
 import { getUserAgentString } from '../shared/user-agent.js'
 import { getRetryOptions } from './retry-options.js'
 
-const maximumArtifactCount = getMaxArtifactListCount()
 const paginationCount = 100
-const maxNumberOfPages = Math.ceil(maximumArtifactCount / paginationCount)
 
 /**
  * Lists artifacts for a given workflow run.
@@ -72,11 +70,11 @@ export async function listArtifactsPublic(
     listArtifactResponse.total_count / paginationCount
   )
   const totalArtifactCount = listArtifactResponse.total_count
-  if (totalArtifactCount > maximumArtifactCount) {
+  if (totalArtifactCount > getMaxArtifactListCount()) {
     core.warning(
-      `Workflow run ${workflowRunId} has more than 1000 artifacts. Results will be incomplete as only the first ${maximumArtifactCount} artifacts will be returned`
+      `Workflow run ${workflowRunId} has more than 1000 artifacts. Results will be incomplete as only the first ${getMaxArtifactListCount()} artifacts will be returned`
     )
-    numberOfPages = maxNumberOfPages
+    numberOfPages = Math.ceil(getMaxArtifactListCount() / paginationCount)
   }
 
   // Iterate over the first page
