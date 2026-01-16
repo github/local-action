@@ -8,7 +8,7 @@
   "homepage": "https://github.com/github/local-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github/local-action.git"
+    "url": "https://github.com/github/local-action"
   },
   "bugs": {
     "url": "https://github.com/github/local-action/issues"
