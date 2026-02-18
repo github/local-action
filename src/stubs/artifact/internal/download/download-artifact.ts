@@ -220,8 +220,10 @@ export async function downloadArtifactPublic(
         core.debug(`Expected digest: ${options.expectedHash}`)
       }
   } catch (error: any) {
-    // eslint-disable-next-line preserve-caught-error
-    throw new Error(`Unable to download and extract artifact: ${error.message}`)
+    throw new Error(
+      `Unable to download and extract artifact: ${error.message}`,
+      { cause: error }
+    )
   }
 
   return { downloadPath, digestMismatch }
@@ -276,8 +278,10 @@ export async function downloadArtifactInternal(
 
     core.info(`Artifact download completed successfully.`)
   } catch (error: any) {
-    // eslint-disable-next-line preserve-caught-error
-    throw new Error(`Unable to download and extract artifact: ${error.message}`)
+    throw new Error(
+      `Unable to download and extract artifact: ${error.message}`,
+      { cause: error }
+    )
   }
 
   return { downloadPath, digestMismatch: false }
