@@ -45,6 +45,7 @@ export function getOctokitOptions(
   const opts = Object.assign({}, options || {})
 
   const auth = Utils.getAuthString(token, opts)
+  /* istanbul ignore next */
   if (auth) opts.auth = auth
 
   return opts

@@ -310,6 +310,7 @@ async function execCommands(commands: string[], cwd?: string): Promise<void> {
         env: { ...(process.env as object), MSYS: 'winsymlinks:nativestrict' }
       })
     } catch (error: any) {
+      // eslint-disable-next-line preserve-caught-error
       throw new Error(
         `${command.split(' ')[0]} failed with error: ${error?.message}`
       )

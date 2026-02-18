@@ -127,7 +127,7 @@ async function restoreCacheFromFilesystem(
 
   for (const key of keys) checkKey(key)
 
-  let archivePath = ''
+  let archivePath
   let matchedKey = undefined
   let matchedCache = undefined
 
