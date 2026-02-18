@@ -33,6 +33,7 @@ export class Context {
   constructor() {
     this.payload = {}
 
+    /* istanbul ignore next */
     if (process.env.GITHUB_EVENT_PATH) {
       if (existsSync(process.env.GITHUB_EVENT_PATH)) {
         this.payload = JSON.parse(
