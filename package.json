@@ -1,7 +1,7 @@
 {
   "name": "@github/local-action",
   "description": "Local Debugging for GitHub Actions",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "type": "module",
   "author": "Nick Alteen <ncalteen@github.com>",
   "private": false,
@@ -98,6 +98,7 @@
     "@octokit/plugin-paginate-rest": "^13.2.1",
     "@octokit/request-error": "^7.0.1",
     "@octokit/request": "^10.0.5",
-    "undici": "^7.18.2"
+    "undici": "^7.18.2",
+    "ajv": ">=8.18.0"
   }
 }
