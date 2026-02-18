@@ -13,7 +13,8 @@ export function isESM(): boolean {
   const dirs = path.dirname(EnvMeta.entrypoint).split(path.sep)
 
   while (dirs.length > 0) {
-    // Check if the current directory has a packge.json.
+    // Check if the current directory has a package.json.
+    /* istanbul ignore next */
     if (fs.existsSync(path.resolve(dirs.join(path.sep), 'package.json'))) {
       const packageJson = JSON.parse(
         fs.readFileSync(

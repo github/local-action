@@ -8,6 +8,7 @@ const empty: EnvMetadata = {
   actionFile: '',
   actionPath: '',
   artifacts: [],
+  caches: {},
   dotenvFile: '',
   entrypoint: '',
   env: {},

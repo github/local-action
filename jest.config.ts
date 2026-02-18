@@ -9,7 +9,8 @@ const config: JestConfigWithTsJest = {
     'node_modules',
     'src/types/quibble.d.ts',
     'src/commands/run.ts',
-    'src/stubs/artifact/artifact.ts'
+    'src/stubs/artifact/artifact.ts',
+    'src/index.ts'
   ],
   coverageReporters: ['json-summary', 'lcov', 'text'],
   coverageThreshold: {

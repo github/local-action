@@ -311,7 +311,8 @@ async function execCommands(commands: string[], cwd?: string): Promise<void> {
       })
     } catch (error: any) {
       throw new Error(
-        `${command.split(' ')[0]} failed with error: ${error?.message}`
+        `${command.split(' ')[0]} failed with error: ${error?.message}`,
+        { cause: error }
       )
     }
   }
