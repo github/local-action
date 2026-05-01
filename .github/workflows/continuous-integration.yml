@@ -197,7 +197,7 @@ jobs:
 
       - name: Install pnpm
         id: pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: latest
 
@@ -269,7 +269,7 @@ jobs:
 
       - name: Install pnpm
         id: pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: latest
 
