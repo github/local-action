@@ -11,5 +11,8 @@
   ],
   "github.copilot.chat.pullRequestDescriptionGeneration.instructions": [
     { "text": "Always include a list of key changes." }
-  ]
+  ],
+  "airun.settings": {
+    "workspaceId": "fe0502d7-ebd1-4c01-801f-1f4c40960db0"
+  }
 }

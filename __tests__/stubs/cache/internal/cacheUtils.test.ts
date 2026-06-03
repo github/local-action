@@ -83,7 +83,7 @@ describe('cache/internal/cacheUtils', () => {
       const tempDir = await createTempDirectory()
 
       expect(tempDir).toMatch(
-        /^\/tmp\/workspace\/actions\/temp\/[a-f0-9-]{36}$/
+        /^[/\\]tmp[/\\]workspace[/\\]actions[/\\]temp[/\\][a-f0-9-]{36}$/
       )
     })
 

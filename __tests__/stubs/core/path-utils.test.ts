@@ -38,7 +38,7 @@ describe('path-utils', () => {
       )
 
       expect(toPosixPath('C:\\Users\\mona\\Desktop')).toEqual(
-        `C:${path.sep}Users${path.sep}mona${path.sep}Desktop`
+        'C:/Users/mona/Desktop'
       )
     })
   })

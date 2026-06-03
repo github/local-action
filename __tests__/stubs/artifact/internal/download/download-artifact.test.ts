@@ -3,6 +3,7 @@ import * as core from '../../../../../__fixtures__/@actions/core.js'
 import * as crypto from '../../../../../__fixtures__/crypto.js'
 import * as fs from '../../../../../__fixtures__/fs.js'
 import * as stream from '../../../../../__fixtures__/stream/promises.js'
+import path from 'path'
 import { ResetCoreMetadata } from '../../../../../src/stubs/core/core.js'
 import { EnvMeta, ResetEnvMetadata } from '../../../../../src/stubs/env.js'
 
@@ -91,7 +92,7 @@ describe('download-artifact', () => {
 
       expect(fs.createReadStream).toHaveBeenCalledTimes(1)
       expect(fs.createReadStream).toHaveBeenCalledWith(
-        '/tmp/artifacts/artifact-name-1.zip'
+        path.join('/tmp/artifacts', 'artifact-name-1.zip')
       )
       expect(stream.finished).toHaveBeenCalledTimes(1)
     })
