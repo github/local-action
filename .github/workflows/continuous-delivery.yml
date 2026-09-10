@@ -40,13 +40,13 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-tags: true
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           cache: npm
           node-version-file: .node-version
@@ -74,13 +74,13 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-tags: true
 
       - name: Tag
         id: tag
-        uses: issue-ops/semver@v3
+        uses: issue-ops/semver@e58d2f490332e0310a78e9a0e935d8d6f898e9e3 # v3.0.0
         with:
           manifest-path: package.json
           workspace: ${{ github.workspace }}
@@ -88,6 +88,6 @@ jobs:
 
       - name: Create Release
         id: release
-        uses: issue-ops/releaser@v3
+        uses: issue-ops/releaser@41bcc03658669135298bb08b60f043f1e02bf10e # v3.0.0
         with:
           tag: v${{ steps.tag.outputs.version }}
