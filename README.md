@@ -64,8 +64,8 @@ issues, please [file an issue](https://github.com/github/local-action/issues).
 
 Some caveats to this support are listed below.
 
-- The `@github/local-action` package should be run using
-  `yarn dlx @github/local-action` instead of `yarn local-action`.
+- The `@ronaldphilipsen/local-action` package should be run using
+  `yarn dlx @ronaldphilipsen/local-action` instead of `yarn local-action`.
 - This tool does not support CommonJS actions using `yarn`.
 
 ## Prerequisites
@@ -153,7 +153,7 @@ For additional information about transpiled action code, see
 1. Install via `npm`
 
    ```bash
-   npm i -g @github/local-action
+   npm i -g @ronaldphilipsen/local-action
    ```
 
 ### Option 2: Clone this Repository
@@ -274,7 +274,7 @@ values).
 Possible errors that can arise from not having `allowJs: false`:
 
 - `TypeError [ERR_INVALID_URL_SCHEME]: The URL must be of scheme file` from tsx
-  when trying to run `npx @github/local-action`.
+  when trying to run `npx @ronaldphilipsen/local-action`.
 
 ## Features
 

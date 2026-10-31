@@ -1,6 +1,11 @@
 # Mega-Linter Configuration File
 # https://megalinter.io/latest/config-file/
 
+# Allow zizmor to authenticate with GITHUB_TOKEN so it can resolve
+# external action refs (ref-confusion audit)
+ACTION_ZIZMOR_UNSECURED_ENV_VARIABLES:
+  - GITHUB_TOKEN
+
 # Activates formatting and autofix
 APPLY_FIXES: none
 
@@ -26,6 +31,8 @@ DISABLE_LINTERS:
   - MARKDOWN_MARKDOWN_LINK_CHECK
   - MARKDOWN_MARKDOWN_TABLE_FORMATTER
   - REPOSITORY_KICS
+  # Redundant with grype/trivy and has no severity gating
+  - REPOSITORY_OSV_SCANNER
   - REPOSITORY_SEMGREP
   - TYPESCRIPT_STANDARD
   - YAML_V8R
@@ -45,12 +52,19 @@ DISABLE_LINTERS:
 
 # List of excluded directory basenames.
 EXCLUDED_DIRECTORIES:
+  # Intentionally broken test data, not lintable source
+  - __fixtures__
   - .git
   - coverage
   - dist
   - megalinter-reports
   - node_modules
   - reports
+
+# List of excluded file paths. bin/local-action.js is excluded from the
+# repo's own eslint project and cannot be type-aware linted.
+EXCLUDED_FILES:
+  - bin/local-action.js
 
 # If set to true, MegaLinter fails if a linter is missing in the selected flavor
 FAIL_IF_MISSING_LINTER_IN_FLAVOR: false

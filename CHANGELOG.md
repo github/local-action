@@ -46,7 +46,7 @@ This version adds **experimental** support for [pnpm](https://pnpm.io/) and
 [yarn](https://yarnpkg.com/).
 
 Depending on the package manager and version, the invocation of the `tsx`
-command that drives `@github/local-action` is invoked differently.
+command that drives `@ronaldphilipsen/local-action` is invoked differently.
 
 | Package Manager | Version | Command     |
 | --------------- | ------- | ----------- |
@@ -57,7 +57,8 @@ command that drives `@github/local-action` is invoked differently.
 
 Alongside this, yarn PnP support is implemented via
 [unplugging](https://yarnpkg.com/cli/unplug) any modules stubbed by
-`@github/local-action` and "re-plugging" after completion of the action run.
+`@ronaldphilipsen/local-action` and "re-plugging" after completion of the action
+run.
 
 This support is still a work in progress. Any feedback or issues are welcome!
 

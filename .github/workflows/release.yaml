@@ -88,7 +88,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
           git switch -c "release-$VERSION"
           git add package.json package-lock.json
           git commit -m "chore: bump version to $VERSION"
@@ -106,7 +106,7 @@ jobs:
           gh release create "$TAG" \
             --title "$TAG" \
             --notes "$RELEASE_NOTES" \
-            $( [[ "$PRERELEASE" == 'true' ]] && echo '--prerelease' || echo '' )
+            "$( [[ "$PRERELEASE" == 'true' ]] && echo '--prerelease' || echo '' )"
       - name: clean up branch
         if: always()
         run: |

@@ -24,13 +24,13 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: .node-version
           cache: npm
@@ -44,4 +44,4 @@ jobs:
         env:
           DEFAULT_WORKSPACE: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ github.token }}
-        uses: oxsecurity/megalinter/flavors/cupcake@v9
+        uses: oxsecurity/megalinter/flavors/cupcake@ef3e84b8b836d76db562d0f3ed7da61e8fd538bc # v9

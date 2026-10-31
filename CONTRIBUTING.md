@@ -64,7 +64,7 @@ against various repositories with different configurations.
 Once you're finished testing, make sure to unlink!
 
 ```bash
-npm unlink @github/local-action
+npm unlink @ronaldphilipsen/local-action
 ```
 
 #### Example Actions to Test

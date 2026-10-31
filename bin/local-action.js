@@ -53,6 +53,24 @@ function entrypoint() {
       return
     }
 
+    // If the package ships its own tsx (development install or npm link),
+    // run it directly. This avoids package manager sandboxes such as yarn
+    // PnP, which cannot resolve dependencies for files outside the project.
+    const bundledTsx = path.join(
+      packagePath,
+      'node_modules',
+      'tsx',
+      'dist',
+      'cli.mjs'
+    )
+    if (fs.existsSync(bundledTsx)) {
+      execSync(
+        `node "${bundledTsx}" "${path.join(packagePath, 'src', 'index.ts')}" -- ${args.join(' ')}`,
+        { stdio: 'inherit' }
+      )
+      return
+    }
+
     // Starting in the TARGET_ACTION_PATH, locate the package.json file and
     // determine the package manager.
     const actionPackageDirs = path

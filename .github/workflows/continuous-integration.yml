@@ -8,9 +8,7 @@ on:
 
 permissions:
   actions: read
-  checks: write
   contents: read
-  statuses: write
 
 jobs:
   continuous-integration:
@@ -24,11 +22,11 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: .node-version
           cache: npm
@@ -60,28 +58,28 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout @github/local-action
+      - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: typescript-action
-          repository: actions/typescript-action
+          repository: RonaldPhilipsen/typescript-action
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: local-action/.node-version
           cache: npm
           cache-dependency-path: local-action/package-lock.json
 
-      - name: Install @github/local-action Dependencies
+      - name: Install @ronaldphilipsen/local-action Dependencies
         id: install
         run: npm ci
         working-directory: local-action
@@ -90,10 +88,10 @@ jobs:
         id: install-typescript
         run: |
           npm ci
-          npm uninstall @github/local-action
+          npm uninstall @ronaldphilipsen/local-action
         working-directory: typescript-action
 
-      - name: Link @github/local-action
+      - name: Link @ronaldphilipsen/local-action
         id: link
         run: npm link
         working-directory: local-action
@@ -121,28 +119,28 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout @github/local-action
+      - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: local-action
 
       - name: Checkout JavaScript Template
         id: checkout-javascript
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: javascript-action
-          repository: actions/javascript-action
+          repository: RonaldPhilipsen/javascript-action
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: local-action/.node-version
           cache: npm
           cache-dependency-path: local-action/package-lock.json
 
-      - name: Install @github/local-action Dependencies
+      - name: Install @ronaldphilipsen/local-action Dependencies
         id: install
         run: npm ci
         working-directory: local-action
@@ -151,10 +149,10 @@ jobs:
         id: install-javascript
         run: |
           npm ci
-          npm uninstall @github/local-action
+          npm uninstall @ronaldphilipsen/local-action
         working-directory: javascript-action
 
-      - name: Link @github/local-action
+      - name: Link @ronaldphilipsen/local-action
         id: link
         run: npm link
         working-directory: local-action
@@ -182,34 +180,34 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout @github/local-action
+      - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: typescript-pnpm-esm-action
-          repository: ncalteen/typescript-pnpm-esm-action
+          repository: RonaldPhilipsen/typescript-pnpm-esm-action
 
       - name: Install pnpm
         id: pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
         with:
           version: latest
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: local-action/.node-version
           cache: npm
           cache-dependency-path: local-action/package-lock.json
 
-      - name: Install @github/local-action Dependencies
+      - name: Install @ronaldphilipsen/local-action Dependencies
         id: install
         run: npm ci
         working-directory: local-action
@@ -218,7 +216,7 @@ jobs:
         id: install-typescript
         run: |
           pnpm install
-          pnpm uninstall @github/local-action
+          pnpm uninstall @ronaldphilipsen/local-action
         working-directory: typescript-pnpm-esm-action
 
       - name: Create Global Link
@@ -254,34 +252,34 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout @github/local-action
+      - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: typescript-pnpm-cjs-action
-          repository: ncalteen/typescript-pnpm-cjs-action
+          repository: RonaldPhilipsen/typescript-pnpm-cjs-action
 
       - name: Install pnpm
         id: pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
         with:
           version: latest
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: local-action/.node-version
           cache: npm
           cache-dependency-path: local-action/package-lock.json
 
-      - name: Install @github/local-action Dependencies
+      - name: Install @ronaldphilipsen/local-action Dependencies
         id: install
         run: npm ci
         working-directory: local-action
@@ -290,7 +288,7 @@ jobs:
         id: install-typescript
         run: |
           pnpm install
-          pnpm uninstall @github/local-action
+          pnpm uninstall @ronaldphilipsen/local-action
         working-directory: typescript-pnpm-cjs-action
 
       - name: Create Global Link
@@ -325,28 +323,28 @@ jobs:
         working-directory: local-action
 
     steps:
-      - name: Checkout @github/local-action
+      - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           path: typescript-yarn-esm-action
-          repository: ncalteen/typescript-yarn-esm-action
+          repository: RonaldPhilipsen/typescript-yarn-esm-action
 
       - name: Setup Node.js
         id: setup-node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: local-action/.node-version
           cache: npm
           cache-dependency-path: local-action/package-lock.json
 
-      - name: Install @github/local-action Dependencies
+      - name: Install @ronaldphilipsen/local-action Dependencies
         id: install
         run: npm ci
         working-directory: local-action

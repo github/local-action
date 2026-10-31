@@ -1,0 +1,5 @@
+# Fail only on high/critical vulnerabilities; medium findings in
+# transitive dependencies are tracked, not release-blocking.
+severity:
+  - HIGH
+  - CRITICAL
