@@ -9,5 +9,5 @@
  * @returns User Agent
  */
 export function getUserAgentString(): string {
-  return `@github/local-action-${process.env.npm_package_version}`
+  return `@ronaldphilipsen/local-action-${process.env.npm_package_version}`
 }

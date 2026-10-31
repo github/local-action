@@ -1,0 +1,100 @@
+name: 'Release'
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  semVersie:
+    name: semVersie
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      release: ${{ steps.semVersie.outputs.release }}
+      release-notes: ${{ steps.semVersie.outputs.release-notes }}
+      prerelease: ${{ steps.semVersie.outputs.prerelease }}
+      tag: ${{ steps.semVersie.outputs.tag }}
+      version: ${{ steps.semVersie.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: semVersie
+        name: semVersie
+        uses: RonaldPhilipsen/semVersie@41233349edfb40f4e6da4251fea7684026182dc9 # v2.3.4
+
+  release:
+    name: Create Release
+    needs: semVersie
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to push commits and create releases
+      packages: write # to be able to publish to GitHub Packages
+    if:
+      ${{ needs.semVersie.outputs.release == 'true' ||
+      needs.semVersie.outputs.prerelease == 'true' }}
+    env:
+      VERSION: ${{ needs.semVersie.outputs.version }}
+      TAG: ${{ needs.semVersie.outputs.tag }}
+      RELEASE_NOTES: ${{ needs.semVersie.outputs['release-notes'] }}
+      PRERELEASE: ${{ needs.semVersie.outputs.prerelease }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        timeout-minutes: 5
+        with:
+          node-version: '26'
+          registry-url: 'https://registry.npmjs.org'
+      - name: update version in package.json
+        run: |
+          npm version "$VERSION" --no-git-tag-version
+      - name: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: npm publish
+      - name: publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --registry https://npm.pkg.github.com
+      - name: Commit version bump
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git
+          git switch -c "release-$VERSION"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to $VERSION"
+          git push --set-upstream origin "release-$VERSION"
+      - name: Tag Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git tag "$TAG"
+          git push origin "$TAG"
+      - name: Create Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "$RELEASE_NOTES" \
+            $( [[ "$PRERELEASE" == 'true' ]] && echo '--prerelease' || echo '' )
+      - name: clean up branch
+        if: always()
+        run: |
+          git push origin --delete "release-$VERSION"

@@ -22,7 +22,7 @@ function entrypoint() {
   delete process.env.TARGET_ACTION_PATH
 
   try {
-    // Get the absolute path to the `@github/local-action` package.
+    // Get the absolute path to the `@ronaldphilipsen/local-action` package.
     const packagePath = path.resolve(__dirname, '..')
 
     // Disable experimental warnings.

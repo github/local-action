@@ -16,7 +16,7 @@ describe('user-agent', () => {
 
   it('Outputs the correct user agent header', () => {
     expect(getUserAgentString()).toEqual(
-      `@github/local-action-${process.env.npm_package_version}`
+      `@ronaldphilipsen/local-action-${process.env.npm_package_version}`
     )
   })
 })
