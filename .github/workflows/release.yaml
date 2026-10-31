@@ -37,6 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # to be able to push commits and create releases
+      packages: write # to be able to publish to GitHub Packages
     if: needs.semVersie.outputs.release == 'true'
     env:
       VERSION: ${{ needs.semVersie.outputs.version }}
@@ -60,6 +61,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
         run: npm publish
+      - name: publish to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --registry https://npm.pkg.github.com
       - name: Commit version bump
         env:
           GH_TOKEN: ${{ github.token }}
