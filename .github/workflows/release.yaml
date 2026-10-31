@@ -41,7 +41,7 @@ jobs:
     if: needs.semVersie.outputs.release == 'true'
     env:
       VERSION: ${{ needs.semVersie.outputs.version }}
-      TAG: ${{ steps.outputs.tag }}
+      TAG: ${{ needs.semVersie.outputs.tag }}
       RELEASE_NOTES: ${{ needs.semVersie.outputs['release-notes'] }}
       PRERELEASE: ${{ needs.semVersie.outputs.prerelease }}
     steps:
