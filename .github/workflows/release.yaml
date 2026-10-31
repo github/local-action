@@ -63,11 +63,25 @@ jobs:
         run: |
           npm version "$VERSION" --no-git-tag-version
       - name: npm publish
-        run: npm publish
-      - name: publish to GitHub Packages
+        run: |
+          npm publish || {
+            echo "npm publish failed; checking if the version already exists..."
+            if npm view "@ronaldphilipsen/local-action@$VERSION" version --registry https://registry.npmjs.org; then
+              echo "$VERSION is already published; skipping"
+            else
+              exit 1
+            fi
+          }
+      - name: Install Node.js (GitHub Packages)
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        timeout-minutes: 5
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish --registry https://npm.pkg.github.com
+        with:
+          node-version: '26'
+          registry-url: 'https://npm.pkg.github.com'
+      - name: publish to GitHub Packages
+        run: npm publish
       - name: Commit version bump
         env:
           GH_TOKEN: ${{ github.token }}
