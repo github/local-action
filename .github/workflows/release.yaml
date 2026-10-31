@@ -27,9 +27,25 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          repository: RonaldPhilipsen/SemVersie
+          ref: ce71e9b4358156511757bd98025abf4681378ab0
+          path: .semversie
+          persist-credentials: false
+      - name: Install Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        timeout-minutes: 5
+        with:
+          node-version: '24'
+      - name: build semVersie
+        working-directory: .semversie
+        run: |
+          npm ci
+          npm run build
       - id: semVersie
         name: semVersie
-        uses: RonaldPhilipsen/SemVersie@ce71e9b4358156511757bd98025abf4681378ab0
+        uses: ./.semversie
 
   release:
     name: Create Release
