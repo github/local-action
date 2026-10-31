@@ -39,6 +39,7 @@ jobs:
     permissions:
       contents: write # to be able to push commits and create releases
       packages: write # to be able to publish to GitHub Packages
+      id-token: write # to be able to use npm trusted publishing
     if:
       ${{ needs.semVersie.outputs.release == 'true' ||
       needs.semVersie.outputs.prerelease == 'true' }}
@@ -62,8 +63,6 @@ jobs:
         run: |
           npm version "$VERSION" --no-git-tag-version
       - name: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
         run: npm publish
       - name: publish to GitHub Packages
         env:
