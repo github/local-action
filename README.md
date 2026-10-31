@@ -1,8 +1,16 @@
 # Local Action Debugger
 
-![GitHub Super-Linter](https://github.com/github/local-action/actions/workflows/linter.yml/badge.svg)
-![Continuous Integration](https://github.com/github/local-action/actions/workflows/continuous-integration.yml/badge.svg)
+![Continuous Integration](https://github.com/RonaldPhilipsen/local-action/actions/workflows/continuous-integration.yml/badge.svg)
 ![Code Coverage](badges/coverage.svg)
+
+> [!IMPORTANT]
+>
+> This is a fork of
+> [`github/local-action`](https://github.com/github/local-action), republished
+> as
+> [`@ronaldphilipsen/local-action`](https://www.npmjs.com/package/@ronaldphilipsen/local-action)
+> with **Node.js 26 support**. Releases are published to npm (via trusted
+> publishing) and to GitHub Packages.
 
 Run custom GitHub Actions locally and test them in Visual Studio Code!
 
@@ -30,8 +38,8 @@ See the [CHANGELOG](./CHANGELOG.md) for a complete list of changes.
 
 ## Node.js Version Support
 
-This tool is currently tested against **Node.js versions 22 and 24**. It is not
-guaranteed to work with other versions at this time.
+This tool is currently tested against **Node.js versions 22, 24 and 26**. It is
+not guaranteed to work with other versions at this time.
 
 ## Package Manager Support
 
