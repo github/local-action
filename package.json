@@ -1,17 +1,17 @@
 {
-  "name": "@github/local-action",
+  "name": "@ronaldphilipsen/local-action",
   "description": "Local Debugging for GitHub Actions",
   "version": "7.1.0",
   "type": "module",
   "author": "Nick Alteen <ncalteen@github.com>",
   "private": false,
-  "homepage": "https://github.com/github/local-action",
+  "homepage": "https://github.com/RonaldPhilipsen/local-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github/local-action.git"
+    "url": "git+https://github.com/RonaldPhilipsen/local-action.git"
   },
   "bugs": {
-    "url": "https://github.com/github/local-action/issues"
+    "url": "https://github.com/RonaldPhilipsen/local-action/issues"
   },
   "keywords": [
     "actions",
