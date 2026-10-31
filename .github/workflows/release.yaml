@@ -26,10 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          fetch-depth: 0
           persist-credentials: false
       - id: semVersie
         name: semVersie
-        uses: RonaldPhilipsen/SemVersie@v2.3.4
+        uses: RonaldPhilipsen/semVersie@41233349edfb40f4e6da4251fea7684026182dc9 # v2.3.4
 
   release:
     name: Create Release
@@ -38,7 +39,9 @@ jobs:
     permissions:
       contents: write # to be able to push commits and create releases
       packages: write # to be able to publish to GitHub Packages
-    if: needs.semVersie.outputs.release == 'true'
+    if:
+      ${{ needs.semVersie.outputs.release == 'true' ||
+      needs.semVersie.outputs.prerelease == 'true' }}
     env:
       VERSION: ${{ needs.semVersie.outputs.version }}
       TAG: ${{ needs.semVersie.outputs.tag }}
@@ -47,6 +50,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          fetch-depth: 0
           persist-credentials: false
       - name: Install Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
