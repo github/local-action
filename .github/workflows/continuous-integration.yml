@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Checkout
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Setup Node.js
         id: setup-node
@@ -60,13 +60,13 @@ jobs:
     steps:
       - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: typescript-action
           repository: RonaldPhilipsen/typescript-action
@@ -121,13 +121,13 @@ jobs:
     steps:
       - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
 
       - name: Checkout JavaScript Template
         id: checkout-javascript
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: javascript-action
           repository: RonaldPhilipsen/javascript-action
@@ -182,13 +182,13 @@ jobs:
     steps:
       - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: typescript-pnpm-esm-action
           repository: RonaldPhilipsen/typescript-pnpm-esm-action
@@ -254,13 +254,13 @@ jobs:
     steps:
       - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: typescript-pnpm-cjs-action
           repository: RonaldPhilipsen/typescript-pnpm-cjs-action
@@ -325,13 +325,13 @@ jobs:
     steps:
       - name: Checkout @ronaldphilipsen/local-action
         id: checkout
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
-        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: typescript-yarn-esm-action
           repository: RonaldPhilipsen/typescript-yarn-esm-action
