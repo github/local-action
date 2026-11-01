@@ -1,7 +1,9 @@
 import { jest } from '@jest/globals'
+import * as exec from '../../../../__fixtures__/@actions/exec.js'
 import * as io from '../../../../__fixtures__/@actions/io.js'
 import * as fs from '../../../../__fixtures__/fs.js'
 
+jest.unstable_mockModule('@actions/exec', () => exec)
 jest.unstable_mockModule('@actions/io', () => io)
 jest.unstable_mockModule('fs', () => fs)
 
