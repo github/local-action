@@ -23,6 +23,8 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
         id: setup-node
@@ -63,6 +65,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
+          persist-credentials: false
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
@@ -70,6 +73,7 @@ jobs:
         with:
           path: typescript-action
           repository: RonaldPhilipsen/typescript-action
+          persist-credentials: false
 
       - name: Setup Node.js
         id: setup-node
@@ -124,6 +128,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
+          persist-credentials: false
 
       - name: Checkout JavaScript Template
         id: checkout-javascript
@@ -131,6 +136,7 @@ jobs:
         with:
           path: javascript-action
           repository: RonaldPhilipsen/javascript-action
+          persist-credentials: false
 
       - name: Setup Node.js
         id: setup-node
@@ -185,6 +191,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
+          persist-credentials: false
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
@@ -192,6 +199,7 @@ jobs:
         with:
           path: typescript-pnpm-esm-action
           repository: RonaldPhilipsen/typescript-pnpm-esm-action
+          persist-credentials: false
 
       - name: Install pnpm
         id: pnpm
@@ -257,6 +265,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
+          persist-credentials: false
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
@@ -264,6 +273,7 @@ jobs:
         with:
           path: typescript-pnpm-cjs-action
           repository: RonaldPhilipsen/typescript-pnpm-cjs-action
+          persist-credentials: false
 
       - name: Install pnpm
         id: pnpm
@@ -328,6 +338,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: local-action
+          persist-credentials: false
 
       - name: Checkout TypeScript Template
         id: checkout-typescript
@@ -335,6 +346,7 @@ jobs:
         with:
           path: typescript-yarn-esm-action
           repository: RonaldPhilipsen/typescript-yarn-esm-action
+          persist-credentials: false
 
       - name: Setup Node.js
         id: setup-node
