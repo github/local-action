@@ -81,7 +81,15 @@ jobs:
           node-version: '26'
           registry-url: 'https://npm.pkg.github.com'
       - name: publish to GitHub Packages
-        run: npm publish
+        run: |
+          npm publish || {
+            echo "npm publish failed; checking if the version already exists..."
+            if npm view "@ronaldphilipsen/local-action@$VERSION" version --registry https://npm.pkg.github.com; then
+              echo "$VERSION is already published; skipping"
+            else
+              exit 1
+            fi
+          }
       - name: Commit version bump
         env:
           GH_TOKEN: ${{ github.token }}
@@ -93,20 +101,18 @@ jobs:
           git add package.json package-lock.json
           git commit -m "chore: bump version to $VERSION"
           git push --set-upstream origin "release-$VERSION"
-      - name: Tag Release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          git tag "$TAG"
-          git push origin "$TAG"
       - name: Create Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # Creates the tag (pointing at HEAD) and the release in one step
+          flags=()
+          [[ "$PRERELEASE" == 'true' ]] && flags+=(--prerelease)
           gh release create "$TAG" \
+            --target "$(git rev-parse HEAD)" \
             --title "$TAG" \
             --notes "$RELEASE_NOTES" \
-            "$( [[ "$PRERELEASE" == 'true' ]] && echo '--prerelease' || echo '' )"
+            "${flags[@]}"
       - name: clean up branch
         if: always()
         run: |
